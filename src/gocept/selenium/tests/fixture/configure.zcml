@@ -1,0 +1,27 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  >
+
+  <browser:page
+    for="*"
+    name="set.html"
+    class=".dummy.Set"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="get.html"
+    class=".dummy.Get"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="display-delay.html"
+    template="display-delay.pt"
+    permission="zope.Public"
+    />
+
+</configure>
