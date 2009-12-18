@@ -18,7 +18,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='gocept.selenium',
-    version = '0.2dev',
+    version = '0.2',
     author='Wolfgang Schnerring',
     author_email='ws@gocept.com',
     description='zope.testing layer that integrates Selenium-RC',

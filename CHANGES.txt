@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.2 (unreleased)
+0.2 (2009-12-18)
 ----------------
 
 - Make Zope 2 test server reachable from the outside.
