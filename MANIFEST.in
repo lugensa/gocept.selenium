@@ -1,0 +1,4 @@
+include *.cfg
+exclude .installed.cfg
+include *.txt
+recursive-include src *.txt *.zcml *.pt
