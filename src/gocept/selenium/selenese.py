@@ -167,6 +167,11 @@ class Selenese(object):
 
     @assert_type('pattern')
     @passthrough
+    def getTitle(self):
+        pass
+
+    @assert_type('pattern')
+    @passthrough
     def getBodyText(self):
         pass
 
