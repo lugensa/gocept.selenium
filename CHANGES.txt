@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.3 (unreleased)
+0.3 (2010-01-12)
 ----------------
 
 - Extracted 'host' and 'port' as class attributes of gocept.selenium.ztk.Layer
