@@ -24,19 +24,19 @@ import zope.app.wsgi
 
 class Layer(gocept.selenium.base.Layer):
 
+    # Hostname and port of the Zope webserver
+    host = 'localhost'
+    port = 8087
+
     def setUp(self):
         task_dispatcher = ThreadedTaskDispatcher()
         task_dispatcher.setThreadCount(1)
         db = zope.app.testing.functional.FunctionalTestSetup().db
         self.http = SwitchableDBServerType.create(
-            'WSGI-HTTP', task_dispatcher, db, port=8087)
+            'WSGI-HTTP', task_dispatcher, db, port=self.port)
         thread = threading.Thread(target=zope.app.server.main.run)
         thread.setDaemon(True)
         thread.start()
-
-        # XXX make configurable
-        self.host = 'localhost'
-        self.port = '8087'
 
         super(Layer, self).setUp()
 
@@ -75,4 +75,4 @@ SwitchableDBServerType = zope.app.server.wsgi.ServerType(
     zope.server.http.wsgihttpserver.WSGIHTTPServer,
     SwitchableDBApplication,
     zope.server.http.commonaccesslogger.CommonAccessLogger,
-    8087, True)
+    8087, True) # The port number here is just the default value
