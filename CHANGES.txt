@@ -1,10 +1,11 @@
 Changes
 =======
 
-0.2.2 (unreleased)
-------------------
+0.3 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Extracted 'host' and 'port' as class attributes of gocept.selenium.ztk.Layer
+  so subclasses can override them; stopped hardcoding 8087 as the server port.
 
 
 0.2.1 (2009-12-18)

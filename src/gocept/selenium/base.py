@@ -18,12 +18,14 @@ import selenium
 
 class Layer(object):
 
-    # XXX make configurable
+    # XXX make configurable:
+    # hostname and port of the Selenium RC server
     _server = 'localhost'
     _port = 4444
     _browser = '*firefox'
 
-    # override in subclass
+    # override in subclass:
+    # hostname and port of the app web server
     host = None
     port = None
 
