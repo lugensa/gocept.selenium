@@ -84,7 +84,7 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
     def test_pause(self):
         start = time.time()
         self.selenium.pause(5000)
-        if time.time()-start < 4:
+        if time.time() - start < 4:
             self.fail('Pause did not pause long enough')
 
     def test_deleteCookie_smoke(self):
@@ -101,3 +101,9 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
 
     def test_fireEvent_smoke(self):
         self.selenium.fireEvent('css=body', 'click')
+
+    def test_location(self):
+        self.selenium.open('/')
+        self.assertEquals(
+            'http://localhost:8087/',
+            self.selenium.getLocation())
