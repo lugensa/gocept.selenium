@@ -4,7 +4,8 @@ Changes
 0.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- API expansion: add `getLocation` to retrieve currently loaded URL in
+  browser.
 
 
 0.3 (2010-01-12)
