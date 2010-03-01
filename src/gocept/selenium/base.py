@@ -15,7 +15,6 @@
 import gocept.selenium.selenese
 import selenium
 
-
 class Layer(object):
 
     # XXX make configurable:
@@ -33,6 +32,7 @@ class Layer(object):
 
     def __init__(self, *bases):
         self.__bases__ = bases
+        self.__name__ = '.'.join(x.__name__ for x in bases) + '.selenium'
 
     def setUp(self):
         self.selenium = selenium.selenium(
