@@ -16,6 +16,9 @@ import Lifetime
 import Testing.ZopeTestCase
 import Testing.ZopeTestCase.utils
 import gocept.selenium.base
+import random
+import time
+
 
 try:
     # Zope 2 >= 2.11
@@ -44,8 +47,7 @@ class Layer(gocept.selenium.base.Layer):
     def startZServer(self):
         if self.host is not None:
             return
-        host = '195.62.106.98'
-        import random, time
+        host = '127.0.0.1'
         port = random.choice(range(55000, 55500))
         from Testing.ZopeTestCase.threadutils import setNumberOfThreads
         setNumberOfThreads(5)
@@ -53,7 +55,7 @@ class Layer(gocept.selenium.base.Layer):
         t = QuietThread(target=zserverRunner, args=(host, port, None))
         t.setDaemon(1)
         t.start()
-        time.sleep(0.1) # Sandor Palfy
+        time.sleep(0.1)  # Sandor Palfy
 
         Testing.ZopeTestCase.utils._Z2HOST = host
         Testing.ZopeTestCase.utils._Z2PORT = port
