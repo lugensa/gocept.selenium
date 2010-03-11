@@ -121,8 +121,11 @@ class PopUpTest(gocept.selenium.ztk.testing.TestCase):
             self.selenium.deselectPopUp()
         super(PopUpTest, self).tearDown()
 
-    def test_wait_for_popup(self):
+    def test_wait_for_and_select_popup(self):
+        # smoke tests for calls not otherwise used in this test class
         self.selenium.waitForPopUp('gocept.selenium-popup')
+        self.selenium.waitForPopUp()
+        self.selenium.selectPopUp()
 
     def test_0_select_popup(self):
         # XXX needs to be run first as pop-up windows can apparently be

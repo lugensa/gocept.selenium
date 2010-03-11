@@ -67,10 +67,10 @@ class Selenese(object):
     def waitForPageToLoad(self):
         self.selenium.wait_for_page_to_load(self.timeout * 1000)
 
-    def waitForPopUp(self, windowID):
+    def waitForPopUp(self, windowID=''):
         self.selenium.wait_for_pop_up(windowID, self.timeout * 1000)
 
-    def selectPopUp(self, windowID, wait=True):
+    def selectPopUp(self, windowID='', wait=True):
         if wait:
             self.waitForPopUp(windowID)
         self.selenium.select_pop_up(windowID)
