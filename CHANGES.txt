@@ -4,8 +4,11 @@ Changes
 0.3.1 (unreleased)
 ------------------
 
-- API expansion: add `getLocation` to retrieve currently loaded URL in
+- API expansion: add ``getLocation`` to retrieve currently loaded URL in
   browser.
+
+- API expansion: added ``waitForPopUp``, ``selectPopUp``, ``deselectPopUp``
+  and ``close``.
 
 - Usability: raise a better readable exception when an unimplemented selenese
   method is called.
