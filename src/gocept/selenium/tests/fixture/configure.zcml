@@ -24,4 +24,18 @@
     permission="zope.Public"
     />
 
+  <browser:page
+     for="*"
+     name="launch-popup.html"
+     template="launch-popup.pt"
+     permission="zope.Public"
+     />
+
+  <browser:page
+     for="*"
+     name="popup.html"
+     template="popup.pt"
+     permission="zope.Public"
+     />
+
 </configure>

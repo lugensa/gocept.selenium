@@ -107,3 +107,43 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
         self.assertEquals(
             'http://localhost:8087/',
             self.selenium.getLocation())
+
+
+class PopUpTest(gocept.selenium.ztk.testing.TestCase):
+
+    def setUp(self):
+        super(PopUpTest, self).setUp()
+        self.selenium.open('/launch-popup.html')
+
+    def tearDown(self):
+        if self.selenium.getLocation().endswith('/popup.html'):
+            self.selenium.close()
+            self.selenium.deselectPopUp()
+        super(PopUpTest, self).tearDown()
+
+    def test_wait_for_popup(self):
+        self.selenium.waitForPopUp('gocept.selenium-popup')
+
+    def test_0_select_popup(self):
+        # XXX needs to be run first as pop-up windows can apparently be
+        # selected even after they have been closed.
+        self.assertRaises(Exception,
+                          self.selenium.selectPopUp,
+                          'gocept.selenium-popup', wait=False)
+        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.verifyElementPresent('css=div#popup')
+
+    def test_deselect_popup(self):
+        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.deselectPopUp()
+        self.selenium.verifyElementNotPresent('css=div#popup')
+        self.selenium.verifyElementPresent('css=div#parent')
+
+    def test_close(self):
+        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.verifyElementPresent('css=div#popup')
+        self.selenium.close()
+        self.assertRaises(Exception,
+                          self.selenium.verifyElementPresent, 'css=div#popup')
+        self.selenium.deselectPopUp()
+        self.selenium.verifyElementPresent('css=div#parent')

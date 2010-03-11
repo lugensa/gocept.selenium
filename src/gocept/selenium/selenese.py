@@ -67,12 +67,29 @@ class Selenese(object):
     def waitForPageToLoad(self):
         self.selenium.wait_for_page_to_load(self.timeout * 1000)
 
+    def waitForPopUp(self, windowID):
+        self.selenium.wait_for_pop_up(windowID, self.timeout * 1000)
+
+    def selectPopUp(self, windowID, wait=True):
+        if wait:
+            self.waitForPopUp(windowID)
+        self.selenium.select_pop_up(windowID)
+
+    @passthrough
+    def close(self):
+        self.selenium.deselectPopUp()
+        pass
+
     @passthrough
     def createCookie(self, nameAndValue, options):
         pass
 
     @passthrough
     def deleteCookie(self, name, options):
+        pass
+
+    @passthrough
+    def deselectPopUp(self):
         pass
 
     @passthrough
