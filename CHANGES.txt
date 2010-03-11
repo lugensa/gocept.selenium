@@ -7,6 +7,9 @@ Changes
 - API expansion: add `getLocation` to retrieve currently loaded URL in
   browser.
 
+- Usability: raise a better readable exception when an unimplemented selenese
+  method is called.
+
 
 0.3 (2010-01-12)
 ----------------
