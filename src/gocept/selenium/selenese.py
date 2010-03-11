@@ -248,6 +248,7 @@ class Selenese(object):
     # Internal
 
     def __getattr__(self, name):
+        requested_name = name
         if name.startswith('waitFor'):
             name = name.replace('waitFor', 'assert', 1)
             assertion = getattr(self, name)
@@ -270,6 +271,8 @@ class Selenese(object):
             if getter is None:
                 getter_name = name.replace('assert', 'is', 1)
                 getter = getattr(self, getter_name, None)
+            if getter is None:
+                raise AttributeError(requested_name)
             if getter.assert_type == 'pattern':
                 return lambda pattern: self._assert_pattern(getter, pattern)
             elif getter.assert_type == 'locator':
@@ -278,7 +281,7 @@ class Selenese(object):
                 return lambda locator, pattern: \
                         self._assert_pattern(getter, pattern, locator)
 
-        raise AttributeError(name)
+        raise AttributeError(requested_name)
 
     def _assert(self, getter, *args, **kw):
         if not getter(*args, **kw):
