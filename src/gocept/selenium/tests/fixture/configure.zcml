@@ -38,4 +38,11 @@
      permission="zope.Public"
      />
 
+  <browser:page
+     for="*"
+     name="alert.html"
+     template="alert.pt"
+     permission="zope.Public"
+     />
+
 </configure>

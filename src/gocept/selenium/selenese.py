@@ -212,6 +212,11 @@ class Selenese(object):
     def getValue(self, locator):
         pass
 
+    @assert_type(None)
+    @passthrough
+    def isAlertPresent(self):
+        pass
+
     @assert_type('locator')
     @passthrough
     def isElementPresent(self, locator):
@@ -302,6 +307,8 @@ class Selenese(object):
             elif getter.assert_type == 'locator_pattern':
                 return lambda locator, pattern: \
                         self._assert_pattern(getter, pattern, locator)
+            elif getter.assert_type is None:
+                return lambda: self._assert(getter)
 
         raise AttributeError(requested_name)
 
