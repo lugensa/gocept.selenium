@@ -10,6 +10,9 @@ Changes
 - API expansion: added ``waitForPopUp``, ``selectPopUp``, ``deselectPopUp``
   and ``close``.
 
+- API expansion: added ``verifyAlertPresent``, ``verifyAlertNotPresent`` and
+  ``waitForAlertPresent``.
+
 - Usability: raise a better readable exception when an unimplemented selenese
   method is called.
 

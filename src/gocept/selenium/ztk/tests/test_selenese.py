@@ -108,6 +108,22 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
             'http://localhost:8087/',
             self.selenium.getLocation())
 
+    def test_alert_not_present(self):
+        self.selenium.open('/')
+        self.selenium.verifyAlertNotPresent()
+
+    def test_alert_present(self):
+        self.selenium.open('/alert.html')
+        time.sleep(0.6)
+        self.selenium.verifyAlertPresent()
+        self.selenium.getAlert()
+
+    def test_wait_for_alert(self):
+        self.selenium.open('/alert.html')
+        self.selenium.verifyAlertNotPresent()
+        self.selenium.waitForAlertPresent()
+        self.selenium.getAlert()
+
 
 class PopUpTest(gocept.selenium.ztk.testing.TestCase):
 
