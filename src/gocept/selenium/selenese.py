@@ -265,6 +265,11 @@ class Selenese(object):
     # Internal
 
     def __getattr__(self, name):
+        attr = self.__getattr(name)
+        attr.__name__ = name
+        return attr
+
+    def __getattr(self, name):
         requested_name = name
         if name.startswith('waitFor'):
             name = name.replace('waitFor', 'assert', 1)

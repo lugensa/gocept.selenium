@@ -13,6 +13,9 @@ Changes
 - Usability: raise a better readable exception when an unimplemented selenese
   method is called.
 
+- Usability: raise failure exceptions that convey the name of the failed
+  assertion in spite of some lambdas wrapped around it.
+
 
 0.3 (2010-01-12)
 ----------------
