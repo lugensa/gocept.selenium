@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Corporation and Contributors.
+# Copyright (c) 2009 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 setup(
     name='gocept.selenium',
     version = '0.3.1dev',
-    author='Wolfgang Schnerring',
+    author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     description='zope.testing layer that integrates Selenium-RC',
     long_description = (
