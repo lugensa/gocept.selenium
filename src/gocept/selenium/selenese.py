@@ -270,11 +270,6 @@ class Selenese(object):
     # Internal
 
     def __getattr__(self, name):
-        attr = self.__getattr(name)
-        attr.__name__ = name
-        return attr
-
-    def __getattr(self, name):
         requested_name = name
         if name.startswith('waitFor'):
             name = name.replace('waitFor', 'assert', 1)
@@ -282,10 +277,8 @@ class Selenese(object):
             return (lambda *args, **kw:
                     self._waitFor(assertion, *args, **kw))
 
-        positive = True
         if 'Not' in name:
             name = name.replace('Not', '', 1)
-            positive = False
 
         if name.startswith('verify'):
             name = name.replace('verify', 'assert', 1)
@@ -300,25 +293,27 @@ class Selenese(object):
                 raise AttributeError(requested_name)
             if getter.assert_type == 'pattern':
                 return lambda pattern: self._assert_pattern(
-                    getter, positive, pattern)
+                    getter, requested_name, pattern)
             elif getter.assert_type == 'locator':
-                return lambda locator: self._assert(getter, positive, locator)
+                return lambda locator: self._assert(
+                    getter, requested_name, locator)
             elif getter.assert_type == 'locator_pattern':
                 return lambda locator, pattern: self._assert_pattern(
-                    getter, positive, pattern, locator)
+                    getter, requested_name, pattern, locator)
             elif getter.assert_type is None:
-                return lambda: self._assert(getter, positive)
+                return lambda: self._assert(getter, requested_name)
 
         raise AttributeError(requested_name)
 
-    def _assert(self, getter, positive, *args, **kw):
-        if positive ^ bool(getter(*args, **kw)):
+    def _assert(self, getter, name, *args, **kw):
+        if ('Not' not in name) ^ bool(getter(*args, **kw)):
             raise self.failureException(
-                'not valid: %s(%r, %r)' % (getter.__name__, args, kw))
+                'not valid: %s(%r, %r)' % (name, args, kw))
 
-    def _assert_pattern(self, getter, positive, pattern, *args):
+    def _assert_pattern(self, getter, name, pattern, *args):
         result = getter(*args)
-        if positive ^ bool(selenese_pattern_equals(result, pattern)):
+        if ('Not' not in name) ^ bool(
+                selenese_pattern_equals(result, pattern)):
             raise self.failureException(
                 '%r did not match expected %r'
                 % (result, pattern))
