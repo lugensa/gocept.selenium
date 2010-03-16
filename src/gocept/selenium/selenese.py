@@ -200,6 +200,9 @@ class Selenese(object):
     @assert_type('locator_pattern')
     @passthrough
     def getEval(self, script):
+        # Note: we use the locator_pattern because the script acts like a
+        # locator: we pass it through and Selenium returns a result we can
+        # compare with the pattern.
         pass
 
     @assert_type('locator_pattern')
