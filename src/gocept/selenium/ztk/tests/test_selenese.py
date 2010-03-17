@@ -14,6 +14,7 @@
 
 from gocept.selenium.selenese import selenese_pattern_equals as match
 from gocept.selenium.selenese import camelcase_to_underscore
+import gocept.selenium.selenese
 import gocept.selenium.ztk.testing
 import unittest
 import time
@@ -52,6 +53,55 @@ class UtilsTest(unittest.TestCase):
     def test_camelcaseconvert(self):
         self.assertEquals('asdf', camelcase_to_underscore('asdf'))
         self.assertEquals('foo_bar', camelcase_to_underscore('fooBar'))
+
+
+class NonexistentNameTest(unittest.TestCase):
+
+    def setUp(self):
+        class TestCase(object):
+            failureException = None
+
+        class Selenese(gocept.selenium.selenese.Selenese):
+            def get_without_assert_type(self):
+                pass
+            @gocept.selenium.selenese.assert_type('wrong_type')
+            def get_with_wrong_assert_type(self):
+                pass
+
+        self.selenese = Selenese(None, TestCase())
+
+    def assertError(self, error, name, expected_msg):
+        try:
+            getattr(self.selenese, name)
+        except error, e:
+            msg = e.args[0]
+        self.assertEquals(expected_msg, msg)
+
+    def assertAttributeError(self, name):
+        self.assertError(AttributeError, name, name)
+
+    def test_nonexistent_name(self):
+        self.assertAttributeError('a_nonexistent_name')
+        self.assertAttributeError('assert_a_nonexistent_name')
+
+    def test_waitfor_verify(self):
+        self.assertAttributeError('waitFor_a_nonexistent_name')
+        self.assertAttributeError('verify_a_nonexistent_name')
+
+    def test_not(self):
+        self.assertAttributeError('a_Notexistent_name')
+        self.assertAttributeError('assert_a_Notexistent_name')
+        self.assertAttributeError('waitFor_a_Notexistent_name')
+        self.assertAttributeError('verify_a_Notexistent_name')
+
+    def test_broken_assert_type(self):
+        self.assertError(AttributeError,
+                         'assert_without_assert_type',
+                         "'function' object has no attribute 'assert_type'")
+        self.assertError(ValueError,
+                         'assert_with_wrong_assert_type',
+                         "Unknown assert type 'wrong_type' for "
+                         "selenese method 'assert_with_wrong_assert_type'.")
 
 
 class AssertionTest(gocept.selenium.ztk.testing.TestCase):
