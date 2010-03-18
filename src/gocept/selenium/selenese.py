@@ -72,7 +72,10 @@ class Selenese(object):
 
     def selectPopUp(self, windowID='', wait=True):
         if wait:
-            self.waitForPopUp(windowID)
+            timeout = self.timeout * 1000
+        else:
+            timeout = 0
+        self.selenium.wait_for_pop_up(windowID, timeout)
         self.selenium.select_pop_up(windowID)
 
     @passthrough

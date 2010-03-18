@@ -182,9 +182,14 @@ class PopUpTest(gocept.selenium.ztk.testing.TestCase):
         self.selenium.open('/launch-popup.html')
 
     def tearDown(self):
+        try:
+            self.selenium.selectPopUp(wait=False)
+        except Exception:
+            pass
         if self.selenium.getLocation().endswith('/popup.html'):
             self.selenium.close()
             self.selenium.deselectPopUp()
+        self.selenium.setTimeout(30)
         super(PopUpTest, self).tearDown()
 
     def test_wait_for_and_select_popup(self):
@@ -193,9 +198,20 @@ class PopUpTest(gocept.selenium.ztk.testing.TestCase):
         self.selenium.waitForPopUp()
         self.selenium.selectPopUp()
 
-    def test_0_select_popup(self):
-        # XXX needs to be run first as pop-up windows can apparently be
-        # selected even after they have been closed.
+    def test_wait_for_popup_times_out(self):
+        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.close()
+        self.selenium.deselectPopUp()
+        self.selenium.setTimeout(0)
+        self.assertRaises(Exception, self.selenium.waitForPopUp,
+                          'gocept.selenium-popup')
+        self.assertRaises(Exception, self.selenium.waitForPopUp)
+        self.selenium.setTimeout(1)
+        self.assertRaises(Exception, self.selenium.waitForPopUp,
+                          'gocept.selenium-popup')
+        self.assertRaises(Exception, self.selenium.waitForPopUp)
+
+    def test_select_popup(self):
         self.assertRaises(Exception,
                           self.selenium.selectPopUp,
                           'gocept.selenium-popup', wait=False)
