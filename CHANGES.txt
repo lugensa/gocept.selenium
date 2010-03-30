@@ -4,7 +4,7 @@ Changes
 0.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- API expansion: added ``getSelectedLabel``.
 
 
 0.4 (2010-03-30)

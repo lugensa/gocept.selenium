@@ -210,6 +210,11 @@ class Selenese(object):
 
     @assert_type('locator_pattern')
     @passthrough
+    def getSelectedLabel(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
     def getText(self, locator):
         pass
 
