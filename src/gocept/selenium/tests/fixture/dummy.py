@@ -27,4 +27,10 @@ class Get(object):
 
     def __call__(self):
         c = zope.security.proxy.removeSecurityProxy(self.context)
-        return str(c.foo)
+        return str(getattr(c, 'foo', 0))
+
+
+class Error(object):
+
+    def __call__(Self):
+        raise ValueError()

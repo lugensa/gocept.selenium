@@ -15,7 +15,8 @@
 import gocept.selenium.ztk.testing
 import gocept.selenium.tests.isolation
 
-
 class ZTKTests(gocept.selenium.tests.isolation.IsolationTests,
                gocept.selenium.ztk.testing.TestCase):
-    pass
+
+    def test_selenium_http_500_handling(self):
+        self.selenium.open('http://%s/error.html' % self.selenium.server)
