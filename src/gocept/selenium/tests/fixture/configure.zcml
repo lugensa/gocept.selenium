@@ -19,6 +19,13 @@
 
   <browser:page
     for="*"
+    name="error.html"
+    class=".dummy.Error"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
     name="display-delay.html"
     template="display-delay.pt"
     permission="zope.Public"
