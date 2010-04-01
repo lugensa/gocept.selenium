@@ -6,6 +6,10 @@ Changes
 
 - API expansion: added ``getSelectedLabel``.
 
+- Ignore the code of a server's response when calling `open`. The default
+  behaviour of SeleniumRC changed between 1.0.1 and 1.0.2 but we want the old
+  behaviour by default.
+
 
 0.4 (2010-03-30)
 ----------------
