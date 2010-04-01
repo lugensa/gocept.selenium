@@ -78,6 +78,9 @@ class Selenese(object):
         self.selenium.wait_for_pop_up(windowID, timeout)
         self.selenium.select_pop_up(windowID)
 
+    def open(self, url, ignoreResponseCode=True):
+        self.selenium.do_command("open", [url, ignoreResponseCode])
+
     @passthrough
     def close(self):
         self.selenium.deselectPopUp()
@@ -141,10 +144,6 @@ class Selenese(object):
 
     @passthrough
     def mouseUpAt(self, locator, coord):
-        pass
-
-    @passthrough
-    def open(self):
         pass
 
     @passthrough
@@ -282,6 +281,7 @@ class Selenese(object):
 
     def __getattr__(self, name):
         requested_name = name
+
         def _getattr(name):
             try:
                 return getattr(self, name)
