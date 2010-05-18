@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Foundation and Contributors.
+# Copyright (c) 2009-2010 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -82,6 +82,14 @@ class Selenese(object):
         self.selenium.do_command("open", [url, ignoreResponseCode])
 
     @passthrough
+    def altKeyDown(self):
+        pass
+
+    @passthrough
+    def altKeyUp(self):
+        pass
+
+    @passthrough
     def close(self):
         self.selenium.deselectPopUp()
         pass
@@ -123,7 +131,35 @@ class Selenese(object):
         pass
 
     @passthrough
+    def controlKeyDown(self):
+        pass
+
+    @passthrough
+    def controlKeyUp(self):
+        pass
+
+    @passthrough
     def fireEvent(self, locator, eventName):
+        pass
+
+    @passthrough
+    def keyDown(self, locator, keySequence):
+        pass
+
+    @passthrough
+    def keyPress(self, locator, keySequence):
+        pass
+
+    @passthrough
+    def keyUp(self, locator, keySequence):
+        pass
+
+    @passthrough
+    def metaKeyDown(self):
+        pass
+
+    @passthrough
+    def metaKeyUp(self):
         pass
 
     @passthrough
@@ -160,6 +196,14 @@ class Selenese(object):
 
     @passthrough
     def setSpeed(self):
+        pass
+
+    @passthrough
+    def shiftKeyDown(self):
+        pass
+
+    @passthrough
+    def shiftKeyUp(self):
         pass
 
     @passthrough
