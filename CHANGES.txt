@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.4.2 (unreleased)
+0.4.2 (2010-05-20)
 ------------------
 
 - API expansion: ``*keyDown``, ``*keyUp``, ``keyPress``.
