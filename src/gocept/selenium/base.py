@@ -17,12 +17,6 @@ import selenium
 
 class Layer(object):
 
-    # XXX make configurable:
-    # hostname and port of the Selenium RC server
-    _server = 'localhost'
-    _port = 4444
-    _browser = '*firefox'
-
     # override in subclass:
     # hostname and port of the app web server
     host = None
@@ -35,13 +29,7 @@ class Layer(object):
         self.__name__ = '.'.join(x.__name__ for x in bases) + '.selenium'
 
     def setUp(self):
-        self.selenium = selenium.selenium(
-            self._server, self._port, self._browser,
-            'http://%s:%s/' % (self.host, self.port))
-        self.selenium.start()
-
-    def tearDown(self):
-        self.selenium.stop()
+        pass
 
     def switch_db(self):
         raise NotImplemented
@@ -49,8 +37,24 @@ class Layer(object):
 
 class TestCase(object):
 
+    # XXX make configurable:
+    # hostname and port of the Selenium RC server
+    _server = 'localhost'
+    _port = 4444
+
+    browser = '*firefox'
+
     def setUp(self):
         super(TestCase, self).setUp()
+        url = 'http://%s:%s/' % (self.layer.host, self.layer.port)
+        self._selenium = selenium.selenium(
+            self._server, self._port, self.browser, url)
+        self._selenium.start()
+
+        self.selenium = gocept.selenium.selenese.Selenese(self._selenium, self)
+
         self.layer.switch_db()
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer.selenium, self)
+
+    def tearDown(self):
+        self._selenium.stop()
+        super(TestCase, self).tearDown()
