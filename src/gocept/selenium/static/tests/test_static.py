@@ -13,6 +13,7 @@
 ##############################################################################
 
 import os
+import pkg_resources
 import shutil
 import tempfile
 import time
@@ -65,9 +66,10 @@ class TestStaticFilesTestCase(gocept.selenium.static.StaticFilesTestCase):
         self.assert_(self.testlayer.documentroot.startswith(default_tmp_dir))
 
     def test_using_selenese(self):
-        fixtures = os.path.dirname(gocept.selenium.tests.fixture.__file__)
+        alert_template = pkg_resources.resource_filename(
+            'gocept.selenium.tests.fixture', 'alert.pt')
         shutil.copy(
-            os.path.join(fixtures, 'alert.pt'),
+            os.path.join(alert_template),
             os.path.join(self.documentroot, 'alert.html'))
 
         self.selenium.open('/alert.html')
