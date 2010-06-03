@@ -59,7 +59,11 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         # hook to clear out all the files from the documentroot.
         paths = os.listdir(self.documentroot)
         for path in paths:
-            shutil.rmtree(path)
+            fullpath = os.path.join(self.documentroot, path)
+            if os.path.isdir(fullpath):
+                shutil.rmtree(fullpath)
+                continue
+            os.remove(fullpath)
 
 static_files_layer = StaticFilesLayer()
 

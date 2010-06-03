@@ -38,6 +38,7 @@ class TestStaticFilesLayer(unittest.TestCase):
     def test_documentroot_initially_empty(self):
         documentroot = self.testlayer.documentroot
         self.assert_(not os.listdir(self.testlayer.documentroot))
+
         open(os.path.join(documentroot, 'foo.txt'), 'w').write('Hello World!')
         self.assertEquals(
             ['foo.txt'], os.listdir(self.testlayer.documentroot))
@@ -45,9 +46,11 @@ class TestStaticFilesLayer(unittest.TestCase):
     def test_documentroot_empty_after_switchdb(self):
         documentroot = self.testlayer.documentroot
         self.assert_(not os.listdir(self.testlayer.documentroot))
+
         open(os.path.join(documentroot, 'bar.txt'), 'w').write('Hello World!')
         self.assertEquals(
             ['bar.txt'], os.listdir(self.testlayer.documentroot))
+
         self.testlayer.switch_db()
         self.assert_(not os.listdir(self.testlayer.documentroot))
 
@@ -63,7 +66,7 @@ class TestStaticFilesTestCase(gocept.selenium.static.StaticFilesTestCase):
 
     def test_documentroot(self):
         default_tmp_dir = tempfile.gettempdir()
-        self.assert_(self.testlayer.documentroot.startswith(default_tmp_dir))
+        self.assert_(self.documentroot.startswith(default_tmp_dir))
 
     def test_using_selenese(self):
         alert_template = pkg_resources.resource_filename(
