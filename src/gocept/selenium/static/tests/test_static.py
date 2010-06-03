@@ -13,12 +13,15 @@
 ##############################################################################
 
 import os
+import shutil
 import tempfile
+import time
 import unittest
 
+import gocept.selenium.tests.fixture
 import gocept.selenium.static
 
-class TestStaticFilesTestCase(unittest.TestCase):
+class TestStaticFilesLayer(unittest.TestCase):
 
     def setUp(self):
         self.testlayer = gocept.selenium.static.StaticFilesLayer()
@@ -51,3 +54,23 @@ class TestStaticFilesTestCase(unittest.TestCase):
         self.assert_(self.testlayer.server.pid)
         self.testlayer.stop_server()
         self.assert_(not self.testlayer.server)
+
+class TestStaticFilesTestCase(gocept.selenium.static.StaticFilesTestCase):
+
+    def test_server_started(self):
+        self.assert_(self.layer.server)
+
+    def test_documentroot(self):
+        default_tmp_dir = tempfile.gettempdir()
+        self.assert_(self.testlayer.documentroot.startswith(default_tmp_dir))
+
+    def test_using_selenese(self):
+        fixtures = os.path.dirname(gocept.selenium.tests.fixture.__file__)
+        shutil.copy(
+            os.path.join(fixtures, 'alert.pt'),
+            os.path.join(self.documentroot, 'alert.html'))
+
+        self.selenium.open('/alert.html')
+        self.selenium.verifyAlertNotPresent()
+        self.selenium.waitForAlertPresent()
+        self.selenium.getAlert()
