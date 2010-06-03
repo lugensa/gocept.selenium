@@ -1,10 +1,17 @@
 Changes
 =======
 
-0.4.3 (unreleased)
+0.5.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Move the browser selection from the test layer to the testcase baseclass in
+  order to be more flexible in choosing the browser. As a consequence, the
+  browser is started multiple times which is slower, but it will be easier to run
+  the tests against multiple browser types by merely subclassing the concrete
+  testcases and setting a different browser attribute.
+
+- Add utility method for creating multiple test cases for mutiple browsers from
+  one test case.
 
 
 0.4.2 (2010-05-20)
