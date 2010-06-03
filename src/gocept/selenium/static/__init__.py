@@ -23,6 +23,8 @@ import unittest
 
 import gocept.selenium.base
 
+_suffix = 'gocept.selenium.static'
+
 class StaticFilesLayer(gocept.selenium.base.Layer):
 
     host = 'localhost'
@@ -31,7 +33,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def setUp(self):
         super(StaticFilesLayer, self).setUp()
         self.server = None
-        self.documentroot = tempfile.mkdtemp(suffix='tha.selenium.staticfiles')
+        self.documentroot = tempfile.mkdtemp(suffix=_suffix)
         self.start_server()
 
     def start_server(self):
@@ -59,8 +61,9 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def switch_db(self):
         # Part of the gocept.selenium test layer contract. We use the
         # hook to clear out all the files from the documentroot.
-        shutil.rmtree(self.documentroot)
-        self.documentroot = tempfile.mkdtemp(suffix='doctree.tinydocbook')
+        paths = os.listdir(self.documentroot)
+        for path in paths:
+            shutil.rmtree(path)
 
 static_files_layer = StaticFilesLayer()
 
