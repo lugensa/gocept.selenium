@@ -39,19 +39,15 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def start_server(self):
         cmd = [sys.executable, '-m', 'SimpleHTTPServer', str(self.port)]
         self.server = subprocess.Popen(cmd, cwd=self.documentroot)
-        # Wait a little as it sometimes takes a while to
-        # get the server started.
+        # Wait a little as it sometimes takes a while to get the server
+        # started.
         time.sleep(0.25)
 
     def stop_server(self):
         if self.server is None:
             return
-        try:
-            # Kill the previously started SimpleHTTPServer process.
-            os.kill(self.server.pid, signal.SIGKILL)
-            self.server = None
-        except OSError, e:
-            print 'Could not kill process, do so manually. Reason:\n' + str(e)
+        self.server.kill()
+        self.server = None
 
     def tearDown(self):
         # Clean up after our behinds.
