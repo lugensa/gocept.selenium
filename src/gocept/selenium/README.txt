@@ -50,9 +50,15 @@ zope.testing, you need to do this to enable Selenium tests:
             self.selenium.open('http://%s/foo.html' % self.selenium.server)
             self.selenium.assertBodyText('foo')
 
-7. Run seleniumrc.
+7. Optionally duplicate your testcases for multiple browsers, e.g. ::
 
-8. Run bin/test and see it work!
+    from gocept.selenium.util import make_testsuite
+
+    test_suite = make_testsuite((MyTest,), ('*firefox', '*googlechrome'))
+
+8. Run seleniumrc.
+
+9. Run bin/test and see it work!
 
 
 Quick start with Zope 2/Plone
