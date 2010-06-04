@@ -54,7 +54,8 @@ zope.testing, you need to do this to enable Selenium tests:
 
     from gocept.selenium.util import make_testsuite
 
-    test_suite = make_testsuite((MyTest,), ('*firefox', '*googlechrome'))
+    def test_suite():
+        return make_testsuite((MyTest,), ('*firefox', '*googlechrome'))
 
 8. Run seleniumrc.
 
