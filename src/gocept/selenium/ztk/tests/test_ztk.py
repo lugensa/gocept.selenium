@@ -15,6 +15,7 @@
 import gocept.selenium.ztk.testing
 import gocept.selenium.tests.isolation
 
+
 class ZTKTests(gocept.selenium.tests.isolation.IsolationTests,
                gocept.selenium.ztk.testing.TestCase):
 
