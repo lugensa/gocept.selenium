@@ -14,6 +14,7 @@
 
 import unittest
 
+
 def _testcases_for_browser(testcases, browser, app_host, selenium_server):
     suite = unittest.TestSuite()
     for testcase in testcases:
@@ -24,10 +25,12 @@ def _testcases_for_browser(testcases, browser, app_host, selenium_server):
         # Create a new test class, subclassing the original test case. The
         # name of this new class reflects what browser is used.
         new_testcase = type(
-            testcase.__name__+'_'+browser, (testcase,), {'browser': browser})
+            testcase.__name__ + '_' + browser, (testcase,),
+            {'browser': browser})
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromTestCase(new_testcase))
     return suite
+
 
 def make_testsuite(testcases, browsers, app_host=None, selenium_server=None):
     """Creates a test suite, where each of the given test cases is replicated
