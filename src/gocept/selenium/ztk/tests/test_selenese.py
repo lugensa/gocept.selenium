@@ -64,6 +64,7 @@ class NonexistentNameTest(unittest.TestCase):
         class Selenese(gocept.selenium.selenese.Selenese):
             def get_without_assert_type(self):
                 pass
+
             @gocept.selenium.selenese.assert_type('wrong_type')
             def get_with_wrong_assert_type(self):
                 pass

@@ -16,18 +16,22 @@ import unittest
 from gocept.selenium.base import Layer
 from gocept.selenium.util import make_testsuite
 
+
 class MakeTestSuiteTestCase(unittest.TestCase):
     layer = Layer()
 
     def test_one_two_three(self):
         self.assert_(True)
 
+
 class Another(unittest.TestCase):
     def test_four_five(self):
         self.assert_(True)
 
+
 class SubFromMakeTestSuiteTestCase(MakeTestSuiteTestCase):
     layer = Layer()
+
 
 class MakeTestSuite(unittest.TestCase):
 
@@ -64,7 +68,9 @@ class MakeTestSuite(unittest.TestCase):
         for test in tests:
             self.assertEquals('192.168.1.2', test._server)
 
+
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(MakeTestSuite))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(MakeTestSuite))
     return suite
