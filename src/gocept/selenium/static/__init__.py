@@ -14,7 +14,6 @@
 
 import os
 import shutil
-import signal
 import subprocess
 import sys
 import tempfile
@@ -22,6 +21,8 @@ import time
 import unittest
 
 import gocept.selenium.base
+
+_suffix = 'gocept.selenium.static'
 
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
@@ -32,25 +33,21 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def setUp(self):
         super(StaticFilesLayer, self).setUp()
         self.server = None
-        self.documentroot = tempfile.mkdtemp(suffix='tha.selenium.staticfiles')
+        self.documentroot = tempfile.mkdtemp(suffix=_suffix)
         self.start_server()
 
     def start_server(self):
         cmd = [sys.executable, '-m', 'SimpleHTTPServer', str(self.port)]
         self.server = subprocess.Popen(cmd, cwd=self.documentroot)
-        # Wait a little as it sometimes takes a while to
-        # get the server started.
+        # Wait a little as it sometimes takes a while to get the server
+        # started.
         time.sleep(0.25)
 
     def stop_server(self):
         if self.server is None:
             return
-        try:
-            # Kill the previously started SimpleHTTPServer process.
-            os.kill(self.server.pid, signal.SIGKILL)
-            self.server = None
-        except OSError, e:
-            print 'Could not kill process, do so manually. Reason:\n' + str(e)
+        self.server.kill()
+        self.server = None
 
     def tearDown(self):
         # Clean up after our behinds.
@@ -61,8 +58,13 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def switch_db(self):
         # Part of the gocept.selenium test layer contract. We use the
         # hook to clear out all the files from the documentroot.
-        shutil.rmtree(self.documentroot)
-        self.documentroot = tempfile.mkdtemp(suffix='doctree.tinydocbook')
+        paths = os.listdir(self.documentroot)
+        for path in paths:
+            fullpath = os.path.join(self.documentroot, path)
+            if os.path.isdir(fullpath):
+                shutil.rmtree(fullpath)
+                continue
+            os.remove(fullpath)
 
 
 static_files_layer = StaticFilesLayer()
