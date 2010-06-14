@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Foundation and Contributors.
+# Copyright (c) 2010 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -16,11 +16,11 @@ import os
 import pkg_resources
 import shutil
 import tempfile
-import time
 import unittest
 
 import gocept.selenium.tests.fixture
 import gocept.selenium.static
+
 
 class TestStaticFilesLayer(unittest.TestCase):
 
@@ -58,6 +58,7 @@ class TestStaticFilesLayer(unittest.TestCase):
         self.assert_(self.testlayer.server.pid)
         self.testlayer.stop_server()
         self.assert_(not self.testlayer.server)
+
 
 class TestStaticFilesTestCase(gocept.selenium.static.StaticFilesTestCase):
 

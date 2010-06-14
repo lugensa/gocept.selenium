@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Foundation and Contributors.
+# Copyright (c) 2010 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -17,11 +17,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 import gocept.selenium.base
 
 _suffix = 'gocept.selenium.static'
+
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
 
@@ -63,7 +65,9 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
                 continue
             os.remove(fullpath)
 
+
 static_files_layer = StaticFilesLayer()
+
 
 class StaticFilesTestCase(gocept.selenium.base.TestCase, unittest.TestCase):
 
