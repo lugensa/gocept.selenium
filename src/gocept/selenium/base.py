@@ -15,6 +15,7 @@
 import gocept.selenium.selenese
 import selenium
 
+
 class Layer(object):
 
     # XXX make configurable:
