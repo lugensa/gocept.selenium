@@ -19,7 +19,7 @@ import gocept.selenium.static
 class TestStaticFilesTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.testlayer = gocept.selenium.static.StaticFilesLayer()
+        self.testlayer = gocept.selenium.static.static_files_layer
         self.testlayer.setUp()
 
     def tearDown(self):
