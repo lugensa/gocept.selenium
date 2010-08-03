@@ -6,6 +6,8 @@ Changes
 
 - Add a static files test layer for running selenium tests against a set
   of static (HTML) files.
+- Patterns now also work with multiline strings,
+  i. e. 'foo*' will match 'foo\nbar' (#7790).
 
 
 0.4.2 (2010-05-20)

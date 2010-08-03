@@ -435,7 +435,7 @@ def match_glob(text, pattern):
 
 
 def match_regex(text, pattern):
-    return re.search(pattern, text)
+    return re.search(pattern, text, re.DOTALL)
 
 
 def match_exact(text, pattern):
@@ -455,7 +455,7 @@ def selenese_pattern_equals(text, pattern):
     * exact:string: Match a string exactly, verbatim, without any of that fancy
       wildcard stuff.
 
-      If no pattern prefix is specified, assume that it's a"glob"
+      If no pattern prefix is specified, assume that it's a "glob"
       pattern.
     """
     matcher = match_glob
