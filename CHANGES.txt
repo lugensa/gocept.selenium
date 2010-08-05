@@ -10,6 +10,9 @@ Changes
 
 - API expansion: add ``runScript``.
 
+- The ``pause`` method uses float division now. Pauses where implicitly rounded
+  to full seconds before when an int was passed.
+
 
 0.5 (2010-08-03)
 ----------------
