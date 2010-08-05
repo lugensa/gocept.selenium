@@ -15,6 +15,14 @@ Changes
 
 - API expansion: add ``clickAt``.
 
+- The name of the factored test layer contains the module of the bases now. The
+  name is used by zope.testrunner distinguish layers. Before this fix selenium
+  layers factored from base layers with the same names but in different modules
+  would be considered equal by zope.testrunner.
+
+- The factored ZTK layer cleanly shuts down the http server in tearDown now.
+  This allows to run different selenium layers in one go.
+
 
 0.5 (2010-08-03)
 ----------------

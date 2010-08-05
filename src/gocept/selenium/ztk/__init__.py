@@ -15,8 +15,8 @@
 from zope.server.taskthreads import ThreadedTaskDispatcher
 import gocept.selenium.base
 import gocept.selenium.selenese
+import asyncore
 import threading
-import zope.app.server.main
 import zope.app.server.wsgi
 import zope.app.testing.functional
 import zope.app.wsgi
@@ -34,11 +34,21 @@ class Layer(gocept.selenium.base.Layer):
         db = zope.app.testing.functional.FunctionalTestSetup().db
         self.http = SwitchableDBServerType.create(
             'WSGI-HTTP', task_dispatcher, db, port=self.port)
-        thread = threading.Thread(target=zope.app.server.main.run)
-        thread.setDaemon(True)
-        thread.start()
-
+        self.thread = threading.Thread(target=self.run_server)
+        self.thread.setDaemon(True)
+        self.thread.start()
         super(Layer, self).setUp()
+
+    def tearDown(self):
+        self.running = False
+        self.thread.join()
+        super(Layer, self).tearDown()
+
+    def run_server(self):
+        self.running = True
+        while self.running:
+            asyncore.poll(0.1)
+        self.http.close()
 
     def switch_db(self):
         """switches the HTTP-server's database to the currently active
