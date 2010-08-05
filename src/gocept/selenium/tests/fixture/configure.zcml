@@ -52,4 +52,11 @@
      permission="zope.Public"
      />
 
+  <browser:page
+     for="*"
+     name="divs.html"
+     template="divs.pt"
+     permission="zope.Public"
+     />
+
 </configure>

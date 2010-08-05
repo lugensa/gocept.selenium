@@ -179,6 +179,13 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
         self.selenium.waitForAlertPresent()
         self.selenium.getAlert()
 
+    def test_xpathcount_should_convert_to_ints(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertXpathCount("//div[@class='countable']", 3)
+        self.selenium.assertXpathCount("//div[@class='countable']", '3')
+        self.selenium.assertXpathCount("//div", 4)
+        self.selenium.assertXpathCount("//div", '4')
+
 
 class PopUpTest(gocept.selenium.ztk.testing.TestCase):
 

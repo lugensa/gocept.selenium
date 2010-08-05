@@ -4,7 +4,7 @@ Changes
 0.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- assertXpathCount now also takes ints (#7681).
 
 
 0.5 (2010-08-03)
