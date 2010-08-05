@@ -13,6 +13,8 @@ Changes
 - The ``pause`` method uses float division now. Pauses where implicitly rounded
   to full seconds before when an int was passed.
 
+- API expansion: add ``clickAt``.
+
 
 0.5 (2010-08-03)
 ----------------

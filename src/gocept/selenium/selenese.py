@@ -127,6 +127,10 @@ class Selenese(object):
         self.waitForPageToLoad()
 
     @passthrough
+    def clickAt(self, locator, coordString):
+        pass
+
+    @passthrough
     def chooseCancelOnNextConfirmation(self):
         pass
 
