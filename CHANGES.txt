@@ -8,6 +8,8 @@ Changes
 
 - API expansion: add ``isChecked`` to verify checkboxes.
 
+- API expansion: add ``runScript``.
+
 
 0.5 (2010-08-03)
 ----------------
