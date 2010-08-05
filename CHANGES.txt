@@ -6,6 +6,8 @@ Changes
 
 - assertXpathCount now also takes ints (#7681).
 
+- API expansion: add ``isChecked`` to verify checkboxes.
+
 
 0.5 (2010-08-03)
 ----------------
