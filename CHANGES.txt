@@ -23,6 +23,8 @@ Changes
 - The factored ZTK layer cleanly shuts down the http server in tearDown now.
   This allows to run different selenium layers in one go.
 
+- API expansion: add the assertions for ``getLocation``.
+
 
 0.5 (2010-08-03)
 ----------------
