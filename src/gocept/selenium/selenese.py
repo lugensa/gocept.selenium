@@ -214,6 +214,10 @@ class Selenese(object):
     def typeKeys(self):
         pass
 
+    @passthrough
+    def runScript(self, script):
+        pass
+
     # Getter
 
     @assert_type('pattern')
