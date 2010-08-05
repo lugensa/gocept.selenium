@@ -59,7 +59,7 @@ class Selenese(object):
     # Actions
 
     def pause(self, milliseconds):
-        time.sleep(milliseconds / 1000)
+        time.sleep(milliseconds / 1000.0)
 
     def setTimeout(self, timeout):
         self.timeout = timeout / 1000.0
