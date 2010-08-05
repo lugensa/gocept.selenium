@@ -304,6 +304,7 @@ class Selenese(object):
     def isTextPresent(self, pattern):
         pass
 
+    @assert_type('pattern')
     @passthrough
     def getLocation(self):
         pass
