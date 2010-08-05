@@ -310,7 +310,7 @@ class Selenese(object):
 
     def assertXpathCount(self, xpath, count):
         result = self.selenium.get_xpath_count(xpath)
-        if result != count:
+        if int(result) != int(count):
             raise self.failureException(
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, result, count))
