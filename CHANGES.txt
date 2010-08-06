@@ -25,6 +25,8 @@ Changes
 
 - API expansion: add the assertions for ``getLocation``.
 
+- API expansion: ``getSelectedValue``, ``getSelectedIndex``.
+
 
 0.5 (2010-08-03)
 ----------------

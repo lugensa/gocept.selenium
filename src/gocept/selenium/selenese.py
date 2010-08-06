@@ -264,6 +264,16 @@ class Selenese(object):
     def getSelectedLabel(self, locator):
         pass
 
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedValue(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedIndex(self, locator):
+        pass
+
     @assert_type('locator')
     @passthrough
     def isChecked(self, locator):
