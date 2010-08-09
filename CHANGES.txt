@@ -6,14 +6,11 @@ Changes
 
 - assertXpathCount now also takes ints (#7681).
 
-- API expansion: add ``isChecked`` to verify checkboxes.
-
-- API expansion: add ``runScript``.
+- API expansion: add ``isChecked`` to verify checkboxes, ``runScript``,
+  ``clickAt``, ``getLocation``, ``getSelectedValue``, ``getSelectedIndex``.
 
 - The ``pause`` method uses float division now. Pauses where implicitly rounded
   to full seconds before when an int was passed.
-
-- API expansion: add ``clickAt``.
 
 - The name of the factored test layer contains the module of the bases now. The
   name is used by zope.testrunner distinguish layers. Before this fix selenium
@@ -22,10 +19,6 @@ Changes
 
 - The factored ZTK layer cleanly shuts down the http server in tearDown now.
   This allows to run different selenium layers in one go.
-
-- API expansion: add the assertions for ``getLocation``.
-
-- API expansion: ``getSelectedValue``, ``getSelectedIndex``.
 
 
 0.5 (2010-08-03)
