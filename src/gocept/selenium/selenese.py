@@ -345,6 +345,18 @@ class Selenese(object):
                 'Element order did not match expected %r,%r'
                 % (locator1, locator2))
 
+    def assertElementWidth(self, locator, width):
+        got = self.getElementWidth(locator)
+        if width != got:
+            raise self.failureException(
+                'Width of %r is %r, expected %r.' % (locator, got, width))
+
+    def assertElementHeight(self, locator, height):
+        got = self.getElementHeight(locator)
+        if height != got:
+            raise self.failureException(
+                'Height of %r is %r, expected %r.' % (locator, got, height))
+
     # Internal
 
     def __getattr__(self, name):

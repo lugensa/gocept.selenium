@@ -4,7 +4,8 @@ Changes
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- API expansion: ``assertElementHeight`` and ``assertElementWidth`` along with
+  ``waitFor`` companions
 
 
 0.6 (2010-08-09)
