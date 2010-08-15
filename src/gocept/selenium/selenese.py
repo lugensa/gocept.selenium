@@ -58,6 +58,30 @@ class Selenese(object):
 
     # Actions
 
+    @passthrough
+    def addLocationStrategy(self, name, definition):
+        pass
+
+    @passthrough
+    def addScript(self, script):
+        pass
+
+    @passthrough
+    def answerOnNextPrompt(self, answer):
+        pass
+
+    @passthrough
+    def assignId(self, locator, id):
+        pass
+
+    @passthrough
+    def allowNativeXpath(self, allow):
+        pass
+
+    @passthrough
+    def ignoreAttributesWithoutValue(self, ignore):
+        pass
+
     def pause(self, milliseconds):
         time.sleep(milliseconds / 1000.0)
 
@@ -66,6 +90,9 @@ class Selenese(object):
 
     def waitForPageToLoad(self):
         self.selenium.wait_for_page_to_load(self.timeout * 1000)
+
+    def waitForFrameToLoad(self):
+        self.selenium.wait_for_frame_to_load(self.timeout * 1000)
 
     def waitForPopUp(self, windowID=''):
         self.selenium.wait_for_pop_up(windowID, self.timeout * 1000)
@@ -82,11 +109,35 @@ class Selenese(object):
         self.selenium.do_command("open", [url, ignoreResponseCode])
 
     @passthrough
+    def addCustomRequestHeader(self, key, value):
+        pass
+
+    @passthrough
+    def addSelection(self, locator, optionLocator):
+        pass
+
+    @passthrough
     def altKeyDown(self):
         pass
 
     @passthrough
     def altKeyUp(self):
+        pass
+
+    @passthrough
+    def attachFile(self, locator, fileURL):
+        pass
+
+    @passthrough
+    def captureNetworkTraffic(self, type_):
+        pass
+
+    @passthrough
+    def captureScreenshot(self, filename):
+        pass
+
+    @passthrough
+    def captureScreenshotToString(self):
         pass
 
     @passthrough
@@ -100,6 +151,10 @@ class Selenese(object):
 
     @passthrough
     def deleteCookie(self, name, options):
+        pass
+
+    @passthrough
+    def deleteAllVisibleCookies(self):
         pass
 
     @passthrough
@@ -131,6 +186,18 @@ class Selenese(object):
         pass
 
     @passthrough
+    def contextMenu(self, locator):
+        pass
+
+    @passthrough
+    def contextMenuAt(self, locator, coordString):
+        pass
+
+    @passthrough
+    def chooseOKOnNextConfirmation(self):
+        pass
+
+    @passthrough
     def chooseCancelOnNextConfirmation(self):
         pass
 
@@ -143,7 +210,27 @@ class Selenese(object):
         pass
 
     @passthrough
+    def doubleClick(self, locator):
+        pass
+
+    @passthrough
+    def doubleClickAt(self, locator, coordString):
+        pass
+
+    @passthrough
     def fireEvent(self, locator, eventName):
+        pass
+
+    @passthrough
+    def focus(self, locator):
+        pass
+
+    @passthrough
+    def goBack(self):
+        pass
+
+    @passthrough
+    def highlight(self, locator):
         pass
 
     @passthrough
@@ -167,7 +254,23 @@ class Selenese(object):
         pass
 
     @passthrough
+    def mouseDown(self, locator):
+        pass
+
+    @passthrough
     def mouseDownAt(self, locator, coord):
+        pass
+
+    @passthrough
+    def mouseDownRight(self, locator):
+        pass
+
+    @passthrough
+    def mouseDownRightAt(self, locator, coord):
+        pass
+
+    @passthrough
+    def mouseMove(self, locator):
         pass
 
     @passthrough
@@ -183,7 +286,19 @@ class Selenese(object):
         pass
 
     @passthrough
+    def mouseUp(self, locator):
+        pass
+
+    @passthrough
     def mouseUpAt(self, locator, coord):
+        pass
+
+    @passthrough
+    def mouseUpRight(self, locator):
+        pass
+
+    @passthrough
+    def mouseUpRightAt(self, locator, coord):
         pass
 
     @passthrough
@@ -191,7 +306,23 @@ class Selenese(object):
         pass
 
     @passthrough
-    def select(self):
+    def removeAllSelections(self, locator):
+        pass
+
+    @passthrough
+    def removeSelection(self, locator, optionLocator):
+        pass
+
+    @passthrough
+    def removeScript(self, id):
+        pass
+
+    @passthrough
+    def retrieveLastRemoteControlLogs(self):
+        pass
+
+    @passthrough
+    def select(self, locator, optionLocator):
         pass
 
     @passthrough
@@ -199,7 +330,33 @@ class Selenese(object):
         pass
 
     @passthrough
-    def setSpeed(self):
+    def submit(self, locator):
+        pass
+
+    @passthrough
+    def setBrowserLogLevel(self, level):
+        pass
+
+    def getSpeed(self):
+        return int(self.selenium.get_speed())
+
+    @passthrough
+    def setSpeed(self, speed):
+        pass
+
+    def getMouseSpeed(self):
+        return int(self.selenium.get_mouse_speed())
+
+    @passthrough
+    def setMouseSpeed(self, speed):
+        pass
+
+    @passthrough
+    def setContext(self, message):
+        pass
+
+    @passthrough
+    def setCursorPosition(self, locator, position):
         pass
 
     @passthrough
@@ -220,6 +377,22 @@ class Selenese(object):
 
     @passthrough
     def runScript(self, script):
+        pass
+
+    @passthrough
+    def uncheck(self, locator):
+        pass
+
+    @passthrough
+    def useXpathLibrary(self, name):
+        pass
+
+    @passthrough
+    def windowFocus(self):
+        pass
+
+    @passthrough
+    def windowMaximize(self):
         pass
 
     # Getter
@@ -247,8 +420,20 @@ class Selenese(object):
         pass
 
     @assert_type('pattern')
-    @passthrough
     def getConfirmation(self):
+        if not self.selenium.is_confirmation_present():
+            raise self.failureException(
+                'No confirmation occured.')
+        return self.selenium.get_confirmation()
+
+    @assert_type('pattern')
+    @passthrough
+    def getCookie(self):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getCookieByName(self, name):
         pass
 
     @assert_type('locator_pattern')
@@ -259,9 +444,26 @@ class Selenese(object):
         # compare with the pattern.
         pass
 
+    @assert_type('pattern')
+    @passthrough
+    def getHtmlSource(self):
+        pass
+
+    @assert_type('pattern')
+    def getPrompt(self):
+        if not self.selenium.is_prompt_present():
+            raise self.failureException(
+                'No prompt occured.')
+        return self.selenium.get_prompt()
+
     @assert_type('locator_pattern')
     @passthrough
     def getSelectedLabel(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedLabels(self, locator):
         pass
 
     @assert_type('locator_pattern')
@@ -271,7 +473,32 @@ class Selenese(object):
 
     @assert_type('locator_pattern')
     @passthrough
+    def getSelectedValues(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
     def getSelectedIndex(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedIndexes(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedId(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getSelectedIds(self, locator):
+        pass
+
+    @assert_type('locator')
+    @passthrough
+    def isSomethingSelected(self, locator):
         pass
 
     @assert_type('locator')
@@ -279,9 +506,19 @@ class Selenese(object):
     def isChecked(self, locator):
         pass
 
+    @assert_type('locator')
+    @passthrough
+    def isCookiePresent(self, name):
+        pass
+
     @assert_type('locator_pattern')
     @passthrough
     def getText(self, locator):
+        pass
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getTable(self, locator):
         pass
 
     @assert_type('locator_pattern')
@@ -294,6 +531,11 @@ class Selenese(object):
     def isAlertPresent(self):
         pass
 
+    @assert_type(None)
+    @passthrough
+    def isPromptPresent(self):
+        pass
+
     @assert_type('locator')
     @passthrough
     def isElementPresent(self, locator):
@@ -304,11 +546,21 @@ class Selenese(object):
     def isVisible(self, locator):
         pass
 
+    @assert_type('locator')
+    @passthrough
+    def isEditable(self, locator):
+        pass
+
     def getElementWidth(self, locator):
         return int(self.selenium.get_element_width(locator))
 
     def getElementHeight(self, locator):
         return int(self.selenium.get_element_height(locator))
+
+    @assert_type('locator_pattern')
+    @passthrough
+    def getExpression(self, expression):
+        pass
 
     @passthrough
     def isTextPresent(self, pattern):
@@ -326,8 +578,6 @@ class Selenese(object):
             raise self.failureException('Text %r not present' % pattern)
 
     def assertCondition(self, condition):
-        # Extension to selenese API to make automatic `waitForCondition`
-        # generation work
         # XXX comparing to `true` on a string-exact match might not be a good
         # idea as implicit bool conversion might happen in original Selenese.
         return self.assertEval(condition, 'exact:true')
