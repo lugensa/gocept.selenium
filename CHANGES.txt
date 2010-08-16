@@ -4,8 +4,8 @@ Changes
 0.7 (unreleased)
 ----------------
 
-- API expansion: ``assertElementHeight`` and ``assertElementWidth`` along with
-  ``waitFor`` companions
+- API expansion: ``getElementHeight|Width``, ``getCookie*`` and a few others.
+- lots of action methods (``mouse*`` among others)
 
 
 0.6 (2010-08-09)
