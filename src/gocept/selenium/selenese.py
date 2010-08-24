@@ -731,7 +731,7 @@ def match_exact(text, pattern):
 def selenese_pattern_equals(text, pattern):
     """Various Pattern syntaxes are available for matching string values:
 
-    * glob:pattern: Match a string against a"glob" (aka "wildmat") pattern.
+    * glob:pattern: Match a string against a "glob" (aka "wildmat") pattern.
       "Glob" is a kind of limited regular-expression syntax typically used in
       command-line shells. In a glob pattern, "*" represents any sequence of
       characters, and "?" represents any single character. Glob patterns match
