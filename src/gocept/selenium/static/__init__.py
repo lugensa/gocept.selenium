@@ -12,17 +12,50 @@
 #
 ##############################################################################
 
+import BaseHTTPServer
 import os
+import os.path
+import posixpath
 import shutil
+import SimpleHTTPServer
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
+import urllib
 
 import gocept.selenium.base
 
 _suffix = 'gocept.selenium.static'
+
+
+class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+
+    # The documentroot is set on the class just before passing the class on
+    # to the BaseHTTPServer.HTTPServer.
+    documentroot = None
+
+    def translate_path(self, path):
+        # We subclass SimpleHTTPRequestHandler as it is dependent on
+        # the cwd. We however want to inject a different path as the
+        # "documentroot".
+        # The rest of the method's implementation is copied verbatim from
+        # SimpleHTTPServer.SimpleHTTPRequestHandler.
+        path = path.split('?',1)[0]
+        path = path.split('#',1)[0]
+        path = posixpath.normpath(urllib.unquote(path))
+        words = path.split('/')
+        words = filter(None, words)
+
+        path = self.documentroot
+        for word in words:
+            drive, word = os.path.splitdrive(word)
+            head, word = os.path.split(word)
+            if word in (os.curdir, os.pardir): continue
+            path = os.path.join(path, word)
+        return path
 
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
@@ -37,8 +70,10 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         self.start_server()
 
     def start_server(self):
-        cmd = [sys.executable, '-m', 'SimpleHTTPServer', str(self.port)]
-        self.server = subprocess.Popen(cmd, cwd=self.documentroot)
+        StaticFileRequestHandler.documentroot = self.documentroot
+        self.server = BaseHTTPServer.HTTPServer(
+            (self.host, self.port), StaticFileRequestHandler)
+        self._server_thread = threading.Thread(target=server.serve_forever)
         # Wait a little as it sometimes takes a while to get the server
         # started.
         time.sleep(0.25)
@@ -46,7 +81,8 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
     def stop_server(self):
         if self.server is None:
             return
-        self.server.kill()
+        self.server.shutdown()
+        self._server_thread.join()
         self.server = None
 
     def tearDown(self):
