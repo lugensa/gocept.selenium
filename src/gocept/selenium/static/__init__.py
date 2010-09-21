@@ -57,6 +57,23 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             path = os.path.join(path, word)
         return path
 
+    def log_request(self, *args):
+        pass
+
+
+class HTTPServer(BaseHTTPServer.HTTPServer):
+
+    _continue = True
+
+    def serve_until_shutdown(self):
+        while self._continue:
+            self.handle_request()
+
+    def shutdown(self):
+        self._continue = False
+        urllib.urlopen('http://%s:%s/' % (self.server_name, self.server_port))
+        self.server_close()
+
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
 
@@ -71,9 +88,11 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
 
     def start_server(self):
         StaticFileRequestHandler.documentroot = self.documentroot
-        self.server = BaseHTTPServer.HTTPServer(
+        self.server = HTTPServer(
             (self.host, self.port), StaticFileRequestHandler)
-        self._server_thread = threading.Thread(target=server.serve_forever)
+        self.server_thread = threading.Thread(
+            target=self.server.serve_until_shutdown)
+        self.server_thread.start()
         # Wait a little as it sometimes takes a while to get the server
         # started.
         time.sleep(0.25)
@@ -82,7 +101,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         if self.server is None:
             return
         self.server.shutdown()
-        self._server_thread.join()
+        self.server_thread.join()
         self.server = None
 
     def tearDown(self):
