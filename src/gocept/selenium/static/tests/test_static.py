@@ -47,6 +47,6 @@ class TestStaticFilesTestCase(unittest.TestCase):
         self.assert_(not os.listdir(self.testlayer.documentroot))
 
     def test_server_startup_shutdown(self):
-        self.assert_(self.testlayer.server.pid)
+        self.assert_(self.testlayer.server_thread.isAlive())
         self.testlayer.stop_server()
         self.assert_(not self.testlayer.server)
