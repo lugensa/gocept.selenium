@@ -13,13 +13,8 @@ zope.testing, you need to do this to enable Selenium tests:
 1. Add gocept.selenium to the list of eggs either in your setup.py, or in
    buildout.cfg
 
-2. Install Selenium RC by some means, e.g. by using
-   collective.recipe.seleniumrc::
-
-    [seleniumrc]
-    recipe = collective.recipe.seleniumrc
-    url = http://release.seleniumhq.org/selenium-remote-control/1.0.1/selenium-remote-control-1.0.1-dist.zip
-    md5sum = 068b1adb26a7450717e6d6d67e261b58
+2. Install Selenium RC by some means, e.g. by downloading a version from
+    <http://release.seleniumhq.org/selenium-remote-control/>.
 
 3. Run buildout to install gocept.selenium and selenium (the Python bindings
    for Selenium RC).
@@ -50,7 +45,7 @@ zope.testing, you need to do this to enable Selenium tests:
             self.selenium.open('http://%s/foo.html' % self.selenium.server)
             self.selenium.assertBodyText('foo')
 
-7. Run seleniumrc.
+7. Run seleniumrc: java -jar /path/to/selenium-server.jar
 
 8. Run bin/test and see it work!
 
