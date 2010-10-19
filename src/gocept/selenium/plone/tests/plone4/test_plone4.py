@@ -26,7 +26,7 @@ Products.PloneTestCase.PloneTestCase.setupPloneSite(id='plone')
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plone.TestCase):
 
-    layer = gocept.selenium.zope2.Layer(PloneSiteLayer, testing.fixtureLayer)
+    layer = gocept.selenium.zope2.Layer(PloneSiteLayer, testing.isolationLayer)
 
     def test_plone_login(self):
         sel = self.selenium

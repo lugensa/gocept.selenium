@@ -25,7 +25,7 @@ Testing.ZopeTestCase.installProduct('Five')
 class Zope212Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.zope2.TestCase):
 
-    layer = gocept.selenium.zope2.Layer(testing.fixtureLayer, *BASE_LAYERS)
+    layer = gocept.selenium.zope2.Layer(testing.isolationLayer, *BASE_LAYERS)
 
 
 def test_suite():
