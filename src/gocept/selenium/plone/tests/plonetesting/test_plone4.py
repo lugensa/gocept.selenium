@@ -14,7 +14,7 @@
 
 import unittest
 import gocept.selenium.zope2
-from gocept.selenium.zope2 import testing
+from gocept.selenium.zope2.plonetesting import ISOLATION
 import gocept.selenium.tests.isolation
 
 from plone.app.testing.layers import PLONE_FIXTURE
@@ -25,7 +25,7 @@ from plone.app.testing.layers import SITE_OWNER_PASSWORD
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plone.TestCase):
 
-    layer = gocept.selenium.zope2.Layer(PLONE_FIXTURE, testing.isolationLayer)
+    layer = gocept.selenium.zope2.Layer(PLONE_FIXTURE, ISOLATION)
 
     def test_plone_login(self):
         sel = self.selenium
