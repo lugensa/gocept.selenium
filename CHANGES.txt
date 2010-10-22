@@ -5,6 +5,7 @@ Changes
 ----------------
 
 - Fixed tests for the StaticFilesLayer to pass with Python 2.4 through 2.7.
+- API expandsion: ``getSelectOptions``
 
 
 0.7 (2010-08-16)

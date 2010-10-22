@@ -501,6 +501,10 @@ class Selenese(object):
     def isSomethingSelected(self, locator):
         pass
 
+    @passthrough
+    def getSelectOptions(self, locator):
+        pass
+
     @assert_type('locator')
     @passthrough
     def isChecked(self, locator):
