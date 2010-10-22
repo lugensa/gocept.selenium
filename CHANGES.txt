@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.8 (unreleased)
+0.8 (2010-10-22)
 ----------------
 
 - Fixed tests for the StaticFilesLayer to pass with Python 2.4 through 2.7.
