@@ -13,8 +13,6 @@
 ##############################################################################
 
 import os
-import time
-import urllib
 import unittest
 import threading
 from wsgiref.simple_server import WSGIServer, WSGIRequestHandler

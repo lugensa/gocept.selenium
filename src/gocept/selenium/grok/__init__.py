@@ -13,7 +13,7 @@
 ##############################################################################
 import unittest
 
-from zope.app.appsetup.testlayer import createTestDB, ZODBLayer
+from zope.app.appsetup.testlayer import ZODBLayer
 from zope.app.wsgi import WSGIPublisherApplication
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 
