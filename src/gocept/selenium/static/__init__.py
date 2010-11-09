@@ -102,6 +102,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
             return
         self.server.shutdown()
         self.server_thread.join()
+        # Make the server really go away and give up the socket:
         self.server = None
 
     def tearDown(self):
