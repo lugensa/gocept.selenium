@@ -17,6 +17,7 @@ import gocept.selenium.grok
 from gocept.selenium.grok import GrokLayer
 from gocept.selenium.grok.fixtures import App
 
+
 class TestGrokTestCase(gocept.selenium.grok.TestCase):
 
     layer = GrokLayer(gocept.selenium.grok)
@@ -34,4 +35,3 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
     def test_grok_app(self):
         self.selenium.open('/app')
         self.selenium.assertTextPresent('Hello from grok')
-

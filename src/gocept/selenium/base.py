@@ -38,18 +38,23 @@ def _selenium_server_host():
     return os.environ.get(SELENIUM_SERVER_HOST_KEY,
                           SELENIUM_SERVER_HOST_DEFAULT)
 
+
 def _selenium_server_port():
     return int(os.environ.get(SELENIUM_SERVER_PORT_KEY,
                               SELENIUM_SERVER_PORT_DEFAULT))
 
+
 def _browser():
     return os.environ.get(BROWSER_KEY, BROWSER_DEFAULT)
+
 
 def _app_host():
     return os.environ.get(APP_HOST_KEY, APP_HOST_DEFAULT)
 
+
 def _app_port():
     return int(os.environ.get(APP_PORT_KEY, '5698'))
+
 
 def _speed():
     return os.environ.get(SPEED_KEY)

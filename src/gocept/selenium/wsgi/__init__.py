@@ -25,7 +25,7 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
 
     # Add conditional logging to handler.
     def log_request(self, *args):
-        if os.environ.has_key('GOCEPT_SELENIUM_VERBOSE_LOGGING'):
+        if 'GOCEPT_SELENIUM_VERBOSE_LOGGING' in os.environ:
             WSGIRequestHandler.log_request(self, *args)
 
 
