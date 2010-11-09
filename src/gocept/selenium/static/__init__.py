@@ -41,8 +41,8 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         # "documentroot".
         # The rest of the method's implementation is copied verbatim from
         # SimpleHTTPServer.SimpleHTTPRequestHandler.
-        path = path.split('?',1)[0]
-        path = path.split('#',1)[0]
+        path = path.split('?', 1)[0]
+        path = path.split('#', 1)[0]
         path = posixpath.normpath(urllib.unquote(path))
         words = path.split('/')
         words = filter(None, words)
@@ -51,7 +51,8 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         for word in words:
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
-            if word in (os.curdir, os.pardir): continue
+            if word in (os.curdir, os.pardir):
+                continue
             path = os.path.join(path, word)
         return path
 

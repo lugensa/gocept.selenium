@@ -20,6 +20,7 @@ from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import gocept.selenium.selenese
 from gocept.selenium.wsgi import WSGILayer
 
+
 class GrokLayer(ZODBLayer, WSGILayer):
 
     application = WSGIPublisherApplication()

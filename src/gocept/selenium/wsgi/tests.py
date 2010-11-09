@@ -15,6 +15,7 @@
 import gocept.selenium.wsgi
 from gocept.selenium.wsgi.testing import simple_app
 
+
 class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
 
     layer = gocept.selenium.wsgi.WSGILayer(application=simple_app)
@@ -25,4 +26,3 @@ class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
     def test_simple_app(self):
         self.selenium.open('/')
         self.selenium.assertTextPresent('Hello from javascript')
-

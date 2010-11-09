@@ -14,12 +14,12 @@
 
 import grok
 
+
 class App(grok.Model):
     pass
+
 
 class Index(grok.View):
 
     def render(self):
         return '''<html><body>Hello from grok</body></html>'''
-
-
