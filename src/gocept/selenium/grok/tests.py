@@ -11,8 +11,6 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import unittest
-
 import transaction
 
 import gocept.selenium.grok
