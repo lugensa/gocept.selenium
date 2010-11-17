@@ -24,10 +24,6 @@ import zope.app.wsgi
 
 class Layer(gocept.selenium.base.Layer):
 
-    # Hostname and port of the Zope webserver
-    host = 'localhost'
-    port = 8087
-
     def setUp(self):
         task_dispatcher = ThreadedTaskDispatcher()
         task_dispatcher.setThreadCount(1)
