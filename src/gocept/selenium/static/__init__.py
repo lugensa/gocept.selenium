@@ -17,7 +17,7 @@ import os
 import os.path
 import posixpath
 import shutil
-import SimpleHTTPServer
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 import tempfile
 import threading
 import time
@@ -29,7 +29,7 @@ import gocept.selenium.base
 _suffix = 'gocept.selenium.static'
 
 
-class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class StaticFileRequestHandler(SimpleHTTPRequestHandler):
 
     # The documentroot is set on the class just before passing the class on
     # to the BaseHTTPServer.HTTPServer.
@@ -56,8 +56,10 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             path = os.path.join(path, word)
         return path
 
+    # Add conditional logging to handler.
     def log_request(self, *args):
-        pass
+        if 'GOCEPT_SELENIUM_VERBOSE_LOGGING' in os.environ:
+            SimpleHTTPRequestHandler.log_request(self, *args)
 
 
 class HTTPServer(BaseHTTPServer.HTTPServer):
@@ -75,9 +77,6 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
 
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
-
-    host = 'localhost'
-    port = 5698
 
     def setUp(self):
         super(StaticFilesLayer, self).setUp()
