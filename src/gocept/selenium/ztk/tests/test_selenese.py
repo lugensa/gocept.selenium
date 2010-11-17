@@ -160,7 +160,7 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
     def test_location(self):
         self.selenium.open('/')
         self.assertEquals(
-            'http://localhost:8087/',
+            'http://%s:%s/' % (self.layer.host, self.layer.port),
             self.selenium.getLocation())
 
     def test_alert_not_present(self):
