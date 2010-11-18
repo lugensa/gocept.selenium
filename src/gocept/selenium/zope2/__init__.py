@@ -64,10 +64,6 @@ class Layer(gocept.selenium.base.Layer):
         Lifetime.shutdown(0, fast=1)
         super(Layer, self).tearDown()
 
-    def switch_db(self):
-        # Nothing to do, we rely on ZopeLiteLayer et. al.
-        pass
-
 
 class TestCase(gocept.selenium.base.TestCase,
                Testing.ZopeTestCase.FunctionalTestCase):

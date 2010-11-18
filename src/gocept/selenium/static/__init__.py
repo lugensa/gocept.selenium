@@ -109,9 +109,8 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         shutil.rmtree(self.documentroot)
         super(StaticFilesLayer, self).tearDown()
 
-    def switch_db(self):
-        # Part of the gocept.selenium test layer contract. We use the
-        # hook to clear out all the files from the documentroot.
+    def testSetUp(self):
+        super(StaticFilesLayer, self).testSetUp()
         paths = os.listdir(self.documentroot)
         for path in paths:
             fullpath = os.path.join(self.documentroot, path)
