@@ -46,18 +46,18 @@ class Layer(gocept.selenium.base.Layer):
             asyncore.poll(0.1)
         self.http.close()
 
-    def switch_db(self):
-        """switches the HTTP-server's database to the currently active
-        DemoStorage"""
-        db = zope.app.testing.functional.FunctionalTestSetup().db
-        self.http.application.set_db(db)
-
 
 class TestCase(gocept.selenium.base.TestCase,
                zope.app.testing.functional.FunctionalTestCase):
     # note: MRO requires the gocept.selenium.base.TestCase to come first,
     # otherwise setUp/tearDown happens in the wrong order
-    pass
+
+    def setUp(self):
+        # switches the HTTP-server's database to the currently active
+        # DemoStorage (which is set by FunctionalTestCase)
+        super(TestCase, self).setUp()
+        db = zope.app.testing.functional.FunctionalTestSetup().db
+        self.layer.http.application.set_db(db)
 
 
 class SwitchableDBApplication(zope.app.wsgi.WSGIPublisherApplication):

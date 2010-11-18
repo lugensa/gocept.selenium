@@ -49,14 +49,13 @@ class Layer(object):
     def tearDown(self):
         self.selenium.stop()
 
-    def switch_db(self):
-        raise NotImplemented
+    def testSetUp(self):
+        pass
 
 
 class TestCase(object):
 
     def setUp(self):
         super(TestCase, self).setUp()
-        self.layer.switch_db()
         self.selenium = gocept.selenium.selenese.Selenese(
             self.layer.selenium, self)
