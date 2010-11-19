@@ -90,6 +90,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
             (self.host, self.port), StaticFileRequestHandler)
         self.server_thread = threading.Thread(
             target=self.server.serve_until_shutdown)
+        self.server_thread.daemon = True
         self.server_thread.start()
         # Wait a little as it sometimes takes a while to get the server
         # started.

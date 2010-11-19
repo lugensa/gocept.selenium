@@ -42,6 +42,7 @@ class WSGILayer(gocept.selenium.base.Layer):
         self.http.set_app(self.application)
 
         self.thread = threading.Thread(target=self.http.serve_forever)
+        self.thread.daemon = True
         self.thread.start()
 
     def tearDown(self):
