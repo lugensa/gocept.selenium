@@ -29,17 +29,18 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
             WSGIRequestHandler.log_request(self, *args)
 
 
-class WSGILayer(gocept.selenium.base.Layer):
+class WSGILayer(gocept.selenium.base.SaneLayer):
 
-    def __init__(self, application=None, *bases):
-        super(WSGILayer, self).__init__(*bases)
-        self.application = application
+    application = None
+
+    def setup_wsgi_stack(self, app):
+        return app
 
     def setUp(self):
-        super(WSGILayer, self).setUp()
+        gocept.selenium.base.SaneLayer.setUp(self)
 
         self.http = WSGIServer((self.host, self.port), LogWSGIRequestHandler)
-        self.http.set_app(self.application)
+        self.http.set_app(self.setup_wsgi_stack(self.application))
 
         self.thread = threading.Thread(target=self.http.serve_forever)
         self.thread.daemon = True
@@ -50,7 +51,7 @@ class WSGILayer(gocept.selenium.base.Layer):
         self.thread.join()
         # Make the server really go away and give up the socket:
         self.http = None
-        super(WSGILayer, self).tearDown()
+        gocept.selenium.base.SaneLayer.tearDown(self)
 
 
 class TestCase(unittest.TestCase):
