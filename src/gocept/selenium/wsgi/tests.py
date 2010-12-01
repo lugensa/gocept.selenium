@@ -13,12 +13,16 @@
 ##############################################################################
 
 import gocept.selenium.wsgi
-from gocept.selenium.wsgi.testing import simple_app
+from gocept.selenium.wsgi.testing import SimpleApp
 
+class TestLayer(gocept.selenium.wsgi.WSGILayer):
+    application = SimpleApp()
+
+test_layer = TestLayer()
 
 class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
 
-    layer = gocept.selenium.wsgi.WSGILayer(application=simple_app)
+    layer = test_layer
 
     def test_wsgi_layer(self):
         self.assertTrue(self.layer.thread.isAlive)

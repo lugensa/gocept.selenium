@@ -13,32 +13,34 @@
 ##############################################################################
 
 
-def simple_app(environ, start_response):
-    path = environ['PATH_INFO']
+class SimpleApp(object):
 
-    statuscode = '404 Not Found'
-    body = 'Not Found'
-    headers = []
-    if path == '/':
-        statuscode = '200 OK'
-        headers.append(('Content-Type', 'text/html'))
-        body = '''
-          <html>
-          <head>
-            <script src="colors.js"></script>
-          </head>
-          <body>
-            <p id="foo">Testing...</p>
-          </body>
-          </html>'''
-    elif path == '/colors.js':
-        statuscode = '200 OK'
-        headers.append(('Content-Type', 'text/javascript'))
-        body = '''
-        var hello = function hello () {
-            document.getElementById('foo').innerHTML = 'Hello from javascript';
-        };
-        window.onload = hello;
-        '''
-    start_response(statuscode, headers)
-    return body
+    def __call__(self, environ, start_response):
+        path = environ['PATH_INFO']
+
+        statuscode = '404 Not Found'
+        body = 'Not Found'
+        headers = []
+        if path == '/':
+            statuscode = '200 OK'
+            headers.append(('Content-Type', 'text/html'))
+            body = '''
+              <html>
+              <head>
+                <script src="colors.js"></script>
+              </head>
+              <body>
+                <p id="foo">Testing...</p>
+              </body>
+              </html>'''
+        elif path == '/colors.js':
+            statuscode = '200 OK'
+            headers.append(('Content-Type', 'text/javascript'))
+            body = '''
+            var hello = function hello () {
+                document.getElementById('foo').innerHTML = 'Hello from javascript';
+            };
+            window.onload = hello;
+            '''
+        start_response(statuscode, headers)
+        return body
