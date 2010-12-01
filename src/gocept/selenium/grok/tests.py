@@ -24,7 +24,7 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
 
     def setUp(self):
         super(TestGrokTestCase, self).setUp()
-        root = self.layer.getRootFolder()
+        root = self.getRootFolder()
         root['app'] = App()
         transaction.commit()
 

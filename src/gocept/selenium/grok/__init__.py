@@ -41,9 +41,9 @@ class GrokLayer(ZODBLayer, WSGILayer):
             HTTPPublicationRequestFactory(self.db)
 
 
-# Switching the db is handled by testSetUp.
 class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.selenium = gocept.selenium.selenese.Selenese(
             self.layer.selenium, self)
+        self.getRootFolder = self.layer.getRootFolder
