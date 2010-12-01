@@ -14,13 +14,13 @@
 import transaction
 
 import gocept.selenium.grok
-from gocept.selenium.grok import GrokLayer
 from gocept.selenium.grok.fixtures import App
 
+test_layer = gocept.selenium.grok.GrokLayer(gocept.selenium.grok)
 
 class TestGrokTestCase(gocept.selenium.grok.TestCase):
 
-    layer = GrokLayer(gocept.selenium.grok)
+    layer = test_layer
 
     def setUp(self):
         super(TestGrokTestCase, self).setUp()
