@@ -76,7 +76,7 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
         self.server_close()
 
 
-class StaticFilesLayer(gocept.selenium.base.Layer):
+class StaticFilesLayer(gocept.selenium.base.SaneLayer):
 
     def setUp(self):
         super(StaticFilesLayer, self).setUp()
@@ -111,7 +111,6 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         super(StaticFilesLayer, self).tearDown()
 
     def testSetUp(self):
-        super(StaticFilesLayer, self).testSetUp()
         paths = os.listdir(self.documentroot)
         for path in paths:
             fullpath = os.path.join(self.documentroot, path)
