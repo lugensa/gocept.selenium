@@ -34,8 +34,9 @@ class LayerBase(object):
 
     def __init__(self, *bases):
         self.__bases__ = bases
-        self.__name__ = '[%s].selenium' % (
-            '/'.join('%s.%s' % (x.__module__, x.__name__) for x in bases))
+        if self.__bases__:
+            base = bases[0]
+            self.__name__ = '(%s.%s)' % (base.__module__, base.__name__)
 
     def setUp(self):
         self.selenium = selenium.selenium(
