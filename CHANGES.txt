@@ -4,7 +4,9 @@ Changes
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Make browser and RC server configurable (#6484).
+- Provide integration with the recent testlayer approach
+  (zope.app.appsetup/zope.app.wsgi) used by Grok (#8260).
 
 
 0.8 (2010-10-22)
