@@ -39,7 +39,6 @@ setup(
     extras_require=dict(
         grok=[
             'zope.app.appsetup',
-            'zope.app.publication',
             'zope.app.wsgi',
             ],
         test_grok=[
