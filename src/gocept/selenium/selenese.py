@@ -51,7 +51,6 @@ class Selenese(object):
         self.host = app_host
         self.port = app_port
         self.timeout = 30
-        self.variables = {}
 
     @property
     def server(self):
