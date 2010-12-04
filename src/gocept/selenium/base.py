@@ -14,6 +14,7 @@
 
 import gocept.selenium.selenese
 import selenium
+import socket
 import sys
 
 
@@ -47,7 +48,13 @@ class Layer(object):
         self.selenium = selenium.selenium(
             self._server, self._port, self._browser,
             'http://%s:%s/' % (self.host, self.port))
-        self.selenium.start()
+        try:
+            self.selenium.start()
+        except socket.error, e:
+            raise socket.error(
+                'Failed to connect to Selenium RC server at %s:%s,'
+                ' is it running? (%s)'
+                % (self._server, self._port, e))
 
     def tearDown(self):
         self.selenium.stop()
