@@ -4,7 +4,7 @@ Changes
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Show current test case in command log (#7876).
 
 
 0.8 (2010-10-22)

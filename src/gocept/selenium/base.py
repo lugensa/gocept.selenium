@@ -14,6 +14,13 @@
 
 import gocept.selenium.selenese
 import selenium
+import sys
+
+
+if sys.version_info < (2, 5):
+    TEST_METHOD_NAME = '_TestCase__testMethodName'
+else:
+    TEST_METHOD_NAME = '_testMethodName'
 
 
 class Layer(object):
@@ -56,3 +63,5 @@ class TestCase(object):
         self.layer.switch_db()
         self.selenium = gocept.selenium.selenese.Selenese(
             self.layer.selenium, self)
+        self.selenium.setContext('** %s.%s' % (
+            self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
