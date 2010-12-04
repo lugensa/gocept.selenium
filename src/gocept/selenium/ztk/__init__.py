@@ -28,7 +28,7 @@ class Layer(gocept.selenium.base.Layer):
         task_dispatcher = ThreadedTaskDispatcher()
         task_dispatcher.setThreadCount(1)
         db = zope.app.testing.functional.FunctionalTestSetup().db
-        self.http = SwitchableDBServerType.create(
+        self.http = zope.app.server.wsgi.http.create(
             'WSGI-HTTP', task_dispatcher, db, port=self.port)
         self.thread = threading.Thread(target=self.run_server)
         self.thread.setDaemon(True)
@@ -57,28 +57,7 @@ class TestCase(gocept.selenium.base.TestCase,
         # DemoStorage (which is set by FunctionalTestCase)
         super(TestCase, self).setUp()
         db = zope.app.testing.functional.FunctionalTestSetup().db
-        self.layer.http.application.set_db(db)
-
-
-class SwitchableDBApplication(zope.app.wsgi.WSGIPublisherApplication):
-
-    def __init__(self, *args, **kw):
-        self.db = kw.get('db', None)
-        super(SwitchableDBApplication, self).__init__(*args, **kw)
-
-    def __call__(self, environ, start_response):
-        if self.db is not None:
-            factory = type(self.requestFactory)
-            self.requestFactory = factory(self.db)
-        return super(SwitchableDBApplication, self).__call__(
-            environ, start_response)
-
-    def set_db(self, db):
-        self.db = db
-
-
-SwitchableDBServerType = zope.app.server.wsgi.ServerType(
-    zope.server.http.wsgihttpserver.WSGIHTTPServer,
-    SwitchableDBApplication,
-    zope.server.http.commonaccesslogger.CommonAccessLogger,
-    8087, True)  # The port number here is just the default value
+        application = self.layer.http.application
+        assert isinstance(application, zope.app.wsgi.WSGIPublisherApplication)
+        factory = type(application.requestFactory)
+        application.requestFactory = factory(db)
