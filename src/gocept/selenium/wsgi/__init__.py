@@ -31,7 +31,9 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
 
 class Layer(gocept.selenium.base.Layer):
 
-    application = None
+    def __init__(self, application=None, *bases):
+        super(Layer, self).__init__(*bases)
+        self.application = application
 
     def setup_wsgi_stack(self, app):
         return app
