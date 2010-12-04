@@ -5,6 +5,7 @@ Changes
 ----------------
 
 - Show current test case in command log (#7876).
+- Raise readable error when connection to RC server fails (#6489).
 
 
 0.8 (2010-10-22)
