@@ -46,8 +46,10 @@ setup(
             'ZODB3',
             ],
         ztk=[
+            'zope.app.server',
             'zope.app.testing',
             'zope.app.wsgi',
+            'zope.server',
             ],
         test_ztk=[
             'zope.app.appsetup',

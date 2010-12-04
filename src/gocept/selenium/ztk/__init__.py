@@ -12,22 +12,39 @@
 #
 ##############################################################################
 
+from zope.server.taskthreads import ThreadedTaskDispatcher
 import gocept.selenium.base
-import gocept.selenium.wsgi
+import gocept.selenium.selenese
+import asyncore
+import threading
+import zope.app.server.wsgi
 import zope.app.testing.functional
 import zope.app.wsgi
 
 
-class Layer(gocept.selenium.wsgi.Layer):
+class Layer(gocept.selenium.base.Layer):
 
-    def __init__(self, *bases):
-        # since the request factory class is only a parameter default of
-        # WSGIPublisherApplication and not easily accessible otherwise, we fake
-        # it into creating a requestFactory instance, so we can read the class
-        # off of that in TestCase.setUp()
-        fake_db = object()
-        super(Layer, self).__init__(
-            zope.app.wsgi.WSGIPublisherApplication(fake_db), *bases)
+    def setUp(self):
+        task_dispatcher = ThreadedTaskDispatcher()
+        task_dispatcher.setThreadCount(1)
+        db = zope.app.testing.functional.FunctionalTestSetup().db
+        self.http = zope.app.server.wsgi.http.create(
+            'WSGI-HTTP', task_dispatcher, db, port=self.port)
+        self.thread = threading.Thread(target=self.run_server)
+        self.thread.setDaemon(True)
+        self.thread.start()
+        super(Layer, self).setUp()
+
+    def tearDown(self):
+        self.running = False
+        self.thread.join()
+        super(Layer, self).tearDown()
+
+    def run_server(self):
+        self.running = True
+        while self.running:
+            asyncore.poll(0.1)
+        self.http.close()
 
 
 class TestCase(gocept.selenium.base.TestCase,
@@ -40,6 +57,7 @@ class TestCase(gocept.selenium.base.TestCase,
         # DemoStorage (which is set by FunctionalTestCase)
         super(TestCase, self).setUp()
         db = zope.app.testing.functional.FunctionalTestSetup().db
-        application = self.layer.application
+        application = self.layer.http.application
+        assert isinstance(application, zope.app.wsgi.WSGIPublisherApplication)
         factory = type(application.requestFactory)
         application.requestFactory = factory(db)
