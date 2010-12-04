@@ -76,7 +76,11 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
         self.server_close()
 
 
-class StaticFilesLayer(gocept.selenium.base.SaneLayer):
+class StaticFilesLayer(gocept.selenium.base.Layer):
+
+    def __init__(self):
+        # we don't need any __bases__
+        super(StaticFilesLayer, self).__init__()
 
     def setUp(self):
         super(StaticFilesLayer, self).setUp()

@@ -18,7 +18,7 @@ import selenium
 import gocept.selenium.selenese
 
 
-class LayerBase(object):
+class Layer(object):
 
     # hostname and port of the Selenium RC server
     _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
@@ -30,13 +30,13 @@ class LayerBase(object):
     host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
     port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 5698))
 
-    __name__ = 'Layer'
-
     def __init__(self, *bases):
         self.__bases__ = bases
         if self.__bases__:
             base = bases[0]
             self.__name__ = '(%s.%s)' % (base.__module__, base.__name__)
+        else:
+            self.__name__ = self.__class__.__name__
 
     def setUp(self):
         self.selenium = selenium.selenium(
@@ -49,39 +49,6 @@ class LayerBase(object):
 
     def tearDown(self):
         self.selenium.stop()
-
-
-class Layer(LayerBase):
-    __name__ = 'Layer'
-
-    def __init__(self, *bases):
-        self.__bases__ = bases
-        self.__name__ = '[%s].selenium' % (
-            '/'.join('%s.%s' % (x.__module__, x.__name__) for x in bases))
-
-    def testSetUp(self):
-        pass
-
-    def testTearDown(self):
-        pass
-
-
-class SaneLayer(LayerBase):
-    """Sane layer base class.
-
-    Sane test layer base class inspired by zope.component.testlayer.
-
-    The hack requires us to set __bases__, __module__ and __name__.
-    This fools zope.testrunner into thinking that this layer instance is
-    an object it can work with.
-    """
-
-    __bases__ = ()
-
-    def __init__(self, name=None):
-        if name is None:
-            name = self.__class__.__name__
-        self.__name__ = name
 
 
 class TestCase(object):
