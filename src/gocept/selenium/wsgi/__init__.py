@@ -56,8 +56,5 @@ class Layer(gocept.selenium.base.Layer):
         super(Layer, self).tearDown()
 
 
-class TestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer.selenium, self)
+class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+    pass

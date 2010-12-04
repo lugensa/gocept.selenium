@@ -39,21 +39,34 @@ class Layer(object):
             self.__name__ = self.__class__.__name__
 
     def setUp(self):
-        self.selenium = selenium.selenium(
+        self.seleniumrc = selenium.selenium(
             self._server, self._port, self._browser,
             'http://%s:%s/' % (self.host, self.port))
-        self.selenium.start()
+        self.seleniumrc.start()
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
         if speed is not None:
-            self.selenium.set_speed(speed)
+            self.seleniumrc.set_speed(speed)
 
     def tearDown(self):
-        self.selenium.stop()
+        self.seleniumrc.stop()
+
+    def testSetUp(self):
+        # instantiate a fresh one per test run, so any configuration
+        # (e.g. timeout) is reset
+        self.selenium = gocept.selenium.selenese.Selenese(
+            self.seleniumrc, self.host, self.port)
 
 
 class TestCase(object):
+    # the various flavours (ztk, zope2, grok, etc.) are supposed to provide
+    # their own TestCase as needed, and mix this class in to have
+    # 'self.selenium' available on the TestCase itself for convenience.
+    #
+    # Example:
+    # some.flavour.TestCase(gocept.selenium.base.TestCase,
+    #                       the.actual.base.TestCase):
+    #     pass
 
     def setUp(self):
         super(TestCase, self).setUp()
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer.selenium, self)
+        self.selenium = self.layer.selenium

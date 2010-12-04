@@ -73,7 +73,7 @@ class NonexistentNameTest(unittest.TestCase):
             def get_with_wrong_assert_type(self):
                 pass
 
-        self.selenese = Selenese(None, TestCase())
+        self.selenese = Selenese(None, None, None)
 
     def assertError(self, error, name, expected_msg):
         try:

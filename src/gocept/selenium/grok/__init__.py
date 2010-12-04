@@ -22,6 +22,10 @@ import gocept.selenium.wsgi
 
 class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
 
+     # we can't use super, since the base class zope.component.testlayer is not
+     # built for multiple inheritance; the wsgi.Layer-part of the family would
+     # never be reached
+
     def __init__(self, *args):
         # since the request factory class is only a parameter default of
         # WSGIPublisherApplication and not easily accessible otherwise, we fake
@@ -41,16 +45,15 @@ class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
         ZODBLayer.tearDown(self)
 
     def testSetUp(self):
-        # A fresh database is created in the setup of the ZODBLayer:
+        gocept.selenium.wsgi.Layer.testSetUp(self)
         ZODBLayer.testSetUp(self)
-        # We tell the publisher to use this new database:
+        # tell the publisher to use ZODBLayer's current database
         factory = type(self.application.requestFactory)
         self.application.requestFactory = factory(self.db)
 
 
-class TestCase(unittest.TestCase):
+class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
 
     def setUp(self):
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer.selenium, self)
+        super(TestCase, self).setUp()
         self.getRootFolder = self.layer.getRootFolder
