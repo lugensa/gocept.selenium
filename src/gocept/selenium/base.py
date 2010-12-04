@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import atexit
 import gocept.selenium.selenese
 import selenium
 import socket
@@ -55,6 +56,7 @@ class Layer(object):
                 'Failed to connect to Selenium RC server at %s:%s,'
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
+        atexit.register(self.selenium.stop)
 
     def tearDown(self):
         self.selenium.stop()
