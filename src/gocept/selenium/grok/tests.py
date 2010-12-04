@@ -14,9 +14,11 @@
 import transaction
 
 import gocept.selenium.grok
-from gocept.selenium.grok.fixtures import App
+import gocept.selenium.grok.fixtures
 
-test_layer = gocept.selenium.grok.GrokLayer(gocept.selenium.grok)
+
+test_layer = gocept.selenium.grok.Layer(gocept.selenium.grok)
+
 
 class TestGrokTestCase(gocept.selenium.grok.TestCase):
 
@@ -25,7 +27,7 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
     def setUp(self):
         super(TestGrokTestCase, self).setUp()
         root = self.getRootFolder()
-        root['app'] = App()
+        root['app'] = gocept.selenium.grok.fixtures.App()
         transaction.commit()
 
     def test_grok_layer(self):

@@ -29,7 +29,7 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
             WSGIRequestHandler.log_request(self, *args)
 
 
-class WSGILayer(gocept.selenium.base.SaneLayer):
+class Layer(gocept.selenium.base.SaneLayer):
 
     application = None
 

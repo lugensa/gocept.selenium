@@ -15,10 +15,14 @@
 import gocept.selenium.wsgi
 from gocept.selenium.wsgi.testing import SimpleApp
 
-class TestLayer(gocept.selenium.wsgi.WSGILayer):
+
+class TestLayer(gocept.selenium.wsgi.Layer):
+
     application = SimpleApp()
 
+
 test_layer = TestLayer()
+
 
 class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
 

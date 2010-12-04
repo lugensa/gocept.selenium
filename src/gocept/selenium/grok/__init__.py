@@ -18,19 +18,19 @@ from zope.app.wsgi import WSGIPublisherApplication
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 
 import gocept.selenium.selenese
-from gocept.selenium.wsgi import WSGILayer
+import gocept.selenium.wsgi
 
 
-class GrokLayer(ZODBLayer, WSGILayer):
+class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
 
     application = WSGIPublisherApplication()
 
     def setUp(self):
         ZODBLayer.setUp(self)
-        WSGILayer.setUp(self)
+        gocept.selenium.wsgi.Layer.setUp(self)
 
     def tearDown(self):
-        WSGILayer.tearDown(self)
+        gocept.selenium.wsgi.Layer.tearDown(self)
         ZODBLayer.tearDown(self)
 
     def testSetUp(self):
