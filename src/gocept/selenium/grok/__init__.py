@@ -26,7 +26,7 @@ class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
      # built for multiple inheritance; the wsgi.Layer-part of the family would
      # never be reached
 
-    def __init__(self, *args):
+    def __init__(self, *args, **kw):
         # since the request factory class is only a parameter default of
         # WSGIPublisherApplication and not easily accessible otherwise, we fake
         # it into creating a requestFactory instance, so we can read the class
@@ -34,7 +34,7 @@ class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
         fake_db = object()
         gocept.selenium.wsgi.Layer.__init__(
             self, zope.app.wsgi.WSGIPublisherApplication(fake_db))
-        ZODBLayer.__init__(self, *args)
+        ZODBLayer.__init__(self, *args, **kw)
 
     def setUp(self):
         ZODBLayer.setUp(self)
