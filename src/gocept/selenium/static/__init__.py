@@ -115,6 +115,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         super(StaticFilesLayer, self).tearDown()
 
     def testSetUp(self):
+        super(StaticFilesLayer, self).testSetUp()
         paths = os.listdir(self.documentroot)
         for path in paths:
             fullpath = os.path.join(self.documentroot, path)
