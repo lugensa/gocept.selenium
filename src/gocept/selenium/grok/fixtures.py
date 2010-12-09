@@ -23,3 +23,20 @@ class Index(grok.View):
 
     def render(self):
         return '''<html><body>Hello from grok</body></html>'''
+
+
+class Set(grok.View):
+    grok.name('set.html')
+    grok.context(object)
+
+    def render(self):
+        self.context.foo = 1
+        return u'setting done'
+
+
+class Get(grok.View):
+    grok.name('get.html')
+    grok.context(object)
+
+    def render(self):
+        return str(getattr(self.context, 'foo', 0))
