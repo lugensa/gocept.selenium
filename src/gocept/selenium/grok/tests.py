@@ -16,6 +16,7 @@ import transaction
 import gocept.selenium.grok
 import gocept.selenium.grok.fixtures
 
+import gocept.selenium.tests.isolation
 
 test_layer = gocept.selenium.grok.Layer(gocept.selenium.grok)
 
@@ -37,3 +38,11 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
     def test_grok_app(self):
         self.selenium.open('/app')
         self.selenium.assertTextPresent('Hello from grok')
+
+
+class GrokIsolation(gocept.selenium.tests.isolation.IsolationTests,
+    gocept.selenium.grok.TestCase):
+
+    layer = test_layer
+
+
