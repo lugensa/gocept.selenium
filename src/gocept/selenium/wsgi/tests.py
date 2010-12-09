@@ -16,12 +16,7 @@ import gocept.selenium.wsgi
 from gocept.selenium.wsgi.testing import SimpleApp
 
 
-class TestLayer(gocept.selenium.wsgi.Layer):
-
-    application = SimpleApp()
-
-
-test_layer = TestLayer()
+test_layer = gocept.selenium.wsgi.Layer(SimpleApp())
 
 
 class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
