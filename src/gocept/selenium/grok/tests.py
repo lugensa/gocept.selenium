@@ -44,5 +44,3 @@ class GrokIsolation(gocept.selenium.tests.isolation.IsolationTests,
     gocept.selenium.grok.TestCase):
 
     layer = test_layer
-
-

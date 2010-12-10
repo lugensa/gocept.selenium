@@ -27,6 +27,7 @@ class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
         self.selenium.open('/')
         self.selenium.assertTextPresent('Hello from javascript')
 
+
 class TestWSGILayerName(gocept.selenium.wsgi.TestCase):
     """ We introduce a new test layer with a different application.
     The name of the application is used in the name of the layer in order
