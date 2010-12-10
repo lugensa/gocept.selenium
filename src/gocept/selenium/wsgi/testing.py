@@ -36,14 +36,14 @@ class SimpleApp(object):
         elif path == '/colors.js':
             statuscode = '200 OK'
             headers.append(('Content-Type', 'text/javascript'))
-            body = '''
-            var hello = function hello () {
-                document.getElementById('foo').innerHTML = 'Hello from javascript';
-            };
-            window.onload = hello;
-            '''
+            body = '''\
+var hello = function hello () {
+    document.getElementById('foo').innerHTML = 'Hello from javascript';
+};
+window.onload = hello;'''
         start_response(statuscode, headers)
         return body
+
 
 class SimpleApp2(object):
 

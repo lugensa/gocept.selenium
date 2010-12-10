@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import os
 import unittest
 import gocept.selenium.static
 
@@ -29,7 +30,6 @@ class TestStaticFilesTestCase(unittest.TestCase):
         self.assert_(self.testlayer.documentroot.startswith('/tmp'))
 
     def test_documentroot_initially_empty(self):
-        import os
         documentroot = self.testlayer.documentroot
         self.assert_(not os.listdir(self.testlayer.documentroot))
         open(os.path.join(documentroot, 'foo.txt'), 'w').write('Hello World!')
@@ -37,7 +37,6 @@ class TestStaticFilesTestCase(unittest.TestCase):
             ['foo.txt'], os.listdir(self.testlayer.documentroot))
 
     def test_documentroot_empty_after_testsetup(self):
-        import os
         documentroot = self.testlayer.documentroot
         self.assert_(not os.listdir(self.testlayer.documentroot))
         open(os.path.join(documentroot, 'bar.txt'), 'w').write('Hello World!')
