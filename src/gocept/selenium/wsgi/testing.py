@@ -44,3 +44,9 @@ class SimpleApp(object):
             '''
         start_response(statuscode, headers)
         return body
+
+class SimpleApp2(object):
+
+    def __call__(self, environ, start_response):
+        start_response('200 OK', [('Content-Type', 'text/html')])
+        return '<html><head></head><body>simple</body></html>'
