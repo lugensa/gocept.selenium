@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Foundation and Contributors.
+# Copyright (c) 2010 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,18 +12,31 @@
 #
 ##############################################################################
 
-import gocept.selenium.ztk
-import pkg_resources
-import zope.app.testing.functional
-
-zcml_layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(
-        'gocept.selenium.ztk.tests', 'ftesting.zcml'),
-    __name__, 'zcml_layer', allow_teardown=True)
-
-selenium_layer = gocept.selenium.ztk.Layer(zcml_layer)
+import grok
 
 
-class TestCase(gocept.selenium.ztk.TestCase):
+class App(grok.Model):
+    pass
 
-    layer = selenium_layer
+
+class Index(grok.View):
+
+    def render(self):
+        return '''<html><body>Hello from grok</body></html>'''
+
+
+class Set(grok.View):
+    grok.name('set.html')
+    grok.context(object)
+
+    def render(self):
+        self.context.foo = 1
+        return u'setting done'
+
+
+class Get(grok.View):
+    grok.name('get.html')
+    grok.context(object)
+
+    def render(self):
+        return str(getattr(self.context, 'foo', 0))

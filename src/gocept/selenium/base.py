@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2009 Zope Foundation and Contributors.
+# Copyright (c) 2010 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -14,6 +14,7 @@
 
 import atexit
 import gocept.selenium.selenese
+import os
 import selenium
 import socket
 import sys
@@ -27,50 +28,62 @@ else:
 
 class Layer(object):
 
-    # XXX make configurable:
     # hostname and port of the Selenium RC server
-    _server = 'localhost'
-    _port = 4444
-    _browser = '*firefox'
+    _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
+    _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
-    # override in subclass:
-    # hostname and port of the app web server
-    host = None
-    port = None
+    _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', '*firefox')
 
-    __name__ = 'Layer'
+    # hostname and port of the local application.
+    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 5698))
 
     def __init__(self, *bases):
         self.__bases__ = bases
-        self.__name__ = '[%s].selenium' % (
-            '/'.join('%s.%s' % (x.__module__, x.__name__) for x in bases))
+        if self.__bases__:
+            base = bases[0]
+            self.__name__ = '(%s.%s)' % (base.__module__, base.__name__)
+        else:
+            self.__name__ = self.__class__.__name__
 
     def setUp(self):
-        self.selenium = selenium.selenium(
+        self.seleniumrc = selenium.selenium(
             self._server, self._port, self._browser,
             'http://%s:%s/' % (self.host, self.port))
         try:
-            self.selenium.start()
+            self.seleniumrc.start()
         except socket.error, e:
             raise socket.error(
                 'Failed to connect to Selenium RC server at %s:%s,'
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
-        atexit.register(self.selenium.stop)
+        atexit.register(self.seleniumrc.stop)
+        speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
+        if speed is not None:
+            self.seleniumrc.set_speed(speed)
 
     def tearDown(self):
-        self.selenium.stop()
+        self.seleniumrc.stop()
 
-    def switch_db(self):
-        raise NotImplemented
+    def testSetUp(self):
+        # instantiate a fresh one per test run, so any configuration
+        # (e.g. timeout) is reset
+        self.selenium = gocept.selenium.selenese.Selenese(
+            self.seleniumrc, self.host, self.port)
 
 
 class TestCase(object):
+    # the various flavours (ztk, zope2, grok, etc.) are supposed to provide
+    # their own TestCase as needed, and mix this class in to get the
+    # convenience functionality.
+    #
+    # Example:
+    # some.flavour.TestCase(gocept.selenium.base.TestCase,
+    #                       the.actual.base.TestCase):
+    #     pass
 
     def setUp(self):
         super(TestCase, self).setUp()
-        self.layer.switch_db()
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer.selenium, self)
+        self.selenium = self.layer.selenium
         self.selenium.setContext('%s.%s' % (
             self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))

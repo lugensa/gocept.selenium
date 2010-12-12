@@ -44,17 +44,17 @@ def assert_type(type):
 
 class Selenese(object):
 
-    def __init__(self, selenium, testcase):
+    failureException = AssertionError
+
+    def __init__(self, selenium, app_host, app_port):
         self.selenium = selenium
-        self.failureException = testcase.failureException
-        self.testcase = testcase
+        self.host = app_host
+        self.port = app_port
         self.timeout = 30
-        self.variables = {}
 
     @property
     def server(self):
-        # we expect the testcase to have a gocept.selenium.layer.SeleniumLayer
-        return '%s:%s' % (self.testcase.layer.host, self.testcase.layer.port)
+        return '%s:%s' % (self.host, self.port)
 
     # Actions
 

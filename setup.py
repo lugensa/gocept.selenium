@@ -37,10 +37,20 @@ setup(
         'setuptools',
         ],
     extras_require=dict(
-        ztk=['zope.app.server',
+        grok=[
+            'zope.app.appsetup',
+            'zope.app.wsgi',
+            ],
+        test_grok=[
+            'grok',
+            'ZODB3',
+            ],
+        ztk=[
+            'zope.app.server',
             'zope.app.testing',
             'zope.app.wsgi',
-            'zope.server'],
+            'zope.server',
+            ],
         test_ztk=[
             'zope.app.appsetup',
             'zope.app.zcmlfiles',

@@ -17,9 +17,7 @@ import os
 import os.path
 import posixpath
 import shutil
-import SimpleHTTPServer
-import subprocess
-import sys
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 import tempfile
 import threading
 import time
@@ -31,7 +29,7 @@ import gocept.selenium.base
 _suffix = 'gocept.selenium.static'
 
 
-class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class StaticFileRequestHandler(SimpleHTTPRequestHandler):
 
     # The documentroot is set on the class just before passing the class on
     # to the BaseHTTPServer.HTTPServer.
@@ -43,8 +41,8 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         # "documentroot".
         # The rest of the method's implementation is copied verbatim from
         # SimpleHTTPServer.SimpleHTTPRequestHandler.
-        path = path.split('?',1)[0]
-        path = path.split('#',1)[0]
+        path = path.split('?', 1)[0]
+        path = path.split('#', 1)[0]
         path = posixpath.normpath(urllib.unquote(path))
         words = path.split('/')
         words = filter(None, words)
@@ -53,12 +51,15 @@ class StaticFileRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         for word in words:
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
-            if word in (os.curdir, os.pardir): continue
+            if word in (os.curdir, os.pardir):
+                continue
             path = os.path.join(path, word)
         return path
 
+    # Add conditional logging to handler.
     def log_request(self, *args):
-        pass
+        if 'GOCEPT_SELENIUM_VERBOSE_LOGGING' in os.environ:
+            SimpleHTTPRequestHandler.log_request(self, *args)
 
 
 class HTTPServer(BaseHTTPServer.HTTPServer):
@@ -71,14 +72,23 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
 
     def shutdown(self):
         self._continue = False
-        urllib.urlopen('http://%s:%s/' % (self.server_name, self.server_port))
+        # We fire a last request at the server in order to take it out of the
+        # while loop in `self.serve_until_shutdown`.
+        try:
+            urllib.urlopen('http://%s:%s/' % (self.server_name,
+                                              self.server_port))
+        except IOError:
+            # If the server is already shut down, we receive a socket error,
+            # which we ignore.
+            pass
         self.server_close()
 
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
 
-    host = 'localhost'
-    port = 5698
+    def __init__(self):
+        # we don't need any __bases__
+        super(StaticFilesLayer, self).__init__()
 
     def setUp(self):
         super(StaticFilesLayer, self).setUp()
@@ -92,6 +102,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
             (self.host, self.port), StaticFileRequestHandler)
         self.server_thread = threading.Thread(
             target=self.server.serve_until_shutdown)
+        self.server_thread.daemon = True
         self.server_thread.start()
         # Wait a little as it sometimes takes a while to get the server
         # started.
@@ -102,6 +113,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
             return
         self.server.shutdown()
         self.server_thread.join()
+        # Make the server really go away and give up the socket:
         self.server = None
 
     def tearDown(self):
@@ -110,9 +122,8 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         shutil.rmtree(self.documentroot)
         super(StaticFilesLayer, self).tearDown()
 
-    def switch_db(self):
-        # Part of the gocept.selenium test layer contract. We use the
-        # hook to clear out all the files from the documentroot.
+    def testSetUp(self):
+        super(StaticFilesLayer, self).testSetUp()
         paths = os.listdir(self.documentroot)
         for path in paths:
             fullpath = os.path.join(self.documentroot, path)
