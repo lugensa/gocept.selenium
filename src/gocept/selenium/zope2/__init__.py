@@ -14,9 +14,9 @@
 
 import Lifetime
 import Testing.ZopeTestCase
+import Testing.ZopeTestCase.threadutils
 import Testing.ZopeTestCase.utils
 import gocept.selenium.base
-import time
 
 
 try:
@@ -31,21 +31,21 @@ except ImportError:
 class Layer(gocept.selenium.base.Layer):
 
     def setUp(self):
-        self.startZServer()
-        super(Layer, self).setUp()
+        # adapted from Testing.ZopeTestCase.utils.startZServer() to make
+        # host/port configurable
+        Testing.ZopeTestCase.threadutils.setNumberOfThreads(5)
+        log = None
+        thread = Testing.ZopeTestCase.threadutils.QuietThread(
+            target=Testing.ZopeTestCase.threadutils.zserverRunner,
+            args=(self.host, self.port, log))
+        thread.setDaemon(True)
+        thread.start()
 
-    def startZServer(self):
-        from Testing.ZopeTestCase.threadutils import setNumberOfThreads
-        setNumberOfThreads(5)
-        from Testing.ZopeTestCase.threadutils import QuietThread, zserverRunner
-        t = QuietThread(
-            target=zserverRunner, args=(self.host, self.port, None))
-        t.setDaemon(1)
-        t.start()
-        time.sleep(0.1)  # Sandor Palfy
-
+        # notify ZopeTestCase infrastructure that a ZServer has been started
         Testing.ZopeTestCase.utils._Z2HOST = self.host
         Testing.ZopeTestCase.utils._Z2PORT = self.port
+
+        super(Layer, self).setUp()
 
     def tearDown(self):
         Lifetime.shutdown(0, fast=1)
