@@ -16,7 +16,6 @@ import Lifetime
 import Testing.ZopeTestCase
 import Testing.ZopeTestCase.utils
 import gocept.selenium.base
-import random
 import time
 
 
@@ -32,33 +31,21 @@ except ImportError:
 class Layer(gocept.selenium.base.Layer):
 
     def setUp(self):
-        # five threads
         self.startZServer()
         super(Layer, self).setUp()
 
-    @property
-    def host(self):
-        return Testing.ZopeTestCase.utils._Z2HOST
-
-    @property
-    def port(self):
-        return Testing.ZopeTestCase.utils._Z2PORT
-
     def startZServer(self):
-        if self.host is not None:
-            return
-        host = '127.0.0.1'
-        port = random.choice(range(55000, 55500))
         from Testing.ZopeTestCase.threadutils import setNumberOfThreads
         setNumberOfThreads(5)
         from Testing.ZopeTestCase.threadutils import QuietThread, zserverRunner
-        t = QuietThread(target=zserverRunner, args=(host, port, None))
+        t = QuietThread(
+            target=zserverRunner, args=(self.host, self.port, None))
         t.setDaemon(1)
         t.start()
         time.sleep(0.1)  # Sandor Palfy
 
-        Testing.ZopeTestCase.utils._Z2HOST = host
-        Testing.ZopeTestCase.utils._Z2PORT = port
+        Testing.ZopeTestCase.utils._Z2HOST = self.host
+        Testing.ZopeTestCase.utils._Z2PORT = self.port
 
     def tearDown(self):
         Lifetime.shutdown(0, fast=1)
