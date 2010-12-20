@@ -33,7 +33,7 @@ class Layer(gocept.selenium.base.Layer):
     def setUp(self):
         # adapted from Testing.ZopeTestCase.utils.startZServer() to make
         # host/port configurable
-        Testing.ZopeTestCase.threadutils.setNumberOfThreads(5)
+        Testing.ZopeTestCase.threadutils.setNumberOfThreads(1)
         log = None
         thread = Testing.ZopeTestCase.threadutils.QuietThread(
             target=Testing.ZopeTestCase.threadutils.zserverRunner,
