@@ -13,19 +13,38 @@
 ##############################################################################
 
 import unittest
-import gocept.selenium.zope2
-from gocept.selenium.zope2.plonetesting import ISOLATION
-import gocept.selenium.tests.isolation
+
+import plone.testing
+from plone.testing.z2 import FunctionalTesting
 
 from plone.app.testing.layers import PLONE_FIXTURE
 from plone.app.testing.layers import SITE_OWNER_NAME
 from plone.app.testing.layers import SITE_OWNER_PASSWORD
 
+import gocept.selenium.zope2
+import gocept.selenium.tests.isolation
+from gocept.selenium.zope2 import plonetesting
+from gocept.selenium.tests import isolation_layer
 
-class Plone3Tests(gocept.selenium.tests.isolation.IsolationTests,
-                 gocept.selenium.plone.TestCase):
+PLONE_ISOLATION = FunctionalTesting(
+    bases=(isolation_layer.ISOLATION, PLONE_FIXTURE),
+    name="gocept.selenium:PloneIsolation")
 
-    layer = gocept.selenium.zope2.Layer(PLONE_FIXTURE, ISOLATION)
+PLONE_SELENIUM = plone.testing.Layer(
+    bases=(plonetesting.SELENIUM, PLONE_ISOLATION,),
+    name="gocept.selenium:Plone3")
+
+
+class Plone3Tests(unittest.TestCase,
+    gocept.selenium.tests.isolation.IsolationTests):
+
+    layer = PLONE_SELENIUM
+
+    @property
+    def selenium(self):
+        # property needed to reuse IsolationTests without touching them
+        # should not be needed in usual tests; see hereunder
+        return self.layer['selenese']
 
     def test_plone_login(self):
         sel = self.selenium
