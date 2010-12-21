@@ -1,5 +1,4 @@
 import selenium
-import unittest
 
 from plone.testing import Layer
 from plone.testing.z2 import ZSERVER_FIXTURE
@@ -21,17 +20,11 @@ class Selenium(Layer):
             self._rc_server, self._rc_port, self._browser,
             'http://%s:%s/' % (self['host'], self['port']))
         self.selenium.start()
+        self['selenese'] = gocept.selenium.selenese.Selenese(
+            self.selenium, self['host'], self['port'])
 
     def tearDown(self):
         super(Selenium, self).tearDown()
         self.selenium.stop()
 
 SELENIUM = Selenium()
-
-
-class TestCase(unittest.TestCase):
-
-    def setUp(self):
-        super(TestCase, self).setUp()
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.layer['selenium'], self.layer['host'], self.layer['port'])

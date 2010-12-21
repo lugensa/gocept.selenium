@@ -35,13 +35,19 @@ PLONE_SELENIUM = plone.testing.Layer(
     name="gocept.selenium:Plone4")
 
 
-class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
-                 plonetesting.TestCase):
+class Plone4Tests(unittest.TestCase,
+    gocept.selenium.tests.isolation.IsolationTests):
 
     layer = PLONE_SELENIUM
 
+    @property
+    def selenium(self):
+        # property needed to reuse IsolationTests without touching them
+        # should not be needed in usual tests; see hereunder
+        return self.layer['selenese']
+
     def test_plone_login(self):
-        sel = self.selenium
+        sel = self.layer['selenese']
         sel.open('/plone')
         sel.click('link=Log in')
         sel.waitForElementPresent('name=__ac_name')
