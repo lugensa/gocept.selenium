@@ -4,7 +4,7 @@ from plone.testing import Layer
 from plone.testing.z2 import STARTUP
 from plone.testing.z2 import FunctionalTesting
 
-import gocept.selenium.zope2
+from gocept.selenium import plonetesting
 
 
 class Isolation(Layer):
@@ -13,7 +13,7 @@ class Isolation(Layer):
 
     def setUp(self):
         context = self['configurationContext']
-        xmlconfig.file('testing.zcml', package=gocept.selenium.zope2,
+        xmlconfig.file('testing.zcml', package=plonetesting.tests,
             context=context)
 
 ISOLATION = Isolation()
