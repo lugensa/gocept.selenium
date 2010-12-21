@@ -24,10 +24,16 @@ ZOPE2_ISOLATION = plone.testing.Layer(
     name="gocept.selenium:Zope2.12")
 
 
-class Zope212Tests(gocept.selenium.tests.isolation.IsolationTests,
-                 plonetesting.TestCase):
+class Zope212Tests(unittest.TestCase,
+    gocept.selenium.tests.isolation.IsolationTests):
 
     layer = ZOPE2_ISOLATION
+
+    @property
+    def selenium(self):
+        # property needed to reuse IsolationTests without touching them
+        # should not be needed in usual tests; see plone4 tests for example
+        return self.layer['selenese']
 
 
 def test_suite():
