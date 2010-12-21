@@ -301,9 +301,11 @@ class Selenese(object):
     def mouseUpRightAt(self, locator, coord):
         pass
 
-    @passthrough
     def refresh(self):
-        pass
+        # No thanks to selenium... why would one ever *not* want to wait for
+        # the page to load?
+        self.selenium.refresh()
+        self.waitForPageToLoad()
 
     @passthrough
     def removeAllSelections(self, locator):
