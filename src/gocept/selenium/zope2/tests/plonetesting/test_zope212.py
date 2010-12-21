@@ -11,17 +11,23 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-
 import unittest
-import gocept.selenium.zope2
+
+import plone.testing
 from gocept.selenium.zope2 import plonetesting
 import gocept.selenium.tests.isolation
+from gocept.selenium.tests import isolation_layer
+
+
+ZOPE2_ISOLATION = plone.testing.Layer(
+    bases=(plonetesting.SELENIUM, isolation_layer.FUNCTIONAL_ISOLATION,),
+    name="gocept.selenium:Zope2.12")
 
 
 class Zope212Tests(gocept.selenium.tests.isolation.IsolationTests,
-                 gocept.selenium.zope2.TestCase):
+                 plonetesting.TestCase):
 
-    layer = gocept.selenium.zope2.Layer(plonetesting.ISOLATION)
+    layer = ZOPE2_ISOLATION
 
 
 def test_suite():
