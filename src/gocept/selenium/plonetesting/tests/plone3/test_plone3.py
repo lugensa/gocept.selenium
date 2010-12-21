@@ -21,10 +21,10 @@ from plone.app.testing.layers import PLONE_FIXTURE
 from plone.app.testing.layers import SITE_OWNER_NAME
 from plone.app.testing.layers import SITE_OWNER_PASSWORD
 
-import gocept.selenium.zope2
 import gocept.selenium.tests.isolation
-from gocept.selenium.zope2 import plonetesting
-from gocept.selenium.tests import isolation_layer
+from gocept.selenium import plonetesting
+from gocept.selenium.plonetesting.tests import isolation_layer
+from gocept.selenium.plonetesting.tests.zope2.test_zope2 import Zope2Tests
 
 PLONE_ISOLATION = FunctionalTesting(
     bases=(isolation_layer.ISOLATION, PLONE_FIXTURE),
@@ -57,4 +57,6 @@ class Plone3Tests(unittest.TestCase,
 
 
 def test_suite():
-    return unittest.makeSuite(Plone3Tests)
+    suite = unittest.makeSuite(Plone3Tests)
+    suite.addTest(unittest.makeSuite(Zope2Tests))
+    return suite
