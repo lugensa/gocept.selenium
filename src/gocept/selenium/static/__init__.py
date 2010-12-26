@@ -136,10 +136,10 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
 static_files_layer = StaticFilesLayer()
 
 
-class StaticFilesTestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
 
     layer = static_files_layer
 
     def setUp(self):
-        super(StaticFilesTestCase, self).setUp()
+        super(TestCase, self).setUp()
         self.documentroot = self.layer.documentroot
