@@ -24,6 +24,9 @@ Products.PloneTestCase.PloneTestCase.setupPloneSite(id='plone')
 class PloneTests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plone.TestCase):
 
+    def getDatabase(self):
+        return gocept.selenium.zope2.get_current_db()
+
     def test_plone_login(self):
         sel = self.selenium
         sel.open('/plone')
