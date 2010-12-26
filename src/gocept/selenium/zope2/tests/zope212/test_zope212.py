@@ -12,12 +12,12 @@
 #
 ##############################################################################
 
-import unittest
-import gocept.selenium.zope2
-from gocept.selenium.zope2 import testing
 from gocept.selenium.zope2 import BASE_LAYERS
-import gocept.selenium.tests.isolation
+from gocept.selenium.zope2 import testing
 import Testing.ZopeTestCase
+import gocept.selenium.tests.isolation
+import gocept.selenium.zope2
+import unittest
 
 Testing.ZopeTestCase.installProduct('Five')
 
@@ -26,6 +26,9 @@ class Zope212Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.zope2.TestCase):
 
     layer = gocept.selenium.zope2.Layer(testing.isolationLayer, *BASE_LAYERS)
+
+    def getDatabase(self):
+        return gocept.selenium.zope2.get_current_db()
 
 
 def test_suite():
