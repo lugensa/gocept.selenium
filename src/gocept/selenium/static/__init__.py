@@ -131,6 +131,8 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
                 shutil.rmtree(fullpath)
                 continue
             os.remove(fullpath)
+        # silence annoying 404s
+        open(os.path.join(self.documentroot, 'favicon.ico'), 'w').close()
 
 
 static_files_layer = StaticFilesLayer()

@@ -12,12 +12,16 @@
 #
 ##############################################################################
 
-from gocept.selenium.selenese import selenese_pattern_equals as match
 from gocept.selenium.selenese import camelcase_to_underscore
+from gocept.selenium.selenese import selenese_pattern_equals as match
+import glob
 import gocept.selenium.selenese
-import gocept.selenium.ztk.testing
-import unittest
+import gocept.selenium.static
+import os
+import pkg_resources
+import shutil
 import time
+import unittest
 
 
 class PatternTest(unittest.TestCase):
@@ -109,7 +113,17 @@ class NonexistentNameTest(unittest.TestCase):
                          "selenese method 'assert_with_wrong_assert_type'.")
 
 
-class AssertionTest(gocept.selenium.ztk.testing.TestCase):
+class HTMLTestCase(gocept.selenium.static.TestCase):
+
+    def setUp(self):
+        super(HTMLTestCase, self).setUp()
+        directory = pkg_resources.resource_filename(
+            'gocept.selenium.tests.fixture', '')
+        for name in glob.glob(os.path.join(directory, '*.html')):
+            shutil.copy(os.path.join(directory, name), self.documentroot)
+
+
+class AssertionTest(HTMLTestCase):
 
     def test_wait_for(self):
         self.selenium.open('/display-delay.html')
@@ -187,7 +201,7 @@ class AssertionTest(gocept.selenium.ztk.testing.TestCase):
         self.selenium.assertXpathCount("//div", '4')
 
 
-class PopUpTest(gocept.selenium.ztk.testing.TestCase):
+class PopUpTest(HTMLTestCase):
 
     def setUp(self):
         super(PopUpTest, self).setUp()
