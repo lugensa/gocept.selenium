@@ -14,6 +14,7 @@
 
 import Lifetime
 import Testing.ZopeTestCase
+import Testing.ZopeTestCase.ZopeLite
 import Testing.ZopeTestCase.threadutils
 import Testing.ZopeTestCase.utils
 import Zope2
