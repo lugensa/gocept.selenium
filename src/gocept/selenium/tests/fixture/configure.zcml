@@ -5,34 +5,6 @@
 
   <browser:page
     for="*"
-    name="set.html"
-    class=".dummy.Set"
-    permission="zope.Public"
-    />
-
-  <browser:page
-    for="*"
-    name="get.html"
-    class=".dummy.Get"
-    permission="zope.Public"
-    />
-
-  <browser:page
-    for="*"
-    name="inc-volatile.html"
-    class=".dummy.IncrementVolatile"
-    permission="zope.Public"
-    />
-
-  <browser:page
-    for="*"
-    name="error.html"
-    class=".dummy.Error"
-    permission="zope.Public"
-    />
-
-  <browser:page
-    for="*"
     name="display-delay.html"
     template="display-delay.pt"
     permission="zope.Public"

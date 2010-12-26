@@ -13,7 +13,7 @@
 ##############################################################################
 
 import Products.Five.zcml
-import gocept.selenium.tests.fixture
+import gocept.selenium.tests.isolation
 import gocept.selenium.zope2
 
 
@@ -22,7 +22,7 @@ class Layer(object):
     @classmethod
     def setUp(cls):
         Products.Five.zcml.load_config(
-            'configure.zcml', package=gocept.selenium.tests.fixture)
+            'configure.zcml', package=gocept.selenium.tests.isolation)
 
 
 # required for Zope2 >= 2.12

@@ -1,0 +1,34 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  >
+
+  <browser:page
+    for="*"
+    name="set.html"
+    class=".views.Set"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="get.html"
+    class=".views.Get"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="inc-volatile.html"
+    class=".views.IncrementVolatile"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="error.html"
+    class=".views.Error"
+    permission="zope.Public"
+    />
+
+</configure>
