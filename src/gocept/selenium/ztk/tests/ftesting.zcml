@@ -4,7 +4,6 @@
 
   <include package="zope.app.zcmlfiles"/>
   <include package="gocept.selenium.tests.isolation" />
-  <include package="gocept.selenium.tests.fixture" />
 
   <!-- typical functional testing security setup -->
   <include package="zope.securitypolicy" file="meta.zcml"/>
