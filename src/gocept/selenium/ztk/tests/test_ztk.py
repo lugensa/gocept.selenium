@@ -22,6 +22,3 @@ class ZTKTests(gocept.selenium.tests.isolation.IsolationTests,
 
     def getDatabase(self):
         return zope.app.testing.functional.FunctionalTestSetup().db
-
-    def test_selenium_http_500_handling(self):
-        self.selenium.open('http://%s/error.html' % self.selenium.server)
