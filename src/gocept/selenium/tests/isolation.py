@@ -21,12 +21,6 @@ class IsolationTests(object):
     # from each other, i.e. that the underlying DemoStorage stacking is wired
     # up correctly
 
-    def getRootFolder(self):
-        raise NotImplementedError()
-
-    def getDatabase(self):
-        raise NotImplementedError()
-
     def test_0_set(self):
         global ENSURE_ORDER
         self.selenium.open('http://%s/set.html' % self.selenium.server)
@@ -41,6 +35,9 @@ class IsolationTests(object):
         self.selenium.open('http://%s/get.html' % self.selenium.server)
         self.selenium.assertNotBodyText('1')
         ENSURE_ORDER = False
+
+    # subclasses need to implement getRootFolder() and getDatabase()
+    # for the tests below to work
 
     def test_each_request_gets_a_separate_zodb_connection(self):
         self.selenium.open(

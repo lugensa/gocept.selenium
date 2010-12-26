@@ -12,12 +12,16 @@
 #
 ##############################################################################
 
-import gocept.selenium.ztk.testing
 import gocept.selenium.tests.isolation
+import gocept.selenium.ztk.testing
+import zope.app.testing.functional
 
 
 class ZTKTests(gocept.selenium.tests.isolation.IsolationTests,
                gocept.selenium.ztk.testing.TestCase):
+
+    def getDatabase(self):
+        return zope.app.testing.functional.FunctionalTestSetup().db
 
     def test_selenium_http_500_handling(self):
         self.selenium.open('http://%s/error.html' % self.selenium.server)
