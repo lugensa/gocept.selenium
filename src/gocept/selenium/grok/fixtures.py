@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import gocept.selenium.tests.fixture.dummy
 import grok
 
 
@@ -25,13 +26,16 @@ class Index(grok.View):
         return '''<html><body>Hello from grok</body></html>'''
 
 
+# delegate to the common isolation fixture, but register the views grok-style
+
 class Set(grok.View):
     grok.name('set.html')
     grok.context(object)
 
     def render(self):
-        self.context.foo = 1
-        return u'setting done'
+        view = gocept.selenium.tests.fixture.dummy.Set()
+        view.context = self.context
+        return view()
 
 
 class Get(grok.View):
@@ -39,4 +43,16 @@ class Get(grok.View):
     grok.context(object)
 
     def render(self):
-        return str(getattr(self.context, 'foo', 0))
+        view = gocept.selenium.tests.fixture.dummy.Get()
+        view.context = self.context
+        return view()
+
+
+class IncrementVolatile(grok.View):
+    grok.name('inc-volatile.html')
+    grok.context(object)
+
+    def render(self):
+        view = gocept.selenium.tests.fixture.dummy.IncrementVolatile()
+        view.context = self.context
+        return view()
