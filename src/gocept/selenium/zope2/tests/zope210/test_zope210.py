@@ -12,17 +12,19 @@
 #
 ##############################################################################
 
-import unittest
-import gocept.selenium.zope2
-import gocept.selenium.tests.isolation
 import Testing.ZopeTestCase
+import gocept.selenium.tests.isolation
+import gocept.selenium.zope2
+import unittest
 
 Testing.ZopeTestCase.installProduct('Five')
 
 
 class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.zope2.TestCase):
-    pass
+
+    def getDatabase(self):
+        return gocept.selenium.zope2.get_current_db()
 
 
 def test_suite():

@@ -44,3 +44,6 @@ class GrokIsolation(gocept.selenium.tests.isolation.IsolationTests,
     gocept.selenium.grok.TestCase):
 
     layer = test_layer
+
+    def getDatabase(self):
+        return self.layer.db
