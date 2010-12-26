@@ -13,7 +13,6 @@
 ##############################################################################
 
 import Testing.ZopeTestCase
-import Zope2
 import gocept.selenium.tests.isolation
 import gocept.selenium.zope2
 import unittest
@@ -24,12 +23,8 @@ Testing.ZopeTestCase.installProduct('Five')
 class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.zope2.TestCase):
 
-    def getRootFolder(self):
-        return self.app
-
     def getDatabase(self):
-        db, aname, version = Zope2.bobo_application._stuff
-        return db
+        return gocept.selenium.zope2.get_current_db()
 
 
 def test_suite():
