@@ -12,10 +12,12 @@
 #
 ##############################################################################
 
-import unittest
-import gocept.selenium.zope2
-import gocept.selenium.tests.isolation
+from Products.PloneTestCase.layer import PloneSiteLayer
 import Products.PloneTestCase.PloneTestCase
+import gocept.selenium.tests.isolation
+import gocept.selenium.zope2
+import gocept.selenium.zope2.testing
+import unittest
 
 
 Products.PloneTestCase.PloneTestCase.setupPloneSite(id='plone')
@@ -23,6 +25,10 @@ Products.PloneTestCase.PloneTestCase.setupPloneSite(id='plone')
 
 class PloneTests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plone.TestCase):
+
+    layer = gocept.selenium.zope2.Layer(
+        PloneSiteLayer,
+        gocept.selenium.zope2.testing.Layer)
 
     def getDatabase(self):
         return gocept.selenium.zope2.get_current_db()

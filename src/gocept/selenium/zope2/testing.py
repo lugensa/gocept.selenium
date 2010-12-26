@@ -1,16 +1,34 @@
-from Products.Five import zcml
+#############################################################################
+#
+# Copyright (c) 2010 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 
-from gocept.selenium import zope2
+import Products.Five.zcml
+import gocept.selenium.tests.fixture
+import gocept.selenium.zope2
 
 
-class IsolationLayer(object):
+class Layer(object):
 
-    __name__ = "gocept.selenium.tests.isolation"
-    __bases__ = ()
-
+    @classmethod
     def setUp(cls):
-        zcml.load_config('testing.zcml',
-            package=zope2)
-    setUp = classmethod(setUp)
+        Products.Five.zcml.load_config(
+            'configure.zcml', package=gocept.selenium.tests.fixture)
 
-isolationLayer = IsolationLayer()
+
+# required for Zope2 >= 2.12
+class FiveLayer(object):
+
+    @classmethod
+    def setUp(cls):
+        Products.Five.zcml.load_config(
+            'configure.zcml', package=Products.Five)
