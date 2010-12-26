@@ -76,9 +76,9 @@ class SandboxPatch(object):
 
     def _app(self):
         Zope2.startup()
-        db, aname, version = Zope2.bobo_application._stuff
+        stuff = Zope2.bobo_application._stuff
         db = Testing.ZopeTestCase.ZopeLite.sandbox()
-        Zope2.bobo_application._stuff = db, aname, version
+        Zope2.bobo_application._stuff = (db,) + stuff[1:]
         app = Zope2.bobo_application()
         app = Testing.ZopeTestCase.utils.makerequest(app)
         Testing.ZopeTestCase.connections.register(app)
@@ -87,8 +87,7 @@ class SandboxPatch(object):
 
 def get_current_db():
     """helper for gocept.selenium.tests.isolation"""
-    db, aname, version = Zope2.bobo_application._stuff
-    return db
+    return Zope2.bobo_application._stuff[0]
 
 
 class TestCase(gocept.selenium.base.TestCase,
