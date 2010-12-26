@@ -16,6 +16,7 @@ import Lifetime
 import Testing.ZopeTestCase
 import Testing.ZopeTestCase.threadutils
 import Testing.ZopeTestCase.utils
+import Zope2
 import gocept.selenium.base
 
 
