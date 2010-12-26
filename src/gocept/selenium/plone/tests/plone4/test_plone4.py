@@ -28,6 +28,9 @@ class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
 
     layer = gocept.selenium.zope2.Layer(PloneSiteLayer, testing.isolationLayer)
 
+    def getDatabase(self):
+        return gocept.selenium.zope2.get_current_db()
+
     def test_plone_login(self):
         sel = self.selenium
         sel.open('/plone')
