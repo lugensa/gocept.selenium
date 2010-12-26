@@ -15,6 +15,7 @@
 import Testing.ZopeTestCase
 import gocept.selenium.tests.isolation
 import gocept.selenium.zope2
+import gocept.selenium.zope2.testing
 import unittest
 
 Testing.ZopeTestCase.installProduct('Five')
@@ -22,6 +23,8 @@ Testing.ZopeTestCase.installProduct('Five')
 
 class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.zope2.TestCase):
+
+    layer = gocept.selenium.zope2.Layer(gocept.selenium.zope2.testing.Layer)
 
     def getDatabase(self):
         return gocept.selenium.zope2.get_current_db()

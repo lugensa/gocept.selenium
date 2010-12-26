@@ -12,21 +12,21 @@
 #
 ##############################################################################
 
-import unittest
-import gocept.selenium.zope2
-from gocept.selenium.zope2 import testing
-import gocept.selenium.tests.isolation
-import Products.PloneTestCase.PloneTestCase
-
 from Products.PloneTestCase.layer import PloneSiteLayer
+import Products.PloneTestCase.PloneTestCase
+import gocept.selenium.tests.isolation
+import gocept.selenium.zope2
+import gocept.selenium.zope2.testing
 
 Products.PloneTestCase.PloneTestCase.setupPloneSite(id='plone')
 
 
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
-                 gocept.selenium.plone.TestCase):
+                  gocept.selenium.plone.TestCase):
 
-    layer = gocept.selenium.zope2.Layer(PloneSiteLayer, testing.isolationLayer)
+    layer = gocept.selenium.zope2.Layer(
+        PloneSiteLayer,
+        gocept.selenium.zope2.testing.Layer)
 
     def getDatabase(self):
         return gocept.selenium.zope2.get_current_db()
@@ -41,7 +41,3 @@ class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
         sel.click('name=submit')
         sel.waitForPageToLoad()
         sel.assertTextPresent('portal_owner')
-
-
-def test_suite():
-    return unittest.makeSuite(Plone4Tests)

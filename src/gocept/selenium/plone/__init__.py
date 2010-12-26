@@ -12,7 +12,6 @@
 #
 ##############################################################################
 
-from Products.PloneTestCase.layer import PloneSiteLayer
 import Products.PloneTestCase.PloneTestCase
 import gocept.selenium.base
 import gocept.selenium.zope2
@@ -21,8 +20,6 @@ import gocept.selenium.zope2
 class TestCase(gocept.selenium.base.TestCase,
                gocept.selenium.zope2.SandboxPatch,
                Products.PloneTestCase.PloneTestCase.FunctionalTestCase):
-
-    layer = gocept.selenium.zope2.Layer(PloneSiteLayer)
 
     def getRootFolder(self):
         """forward API-compatibility with zope.app.testing"""

@@ -21,15 +21,6 @@ import Zope2
 import gocept.selenium.base
 
 
-try:
-    # Zope 2 >= 2.11
-    import Testing.ZopeTestCase.layer
-    BASE_LAYERS = (Testing.ZopeTestCase.layer.ZopeLiteLayer, )
-except ImportError:
-    # Zope 2 < 2.11
-    BASE_LAYERS = ()
-
-
 class Layer(gocept.selenium.base.Layer):
 
     def setUp(self):
@@ -94,8 +85,6 @@ def get_current_db():
 class TestCase(gocept.selenium.base.TestCase,
                SandboxPatch,
                Testing.ZopeTestCase.FunctionalTestCase):
-
-    layer = Layer(*BASE_LAYERS)
 
     def getRootFolder(self):
         """forward API-compatibility with zope.app.testing"""
