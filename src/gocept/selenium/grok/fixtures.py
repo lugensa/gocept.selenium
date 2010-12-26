@@ -12,7 +12,7 @@
 #
 ##############################################################################
 
-import gocept.selenium.tests.fixture.dummy
+import gocept.selenium.tests.isolation.views
 import grok
 
 
@@ -34,7 +34,7 @@ class DelegatingView(grok.View):
 
     def render(self):
         view = getattr(
-            gocept.selenium.tests.fixture.dummy, self.__class__.__name__)()
+            gocept.selenium.tests.isolation.views, self.__class__.__name__)()
         view.context = self.context
         return view()
 
