@@ -26,33 +26,29 @@ class Index(grok.View):
         return '''<html><body>Hello from grok</body></html>'''
 
 
-# delegate to the common isolation fixture, but register the views grok-style
+class DelegatingView(grok.View):
+    # delegates actual functionality to the common isolation fixture, but lets
+    # us register the views grok-style
 
-class Set(grok.View):
+    grok.context(object)
+
+    def render(self):
+        view = getattr(
+            gocept.selenium.tests.fixture.dummy, self.__class__.__name__)()
+        view.context = self.context
+        return view()
+
+
+class Set(DelegatingView):
+
     grok.name('set.html')
-    grok.context(object)
-
-    def render(self):
-        view = gocept.selenium.tests.fixture.dummy.Set()
-        view.context = self.context
-        return view()
 
 
-class Get(grok.View):
+class Get(DelegatingView):
+
     grok.name('get.html')
-    grok.context(object)
-
-    def render(self):
-        view = gocept.selenium.tests.fixture.dummy.Get()
-        view.context = self.context
-        return view()
 
 
-class IncrementVolatile(grok.View):
+class IncrementVolatile(DelegatingView):
+
     grok.name('inc-volatile.html')
-    grok.context(object)
-
-    def render(self):
-        view = gocept.selenium.tests.fixture.dummy.IncrementVolatile()
-        view.context = self.context
-        return view()
