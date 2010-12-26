@@ -19,6 +19,13 @@
 
   <browser:page
     for="*"
+    name="inc-volatile.html"
+    class=".dummy.IncrementVolatile"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
     name="error.html"
     class=".dummy.Error"
     permission="zope.Public"
