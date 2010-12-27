@@ -2,6 +2,6 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <include package="Products.Five" />
-  <include package="gocept.selenium.tests.fixture" />
+  <include package="gocept.selenium.tests.isolation" />
 
 </configure>
