@@ -22,12 +22,12 @@ setup(
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     description='zope.testing layer that integrates Selenium-RC',
-    long_description = (
+    long_description=(
         open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
         '\n\n' +
         open('CHANGES.txt').read()),
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
+    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
     license='ZPL 2.1',
