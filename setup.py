@@ -59,5 +59,24 @@ setup(
             'zope.interface',
             'zope.schema',
             'ZODB3',
-            ]),
+            ],
+        zope2=[ # Zope2>=2.12 is eggified
+            'Zope2',
+            ],
+        plone=[
+            'Products.PloneTestCase',
+            ],
+        test_plone=[
+            'Plone',
+            'PILwoTK',
+            ],
+        plonetesting=[
+            'plone.testing',
+            ],
+        test_plonetesting=[
+            'Plone',
+            'PILwoTK',
+            'plone.app.testing',
+            ],
+    ),
 )
