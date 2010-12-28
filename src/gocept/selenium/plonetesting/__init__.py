@@ -45,7 +45,7 @@ class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
         super(Layer, self).testSetUp()
         # conform to the plone.testing contract that layers expose interesting
         # stuff via getitem
-        self['selenese'] = self.selenium
+        self['selenium'] = self.selenium
 
 
 SELENIUM = Layer()
@@ -55,7 +55,7 @@ class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
 
     @property
     def selenium(self):
-        return self.layer['selenese']
+        return self.layer['selenium']
 
     def getRootFolder(self):
         return self.layer['app']
