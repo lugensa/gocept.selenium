@@ -17,7 +17,6 @@ from plone.app.testing.layers import SITE_OWNER_PASSWORD
 import gocept.selenium.plonetesting
 import gocept.selenium.plonetesting.testing_plone
 import gocept.selenium.tests.isolation
-import unittest
 
 
 class Plone3Tests(gocept.selenium.tests.isolation.IsolationTests,
@@ -34,10 +33,3 @@ class Plone3Tests(gocept.selenium.tests.isolation.IsolationTests,
         sel.click('name=submit')
         sel.waitForPageToLoad()
         sel.assertTextPresent('Welcome! You are now logged in.')
-
-
-def test_suite():
-    suite = unittest.makeSuite(Plone3Tests)
-    from gocept.selenium.plonetesting.tests.zope2 import test_zope2
-    suite.addTest(test_zope2.test_suite())
-    return suite
