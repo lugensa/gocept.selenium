@@ -22,9 +22,9 @@ import gocept.selenium.wsgi
 
 class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
 
-     # we can't use super, since the base class zope.component.testlayer is not
-     # built for multiple inheritance; the wsgi.Layer-part of the family would
-     # never be reached
+    # we can't use super, since our base classes are not built for multiple
+    # inheritance (they don't consistently call super themselves, so parts of
+    # the hierarchy might be missed)
 
     def __init__(self, *args, **kw):
         # since the request factory class is only a parameter default of
