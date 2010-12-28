@@ -15,6 +15,7 @@
 import gocept.selenium.base
 import plone.testing
 import plone.testing.z2
+import unittest
 
 
 # XXX it would be nicer to reuse plone.testing.z2.ZSERVER_FIXTURE,
@@ -48,3 +49,13 @@ class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
 
 
 SELENIUM = Layer()
+
+
+class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+
+    @property
+    def selenium(self):
+        return self.layer['selenese']
+
+    def getRootFolder(self):
+        return self.layer['app']

@@ -82,8 +82,11 @@ class TestCase(object):
     #                       the.actual.base.TestCase):
     #     pass
 
+    @property
+    def selenium(self):
+        return self.layer.selenium
+
     def setUp(self):
         super(TestCase, self).setUp()
-        self.selenium = self.layer.selenium
         self.selenium.setContext('%s.%s' % (
             self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
