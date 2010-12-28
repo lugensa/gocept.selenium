@@ -12,32 +12,39 @@
 #
 ##############################################################################
 
-from plone.testing import Layer
-from plone.testing.z2 import ZSERVER_FIXTURE
-import gocept.selenium.selenese
-import selenium
+import gocept.selenium.base
+import plone.testing
+import plone.testing.z2
 
 
-class Selenium(Layer):
-
-    defaultBases = (ZSERVER_FIXTURE, )
-
-    _rc_server = 'localhost'
-    _rc_port = 4444
-    _browser = '*firefox'
-
-    def setUp(self):
-        super(Selenium, self).setUp()
-        self.selenium = self['selenium'] = selenium.selenium(
-            self._rc_server, self._rc_port, self._browser,
-            'http://%s:%s/' % (self['host'], self['port']))
-        self.selenium.start()
-        self['selenese'] = gocept.selenium.selenese.Selenese(
-            self.selenium, self['host'], self['port'])
-
-    def tearDown(self):
-        super(Selenium, self).tearDown()
-        self.selenium.stop()
+# XXX it would be nicer to reuse plone.testing.z2.ZSERVER_FIXTURE,
+# but we can't since we want to be able to override host/port via the
+# mechanisms exposed by gocept.selenium.base.Layer
+ZSERVER = plone.testing.z2.ZServer()
 
 
-SELENIUM = Selenium()
+class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
+
+    defaultBases = (ZSERVER,)
+
+    def __init__(self, *args, **kw):
+        # we can't use super, since our base classes are not built for multiple
+        # inheritance (they don't consistently call super themselves, so parts
+        # of the hierarchy might be missed).
+        #
+        # plone.testing.Layer has noops for everything except __init__, so this
+        # only matters here.
+
+        gocept.selenium.base.Layer.__init__(self)
+        plone.testing.Layer.__init__(self, *args, **kw)
+        ZSERVER.host = self.host
+        ZSERVER.port = self.port
+
+    def testSetUp(self):
+        super(Layer, self).testSetUp()
+        # conform to the plone.testing contract that layers expose interesting
+        # stuff via getitem
+        self['selenese'] = self.selenium
+
+
+SELENIUM = Layer()
