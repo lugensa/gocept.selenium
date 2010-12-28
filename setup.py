@@ -71,7 +71,7 @@ setup(
             'PILwoTK',
             ],
         plonetesting=[
-            'plone.testing',
+            'plone.testing[z2]',
             ],
         test_plonetesting=[
             'Plone',
