@@ -23,6 +23,8 @@ from plone.app.testing.layers import SITE_OWNER_PASSWORD
 
 from gocept.selenium import plonetesting
 from gocept.selenium.plonetesting import testing
+import gocept.selenium.tests.isolation
+
 
 PLONE_ISOLATION = FunctionalTesting(
     bases=(testing.ISOLATION, PLONE_FIXTURE),
@@ -33,8 +35,9 @@ PLONE_SELENIUM = plone.testing.Layer(
     name="gocept.selenium:Plone4")
 
 
-class Plone4Tests(unittest.TestCase,
-    testing.IsolationTests):
+class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
+                  testing.IsolationTestHelper,
+                  plonetesting.TestCase):
 
     layer = PLONE_SELENIUM
 
