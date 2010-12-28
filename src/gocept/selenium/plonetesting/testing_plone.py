@@ -12,34 +12,18 @@
 #
 ##############################################################################
 
-import gocept.selenium.plonetesting.tests
+import gocept.selenium.plonetesting
+import gocept.selenium.plonetesting.testing
+import plone.app.testing.layers
 import plone.testing
-import plone.testing.z2
-import zope.configuration.xmlconfig
 
 
-class Layer(plone.testing.Layer):
-
-    defaultBases = (plone.testing.z2.STARTUP,)
-
-    def setUp(self):
-        zope.configuration.xmlconfig.file(
-            'testing.zcml', package=gocept.selenium.plonetesting.tests,
-            context=self['configurationContext'])
-
-
-layer = Layer()
+layer = plone.testing.Layer(
+    bases=(gocept.selenium.plonetesting.testing.layer,
+           plone.app.testing.layers.PLONE_FIXTURE),
+    name='Isolation')
 
 
 selenium_layer = plone.testing.Layer(
     bases=(layer, gocept.selenium.plonetesting.SELENIUM),
     name='layer')
-
-
-class IsolationTestHelper(object):
-    """
-    plone.testing implementation of methods needed by common isolation tests
-    """
-
-    def getDatabase(self):
-        return self.layer['zodbDB']
