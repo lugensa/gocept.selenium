@@ -17,7 +17,6 @@ from plone.app.testing.layers import SITE_OWNER_PASSWORD
 import gocept.selenium.plonetesting
 import gocept.selenium.plonetesting.testing_plone
 import gocept.selenium.tests.isolation
-import unittest
 
 
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
@@ -36,10 +35,3 @@ class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
         sel.click('name=submit')
         sel.waitForPageToLoad()
         sel.assertTextPresent(SITE_OWNER_NAME)
-
-
-def test_suite():
-    suite = unittest.makeSuite(Plone4Tests)
-    from gocept.selenium.plonetesting.tests.zope2 import test_zope2
-    suite.addTest(test_zope2.test_suite())
-    return suite
