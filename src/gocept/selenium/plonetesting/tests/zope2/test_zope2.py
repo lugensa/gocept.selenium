@@ -11,20 +11,21 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import unittest
 
+import gocept.selenium.plonetesting
+import gocept.selenium.plonetesting.testing
 import plone.testing
-from gocept.selenium import plonetesting
-from gocept.selenium.plonetesting.tests import isolation
+import unittest
 
 
 ZOPE2_ISOLATION = plone.testing.Layer(
-    bases=(plonetesting.SELENIUM, isolation.FUNCTIONAL_ISOLATION,),
+    bases=(gocept.selenium.plonetesting.SELENIUM,
+           gocept.selenium.plonetesting.testing.FUNCTIONAL_ISOLATION,),
     name="gocept.selenium:Zope2")
 
 
 class Zope2Tests(unittest.TestCase,
-    isolation.IsolationTests):
+    gocept.selenium.plonetesting.testing.IsolationTests):
 
     layer = ZOPE2_ISOLATION
 
