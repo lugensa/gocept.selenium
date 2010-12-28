@@ -115,6 +115,18 @@ gocept.selenium by following the steps described above and substituting:
 
         layer = test_layer
 
+Quick start with plone.testing
+------------------------------
+
+1. Use the ``plonetesting`` extra when requiring gocept.selenium.
+
+4. gocept.selenium provides a plone.testing.Layer,
+   ``gocept.selenium.plonetesting.SELENIUM`` that you can mix and match with
+   your other layers, see plonetesting.testing/plonetesting.tests.zope2 and
+   plonetesting.testing_plone/plonetesting.tests.plone{3,4} for some examples
+   of integrating with Zope2 and Plone, respectively.
+
+
 Controlling gocept.selenium through environment variables
 ---------------------------------------------------------
 
