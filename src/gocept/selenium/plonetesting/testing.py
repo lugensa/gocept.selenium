@@ -12,28 +12,26 @@
 #
 ##############################################################################
 
-from zope.configuration import xmlconfig
-
-from plone.testing import Layer
-from plone.testing.z2 import STARTUP
-from plone.testing.z2 import FunctionalTesting
-
-from gocept.selenium import plonetesting
+import gocept.selenium.plonetesting.tests
+import plone.testing
+import plone.testing.z2
+import zope.configuration.xmlconfig
 
 
-class Isolation(Layer):
+class Isolation(plone.testing.Layer):
 
-    defaultBases = (STARTUP, )
+    defaultBases = (plone.testing.z2.STARTUP,)
 
     def setUp(self):
-        context = self['configurationContext']
-        xmlconfig.file('testing.zcml', package=plonetesting.tests,
-            context=context)
+        zope.configuration.xmlconfig.file(
+            'testing.zcml', package=gocept.selenium.plonetesting.tests,
+            context=self['configurationContext'])
 
 ISOLATION = Isolation()
 
-FUNCTIONAL_ISOLATION = FunctionalTesting(bases=(ISOLATION,),
-    name="gocept.selenium:FunctionalIsolation")
+FUNCTIONAL_ISOLATION = plone.testing.z2.FunctionalTesting(
+    bases=(ISOLATION,),
+    name='FunctionalIsolation')
 
 
 class IsolationTestHelper(object):
