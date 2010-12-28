@@ -4,10 +4,9 @@ Changes
 0.9 (unreleased)
 ----------------
 
-- Provide integration with the recent plone.testing/plone.app.testing
-  packages to be used by Plone.
 - Provide integration with the recent testlayer approach
   (zope.app.appsetup/zope.app.wsgi) used by Grok (#8260).
+- Provide integration with plone.testing
 - Make browser and RC server configurable (#6484).
 - Show current test case in command log (#7876).
 - Raise readable error when connection to RC server fails (#6489).
