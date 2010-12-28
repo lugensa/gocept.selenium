@@ -19,17 +19,17 @@ import plone.testing
 import unittest
 
 
-ZOPE2_ISOLATION = plone.testing.Layer(
+layer = plone.testing.Layer(
     bases=(gocept.selenium.plonetesting.SELENIUM,
-           gocept.selenium.plonetesting.testing.FUNCTIONAL_ISOLATION,),
-    name="gocept.selenium:Zope2")
+           gocept.selenium.plonetesting.testing.ISOLATION,),
+    name='layer')
 
 
 class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plonetesting.testing.IsolationTestHelper,
                  gocept.selenium.plonetesting.TestCase):
 
-    layer = ZOPE2_ISOLATION
+    layer = layer
 
 
 def test_suite():
