@@ -12,32 +12,30 @@
 #
 ##############################################################################
 
-import unittest
-
-import plone.testing
-from plone.testing.z2 import FunctionalTesting
-
-from plone.app.testing.layers import PLONE_FIXTURE
 from plone.app.testing.layers import SITE_OWNER_NAME
 from plone.app.testing.layers import SITE_OWNER_PASSWORD
-
-from gocept.selenium import plonetesting
-from gocept.selenium.plonetesting import testing
+import gocept.selenium.plonetesting
+import gocept.selenium.plonetesting.testing
 import gocept.selenium.tests.isolation
+import plone.app.testing.layers
+import plone.testing
+import plone.testing.z2
+import unittest
 
 
-PLONE_ISOLATION = FunctionalTesting(
-    bases=(testing.ISOLATION, PLONE_FIXTURE),
+PLONE_ISOLATION = plone.testing.z2.FunctionalTesting(
+    bases=(gocept.selenium.plonetesting.testing.ISOLATION,
+           plone.app.testing.layers.PLONE_FIXTURE),
     name="gocept.selenium:PloneIsolation")
 
 PLONE_SELENIUM = plone.testing.Layer(
-    bases=(plonetesting.SELENIUM, PLONE_ISOLATION,),
+    bases=(gocept.selenium.plonetesting.SELENIUM, PLONE_ISOLATION,),
     name="gocept.selenium:Plone4")
 
 
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
-                  testing.IsolationTestHelper,
-                  plonetesting.TestCase):
+                  gocept.selenium.plonetesting.testing.IsolationTestHelper,
+                  gocept.selenium.plonetesting.TestCase):
 
     layer = PLONE_SELENIUM
 
