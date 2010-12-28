@@ -40,7 +40,7 @@ class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
     layer = PLONE_SELENIUM
 
     def test_plone_login(self):
-        sel = self.layer['selenese']
+        sel = self.layer['selenium']
         sel.open('/plone')
         sel.click('link=Log in')
         sel.waitForElementPresent('name=__ac_name')
