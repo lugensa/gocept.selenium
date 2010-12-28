@@ -23,21 +23,18 @@ import plone.testing.z2
 import unittest
 
 
-PLONE_ISOLATION = plone.testing.z2.FunctionalTesting(
-    bases=(gocept.selenium.plonetesting.testing.ISOLATION,
+layer = plone.testing.Layer(
+    bases=(gocept.selenium.plonetesting.SELENIUM,
+           gocept.selenium.plonetesting.testing.ISOLATION,
            plone.app.testing.layers.PLONE_FIXTURE),
-    name="gocept.selenium:PloneIsolation")
-
-PLONE_SELENIUM = plone.testing.Layer(
-    bases=(gocept.selenium.plonetesting.SELENIUM, PLONE_ISOLATION,),
-    name="gocept.selenium:Plone4")
+    name='layer')
 
 
 class Plone4Tests(gocept.selenium.tests.isolation.IsolationTests,
                   gocept.selenium.plonetesting.testing.IsolationTestHelper,
                   gocept.selenium.plonetesting.TestCase):
 
-    layer = PLONE_SELENIUM
+    layer = layer
 
     def test_plone_login(self):
         sel = self.layer['selenium']

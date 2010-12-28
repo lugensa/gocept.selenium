@@ -27,11 +27,8 @@ class Isolation(plone.testing.Layer):
             'testing.zcml', package=gocept.selenium.plonetesting.tests,
             context=self['configurationContext'])
 
-ISOLATION = Isolation()
 
-FUNCTIONAL_ISOLATION = plone.testing.z2.FunctionalTesting(
-    bases=(ISOLATION,),
-    name='FunctionalIsolation')
+ISOLATION = Isolation()
 
 
 class IsolationTestHelper(object):

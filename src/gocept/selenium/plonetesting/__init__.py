@@ -26,7 +26,7 @@ ZSERVER = plone.testing.z2.ZServer()
 
 class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
 
-    defaultBases = (ZSERVER,)
+    defaultBases = (ZSERVER, plone.testing.z2.FUNCTIONAL_TESTING)
 
     def __init__(self, *args, **kw):
         # we can't use super, since our base classes are not built for multiple
