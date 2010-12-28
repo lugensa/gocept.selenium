@@ -15,21 +15,14 @@
 import gocept.selenium.plonetesting
 import gocept.selenium.plonetesting.testing
 import gocept.selenium.tests.isolation
-import plone.testing
 import unittest
-
-
-layer = plone.testing.Layer(
-    bases=(gocept.selenium.plonetesting.SELENIUM,
-           gocept.selenium.plonetesting.testing.ISOLATION,),
-    name='layer')
 
 
 class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
                  gocept.selenium.plonetesting.testing.IsolationTestHelper,
                  gocept.selenium.plonetesting.TestCase):
 
-    layer = layer
+    layer = gocept.selenium.plonetesting.testing.selenium_layer
 
 
 def test_suite():

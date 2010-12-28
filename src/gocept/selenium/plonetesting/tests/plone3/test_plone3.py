@@ -15,26 +15,16 @@
 from plone.app.testing.layers import SITE_OWNER_NAME
 from plone.app.testing.layers import SITE_OWNER_PASSWORD
 import gocept.selenium.plonetesting
-import gocept.selenium.plonetesting.testing
+import gocept.selenium.plonetesting.testing_plone
 import gocept.selenium.tests.isolation
-import plone.app.testing.layers
-import plone.testing
-import plone.testing.z2
 import unittest
-
-
-layer = plone.testing.Layer(
-    bases=(gocept.selenium.plonetesting.SELENIUM,
-           gocept.selenium.plonetesting.testing.ISOLATION,
-           plone.app.testing.layers.PLONE_FIXTURE),
-    name='layer')
 
 
 class Plone3Tests(gocept.selenium.tests.isolation.IsolationTests,
                   gocept.selenium.plonetesting.testing.IsolationTestHelper,
                   gocept.selenium.plonetesting.TestCase):
 
-    layer = layer
+    layer = gocept.selenium.plonetesting.testing_plone.selenium_layer
 
     def test_plone_login(self):
         sel = self.selenium
