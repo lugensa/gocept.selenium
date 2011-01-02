@@ -46,6 +46,11 @@ class Layer(object):
         else:
             self.__name__ = self.__class__.__name__
 
+    def _stop_selenium(self):
+        # Only stop selenium if it is still active.
+        if self.seleniumrc.sessionId is not None:
+            self.seleniumrc.stop()
+
     def setUp(self):
         self.seleniumrc = selenium.selenium(
             self._server, self._port, self._browser,
@@ -57,7 +62,7 @@ class Layer(object):
                 'Failed to connect to Selenium RC server at %s:%s,'
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
-        atexit.register(self.seleniumrc.stop)
+        atexit.register(self._stop_selenium)
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
         if speed is not None:
             self.seleniumrc.set_speed(speed)
