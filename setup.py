@@ -78,5 +78,13 @@ setup(
             'PILwoTK',
             'plone.app.testing',
             ],
+        script=[
+            'elementtree',
+            ],
     ),
+    entry_points={
+          'console_scripts': [
+                  'converthtmltests = gocept.selenium.scripts.converthtmltests:main',
+                  ],
+          }
 )
