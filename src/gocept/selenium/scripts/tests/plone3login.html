@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>plone3login</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">plone3login</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/plone/login_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>__ac_name</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>__ac_password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//a[@id='user-name']/span</td>
+	<td>admin</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
