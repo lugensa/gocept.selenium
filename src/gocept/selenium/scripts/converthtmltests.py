@@ -52,13 +52,13 @@ def formatcommand(command, *args):
     return '        selenium.%s(%s)' % (command, ', '.join(arguments))
 
 
-def parse_options():
+def make_parser():
     parser = OptionParser(usage="generatetests -l LAYER [options] directory",
         version="%prog 1.0")
     parser.add_option("-f", "--file", dest="target",
-                      default="tests_all_selenium.py",
-                      help="write tests to OUTPUT", metavar="FILE")
-    parser.add_option("-l", "--layer", dest="layer",
+                      default=DEFAULT_TARGET,
+                      help="write tests to FILE", metavar="FILE")
+    parser.add_option("-l", "--layer", dest="layer", default=None,
                       help="full python import path to layer instance",
                       metavar="LAYER")
     parser.add_option("-v", "--verbose",
@@ -67,24 +67,37 @@ def parse_options():
     parser.add_option("-q", "--quiet",
                       action="store_false", dest="verbose", default=True,
                       help="do not print progress messages to stdout")
+    return parser
 
-    options, args = parser.parse_args()
-    if not args:
-        parser.error('source directory is required')
-    elif len(args) > 1:
-        parser.error('only one source directory should be provided')
+DEFAULT_TARGET = 'tests_all_selenium.py'
+LAYER_REQUIRED = 'Layer (-l) argument is required.'
+DIRECTORY_REQUIRED = 'Source directory is required.'
+LAYER_WITH_MODULE = 'Layer (-l) should include a module.'
+ONE_DIRECTORY = 'Only one source directory should be provided.'
+DIRECTORY_NOT_EXIST = 'Source directory does not exist.'
+
+
+def parse_options(parser, args=None):
+    directory = ''
+    options, args = parser.parse_args(args=args)
     if not options.layer:
-        parser.error('layer is required')
-    if len(options.layer.split('.')) <= 1:
-        parser.error('layer option should include the module')
-    directory = os.path.abspath(args[0])
-    if not os.path.exists(directory):
-        parser.error('directory [%s] does not exist')
+        parser.error(LAYER_REQUIRED)
+    elif not args:
+        parser.error(DIRECTORY_REQUIRED)
+    elif len(options.layer.split('.')) <= 1:
+        parser.error(LAYER_WITH_MODULE)
+    elif len(args) > 1:
+        parser.error(ONE_DIRECTORY)
+    else:
+        directory = os.path.abspath(args[0])
+        if not os.path.exists(directory):
+            parser.error(DIRECTORY_NOT_EXIST)
     return options, directory
 
 
 def main():
-    options, directory = parse_options()
+    parser = make_parser()
+    options, directory = parse_options(parser)
     tests = []
     pattern = os.path.join(directory, '*.html')
     for filename in glob.glob(pattern):
