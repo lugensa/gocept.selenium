@@ -41,28 +41,32 @@ def formatcommand(command, *args):
             arguments.append("self.getVar('%s')" % matched.group('varname'))
     return 'self.%s(%s)' % (command, ', '.join(arguments))
 
-htmlparser = HTMLTreeBuilder.TreeBuilder()
-tests = []
-for filename in glob.glob('*.html'):
-    tree = HTMLTreeBuilder.parse(filename)
-    root = tree.getroot()
+def main():
+    htmlparser = HTMLTreeBuilder.TreeBuilder()
+    tests = []
+    for filename in glob.glob('*.html'):
+        tree = HTMLTreeBuilder.parse(filename)
+        root = tree.getroot()
 
-    try:
-        testname = root.find('.//title').text
-    except AttributeError:
-        continue
-    commands = []
-    for row in root.findall('.//tbody/tr'):
-        commands.append(formatcommand(*[td.text for td in row.findall('td')]))
+        try:
+            testname = root.find('.//title').text
+        except AttributeError:
+            continue
+        commands = []
+        for row in root.findall('.//tbody/tr'):
+            commands.append(formatcommand(*[td.text for td in row.findall('td')]))
 
-    testfilename = 'seltest_%s.py' % testname
-    testbody = ('    def test_%s(self):\n' % testname + ' ' * 8 +
-        '\n        '.join(commands) + '\n')
-    tests.append(testbody)
+        testfilename = 'seltest_%s.py' % testname
+        testbody = ('    def test_%s(self):\n' % testname + ' ' * 8 +
+            '\n        '.join(commands) + '\n')
+        tests.append(testbody)
 
-f = open('seltest_all.py', 'wb')
-f.write(template.substitute(dict(
-    testname=testname,
-    tests='\n'.join(tests),
-    )))
-f.close()
+    f = open('seltest_all.py', 'wb')
+    f.write(template.substitute(dict(
+        testname=testname,
+        tests='\n'.join(tests),
+        )))
+    f.close()
+
+if  __name__ == '__main__':
+    main()
