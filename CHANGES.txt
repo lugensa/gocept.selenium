@@ -4,7 +4,8 @@ Changes
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Script that generates python tests from Selenium HTML tables.
+  Reused from KSS project, with permission of original author Jeroen Vloothuis.
 
 
 0.9 (2010-12-28)
