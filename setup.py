@@ -81,6 +81,9 @@ setup(
         script=[
             'elementtree',
             ],
+        test_script=[
+            'mock',
+            ],
     ),
     entry_points={
           'console_scripts': [
