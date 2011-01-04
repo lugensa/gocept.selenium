@@ -41,8 +41,8 @@ def formatcommand(command, *args):
             arguments.append("self.getVar('%s')" % matched.group('varname'))
     return 'self.%s(%s)' % (command, ', '.join(arguments))
 
+
 def main():
-    htmlparser = HTMLTreeBuilder.TreeBuilder()
     tests = []
     for filename in glob.glob('*.html'):
         tree = HTMLTreeBuilder.parse(filename)
@@ -54,9 +54,9 @@ def main():
             continue
         commands = []
         for row in root.findall('.//tbody/tr'):
-            commands.append(formatcommand(*[td.text for td in row.findall('td')]))
+            command = formatcommand(*[td.text for td in row.findall('td')])
+            commands.append(command)
 
-        testfilename = 'seltest_%s.py' % testname
         testbody = ('    def test_%s(self):\n' % testname + ' ' * 8 +
             '\n        '.join(commands) + '\n')
         tests.append(testbody)
