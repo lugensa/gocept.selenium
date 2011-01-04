@@ -77,7 +77,9 @@ def parse_options():
         parser.error('layer is required')
     if len(options.layer.split('.')) <= 1:
         parser.error('layer option should include the module')
-    directory = args[0]
+    directory = os.path.abspath(args[0])
+    if not os.path.exists(directory):
+        parser.error('directory [%s] does not exist')
     return options, directory
 
 
@@ -86,8 +88,9 @@ def main():
     tests = []
     pattern = os.path.join(directory, '*.html')
     for filename in glob.glob(pattern):
+        filename = os.path.abspath(filename)
         if options.verbose:
-            print "Parsing %s" % filename
+            print "Parsing [%s]" % filename
         tree = HTMLTreeBuilder.parse(filename)
         root = tree.getroot()
 
@@ -105,9 +108,10 @@ def main():
             commands='\n'.join(commands)))
         tests.append(method_body)
 
+    target = os.path.abspath(options.target)
     if options.verbose:
-        print "Generating %s" % options.target
-    f = open(options.target, 'wb')
+        print "Generating [%s]" % target
+    f = open(target, 'wb')
     layer = options.layer
     layer_module = ".".join(layer.split('.')[:-1])
     f.write(module_template.substitute(dict(
