@@ -95,31 +95,40 @@ def parse_options(parser, args=None):
     return options, directory
 
 
-def main():
-    parser = make_parser()
-    options, directory = parse_options(parser)
-    tests = []
+def parse_directory(directory, verbose):
     pattern = os.path.join(directory, '*.html')
     for filename in glob.glob(pattern):
-        filename = os.path.abspath(filename)
-        if options.verbose:
+        if verbose:
             print "Parsing [%s]" % filename
-        tree = HTMLTreeBuilder.parse(filename)
-        root = tree.getroot()
-
-        try:
-            testname = root.find('.//title').text
-        except AttributeError:
+        filename = os.path.abspath(filename)
+        testname, commands = parse_file(filename)
+        if testname is None:
             continue
-        commands = []
-        for row in root.findall('.//tbody/tr'):
-            command = formatcommand(*[td.text for td in row.findall('td')])
-            commands.append(command)
-
         method_body = method_body_template.substitute(dict(
             testname=testname,
             commands='\n'.join(commands)))
-        tests.append(method_body)
+        yield method_body
+
+
+def parse_file(filename):
+    tree = HTMLTreeBuilder.parse(filename)
+    root = tree.getroot()
+
+    try:
+        testname = root.find('.//title').text
+    except AttributeError:
+        return None, None
+    commands = []
+    for row in root.findall('.//tbody/tr'):
+        command = formatcommand(*[td.text for td in row.findall('td')])
+        commands.append(command)
+    return testname, commands
+
+
+def main():
+    parser = make_parser()
+    options, directory = parse_options(parser)
+    tests = parse_directory(directory, options.verbose)
 
     target = os.path.abspath(options.target)
     if options.verbose:
