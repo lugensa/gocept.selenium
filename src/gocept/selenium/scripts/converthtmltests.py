@@ -21,7 +21,7 @@ class TestAll(gocept.selenium.plonetesting.TestCase):
 
     layer = $layer
 
-$tests
+$methods
 
 def test_suite():
     return unittest.makeSuite(TestAll)
@@ -29,7 +29,7 @@ def test_suite():
 
 variable_regexp = re.compile('\$\{(?P<varname>\w*)\}')
 
-method_body_template = Template('''\
+method_template = Template('''\
     def test_$testname(self):
         selenium = self.selenium
 $commands
@@ -47,8 +47,9 @@ def formatcommand(command, *args):
         matched = variable_regexp.match(arg)
         if matched is None:
             arguments.append('"%s"' % arg)
-        else:
-            arguments.append("self.getVar('%s')" % matched.group('varname'))
+        #XXX selenese should implement storeText
+        #else:
+        #    arguments.append("self.getVar('%s')" % matched.group('varname'))
     return '        selenium.%s(%s)' % (command, ', '.join(arguments))
 
 
@@ -102,12 +103,12 @@ def parse_directory(directory, verbose):
             print "Parsing [%s]" % filename
         filename = os.path.abspath(filename)
         testname, commands = parse_file(filename)
-        if testname is None:
+        if testname is None or len(commands) == 0:
             continue
-        method_body = method_body_template.substitute(dict(
+        method = method_template.substitute(dict(
             testname=testname,
             commands='\n'.join(commands)))
-        yield method_body
+        yield method
 
 
 def parse_file(filename):
@@ -125,24 +126,35 @@ def parse_file(filename):
     return testname, commands
 
 
-def main():
-    parser = make_parser()
-    options, directory = parse_options(parser)
-    tests = parse_directory(directory, options.verbose)
+def make_module(methods, layer, layer_module):
+    return module_template.substitute(dict(
+        testname='all',
+        methods='\n'.join(methods),
+        layer=layer,
+        layer_module=layer_module,
+        ))
 
+
+def main(args=None):
+    parser = make_parser()
+    options, directory = parse_options(parser, args)
+    verbose = options.verbose
     target = os.path.abspath(options.target)
+    layer = options.layer
+    layer_module = ".".join(layer.split('.')[:-1])
+
+    methods = [method for method in parse_directory(directory, verbose)]
+
+    if len(methods) == 0:
+        print "No file was generated !"
+        return
     if options.verbose:
         print "Generating [%s]" % target
     f = open(target, 'wb')
-    layer = options.layer
-    layer_module = ".".join(layer.split('.')[:-1])
-    f.write(module_template.substitute(dict(
-        testname='all',
-        tests='\n'.join(tests),
-        layer=layer,
-        layer_module=layer_module,
-        )))
+    module = make_module(methods, layer, layer_module)
+    f.write(module)
     f.close()
+
 
 if  __name__ == '__main__':
     main()
