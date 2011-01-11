@@ -20,7 +20,7 @@ zope.testing, you need to do this to enable Selenium tests:
    this since we have had some bad experiences with it related to new
    versions of Selenium RC and Firefox.
 
-.. _`seleniumhq.org`: http://release.seleniumhq.org/selenium-remote-control
+.. _`seleniumhq.org`: http://seleniumhq.org/download/
 
 3. Run buildout to install gocept.selenium and selenium (the Python bindings
    for Selenium RC).

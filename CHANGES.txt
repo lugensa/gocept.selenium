@@ -4,7 +4,9 @@ Changes
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Using a URL of `Selenium RC` in README where version 1.0.3 can be
+  downloaded (instead of 1.0.1) which works fine with Firefox on Mac OS X,
+  too.
 
 
 0.9 (2010-12-28)
