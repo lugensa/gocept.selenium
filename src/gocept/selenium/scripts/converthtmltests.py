@@ -54,7 +54,7 @@ def formatcommand(command, *args):
 
 
 def make_parser():
-    parser = OptionParser(usage="generatetests -l LAYER [options] directory",
+    parser = OptionParser(usage="converthtmltests -l LAYER [options] directory",
         version="%prog 1.0")
     parser.add_option("-f", "--file", dest="target",
                       default=DEFAULT_TARGET,

@@ -126,6 +126,49 @@ Quick start with plone.testing
    plonetesting.testing_plone/plonetesting.tests.plone{3,4} for some examples
    of integrating with Zope2 and Plone, respectively.
 
+Selenium HTML tests conversion script
+-------------------------------------
+
+Selenium tests can be written in HTML tables. 
+
+Their syntax is a bit clunky. But their development and debugging is eased a
+lot by using Selenium IDE Firefox extension. 
+Selenium IDE provides both initial recording of tests and stepping through 
+those tests.
+However, HTML tests have a main drawback : they are hard to include in a
+continuous integration system.
+
+``gocept.selenium`` provides a script that converts a set of
+Selenium HTML tests into a Python module (based on ``gocept.selenium`` and
+``plone.testing``). That Python module contains a ``TestCase`` that can be included in any
+``zope.testing`` test suite.
+
+Using the ``converthtmltests`` script, the developer can use HTML tests - written, 
+debugged and maintained with the Selenium tools -
+while being able to easily include those Selenium
+tests in a continuous integration system.
+
+Usage
+~~~~~
+
+See hereunder an excerpt of the help provided by the script ::
+
+    converthtmltests -l LAYER [options] directory
+
+    options:
+      -f FILE, --file=FILE  write tests to FILE
+      -l LAYER, --layer=LAYER
+                            full python import path to layer instance
+
+The script gathers and converts all Selenium HTML tests found in the mentioned
+directory.
+
+The user must refer to a ``plone.testing`` layer by specifying its Python import path.
+That layer is set on the test case generated in the Python module.
+
+An output file can be specified. In case no output file name is specified,
+the module produced is named ``tests_all_selenium.py``.
+
 
 Controlling gocept.selenium through environment variables
 ---------------------------------------------------------
