@@ -67,7 +67,7 @@ Quick start with Grok
 ---------------------
 
 The layer works a little different than in the ZTK steps above, instead of
-delegating to a (probably alredy existing functional-testing) layer, you'll
+delegating to a (probably already existing functional-testing) layer, you'll
 need a separate one for the Selenium tests.
 
 1. Use the ``grok`` extra when requiring gocept.selenium.
