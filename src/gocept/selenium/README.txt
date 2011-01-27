@@ -1,8 +1,34 @@
 Selenium RC integration with zope.testing
 =========================================
 
-gocept.selenium integrates Selenium RC with your Plone/Zope 2/ZTK/Grok test
-suite.
+gocept.selenium integrates the `Selenium remote control`_ with your test suite
+for any WSGI, Plone, Zope 2, ZTK, or Grok application.
+
+.. _`Selenium remote control`: http://seleniumhq.org/projects/remote-control/
+
+.. contents::
+
+
+Quick start for WSGI applications
+---------------------------------
+
+You can test any WSGI application using gocept.selenium by doing:
+
+#. Use the ``wsgi`` extra when requiring gocept.selenium.
+
+#. Create a layer for your tests::
+
+    import gocept.selenium.wsgi
+
+    from mypackage import App
+
+    test_layer = gocept.selenium.wsgi.Layer(App())
+
+#. Inherit from `gocept.selenium.wsgi.TestCase`::
+
+    class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
+
+        layer = test_layer
 
 
 Quick start with ZTK
@@ -11,21 +37,21 @@ Quick start with ZTK
 Assuming that you already have a package that uses zc.buildout and
 zope.testing, you need to do this to enable Selenium tests:
 
-1. Add gocept.selenium to the list of eggs either in your setup.py, or in
+#. Add gocept.selenium to the list of eggs either in your setup.py, or in
    buildout.cfg, using the extra ``ztk``, i.e. ``gocept.selenium[ztk]``.
 
-2. Install Selenium RC by some means, e.g. by downloading a version from
+#. Install Selenium RC by some means, e.g. by downloading a version from
    `seleniumhq.org`_ . We do not recommend using the
    ``collective.recipe.seleniumrc`` buildout recipe for
    this since we have had some bad experiences with it related to new
    versions of Selenium RC and Firefox.
 
-.. _`seleniumhq.org`: http://seleniumhq.org/download/
+   .. _`seleniumhq.org`: http://seleniumhq.org/download/
 
-3. Run buildout to install gocept.selenium and selenium (the Python bindings
+#. Run buildout to install gocept.selenium and selenium (the Python bindings
    for Selenium RC).
 
-4. Create a layer for your tests, like this::
+#. Create a layer for your tests, like this::
 
     import gocept.selenium.ztk
     import zope.app.testing.functional
@@ -34,14 +60,14 @@ zope.testing, you need to do this to enable Selenium tests:
         __name__, __name__, allow_teardown=True)
     selenium_layer = gocept.selenium.ztk.Layer(zcml_layer)
 
-  Essentially, the ``zcml_layer`` is what you would use for typical ZTK
-  functional tests, and then you wrap it to create ``selenium_layer``.
+   Essentially, the ``zcml_layer`` is what you would use for typical ZTK
+   functional tests, and then you wrap it to create the ``selenium_layer``.
 
-5. Start writing tests that inherit ``gocept.selenium.ztk.TestCase``; make
+#. Start writing tests that inherit ``gocept.selenium.ztk.TestCase``; make
    sure you set the ``layer`` attribute to ``selenium_layer`` on each test
    class.
 
-6. In your tests, use ``self.selenium`` to control Selenium RC, e.g. ::
+#. In your tests, use ``self.selenium`` to control Selenium RC, e.g. ::
 
     class MyTest(gocept.selenium.ztk.TestCase):
 
@@ -51,34 +77,36 @@ zope.testing, you need to do this to enable Selenium tests:
             self.selenium.open('http://%s/foo.html' % self.selenium.server)
             self.selenium.assertBodyText('foo')
 
-7. Run seleniumrc: java -jar /path/to/selenium-server.jar
+#. Run seleniumrc::
 
-8. Run bin/test and see it work!
+    $ java -jar /path/to/selenium-server.jar
+
+#. Run bin/test and see it work!
 
 
 Quick start with Zope 2/Plone
 -----------------------------
 
-Essentially the same, only use gocept.selenium.zope2 or gocept.selenium.plone
+Essentially the same, just use gocept.selenium.zope2 or gocept.selenium.plone
 instead of gocept.selenium.ztk.
 
 
 Quick start with Grok
 ---------------------
 
-The layer works a little different than in the ZTK steps above, instead of
-delegating to a (probably already existing functional-testing) layer, you'll
-need a separate one for the Selenium tests.
+This layer works a little different than in the ZTK steps above. Instead of
+delegating to a (probably already existing functional testing) layer, you'll
+need a separate one for the selenium tests.
 
-1. Use the ``grok`` extra when requiring gocept.selenium.
+#. Use the ``grok`` extra when requiring gocept.selenium.
 
-4. Create a layer for your tests::
+#. Create a layer for your tests::
 
     import gocept.selenium.grok
 
     selenium_layer = gocept.selenium.grok.Layer(my.package)
 
-5. Inherit from `gocept.selenium.grok.TestCase`. You will probably want to
+#. Inherit from `gocept.selenium.grok.TestCase`. You will probably want to
    setup your app in your test setup::
 
     import transaction
@@ -96,31 +124,12 @@ need a separate one for the Selenium tests.
              self.selenium.open('/app')
              self.selenium.assertBodyText('foo')
 
-The Grok Layer is based on a WSGI layer. You can test WSGI applications with
-gocept.selenium by following the steps described above and substituting:
-
-1. Use the ``wsgi`` extra when requiring gocept.selenium.
-
-4. Create a layer for your tests::
-
-    import gocept.selenium.wsgi
-
-    from mypackage import App
-
-    test_layer = gocept.selenium.wsgi.Layer(App())
-
-5. Inherit from `gocept.selenium.wsgi.TestCase`::
-
-    class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
-
-        layer = test_layer
-
 Quick start with plone.testing
 ------------------------------
 
-1. Use the ``plonetesting`` extra when requiring gocept.selenium.
+#. Use the ``plonetesting`` extra when requiring gocept.selenium.
 
-4. gocept.selenium provides a plone.testing.Layer,
+#. gocept.selenium provides a plone.testing.Layer,
    ``gocept.selenium.plonetesting.SELENIUM`` that you can mix and match with
    your other layers, see plonetesting.testing/plonetesting.tests.zope2 and
    plonetesting.testing_plone/plonetesting.tests.plone{3,4} for some examples
