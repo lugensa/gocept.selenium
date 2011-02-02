@@ -31,11 +31,11 @@ You can test any WSGI application using gocept.selenium by doing:
         layer = test_layer
 
 
-Quick start with ZTK
---------------------
+Quick start with ZTK (zope.app.testing)
+---------------------------------------
 
-Assuming that you already have a package that uses zc.buildout and
-zope.testing, you need to do this to enable Selenium tests:
+Assuming that you already have a package that uses ``zc.buildout`` and
+``zope.app.testing``, you need to do this to enable Selenium tests:
 
 #. Add gocept.selenium to the list of eggs either in your setup.py, or in
    buildout.cfg, using the extra ``ztk``, i.e. ``gocept.selenium[ztk]``.
@@ -82,6 +82,14 @@ zope.testing, you need to do this to enable Selenium tests:
     $ java -jar /path/to/selenium-server.jar
 
 #. Run bin/test and see it work!
+
+
+Quick start with ZTK (zope.app.wsgi)
+------------------------------------
+
+Assuming that you already have a package that uses ``zc.buildout`` and
+``zope.app.wsgi.testlayer``, you should follow the steps described in `Quick
+start with Grok`_.
 
 
 Quick start with Zope 2/Plone
@@ -138,11 +146,11 @@ Quick start with plone.testing
 Selenium HTML tests conversion script
 -------------------------------------
 
-Selenium tests can be written in HTML tables. 
+Selenium tests can be written in HTML tables.
 
 Their syntax is a bit clunky. But their development and debugging is eased a
-lot by using Selenium IDE Firefox extension. 
-Selenium IDE provides both initial recording of tests and stepping through 
+lot by using Selenium IDE Firefox extension.
+Selenium IDE provides both initial recording of tests and stepping through
 those tests.
 However, HTML tests have a main drawback : they are hard to include in a
 continuous integration system.
@@ -152,7 +160,7 @@ Selenium HTML tests into a Python module (based on ``gocept.selenium`` and
 ``plone.testing``). That Python module contains a ``TestCase`` that can be included in any
 ``zope.testing`` test suite.
 
-Using the ``converthtmltests`` script, the developer can use HTML tests - written, 
+Using the ``converthtmltests`` script, the developer can use HTML tests - written,
 debugged and maintained with the Selenium tools -
 while being able to easily include those Selenium
 tests in a continuous integration system.
