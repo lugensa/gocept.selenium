@@ -9,6 +9,10 @@ Changes
 - Wrote a quick start section for packages using ZTK but using
   ``zope.app.wsgi.testlayer`` instead of ``zope.app.testing``.
 
+- Allowed to use `regexp` as pattern prefix for regular expressions
+  additionally to `regex` to be compatible with the docstring and the
+  Selenium documentation.
+
 
 0.10 (2011-01-18)
 -----------------
