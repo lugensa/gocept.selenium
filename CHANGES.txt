@@ -6,6 +6,9 @@ Changes
 
 - Improvements on the README.
 
+- Wrote a quick start section for packages using ZTK but using
+  ``zope.app.wsgi.testlayer`` instead of ``zope.app.testing``.
+
 
 0.10 (2011-01-18)
 -----------------
