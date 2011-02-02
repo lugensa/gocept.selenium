@@ -51,6 +51,10 @@ class PatternTest(unittest.TestCase):
         self.assert_(match('foo', 'regex:^fo+$'))
         self.assert_(not match('foo', 'regex:^f+$'))
 
+    def test_regexp(self):
+        self.assert_(match('foo', 'regexp:^fo+$'))
+        self.assert_(not match('foo', 'regexp:^f+$'))
+
     def test_multiline_strings(self):
         self.assert_(match('foo\nbar', 'glob:foo*'))
         self.assert_(match('foo\nbar', 'regex:^foo.*$'))

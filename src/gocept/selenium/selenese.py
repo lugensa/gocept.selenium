@@ -730,6 +730,9 @@ def match_regex(text, pattern):
     return re.search(pattern, text, re.DOTALL)
 
 
+match_regexp = match_regex
+
+
 def match_exact(text, pattern):
     return text == pattern
 
