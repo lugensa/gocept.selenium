@@ -14,7 +14,7 @@ Quick start for WSGI applications
 
 You can test any WSGI application using gocept.selenium by doing:
 
-#. Use the ``wsgi`` extra when requiring gocept.selenium.
+#. Requiring gocept.selenium for your tests.
 
 #. Create a layer for your tests::
 
