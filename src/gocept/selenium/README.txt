@@ -8,6 +8,18 @@ for any WSGI, Plone, Zope 2, ZTK, or Grok application.
 
 .. contents::
 
+Prerequisites
+-------------
+
+Install Selenium RC by some means, e.g. by downloading a version from
+`seleniumhq.org`_ . We do not recommend using the
+``collective.recipe.seleniumrc`` buildout recipe for this since we have had
+some bad experiences with it related to new versions of Selenium RC and
+Firefox.
+
+.. _`seleniumhq.org`: http://seleniumhq.org/download/
+
+
 
 Quick start for WSGI applications
 ---------------------------------
@@ -39,14 +51,6 @@ Assuming that you already have a package that uses ``zc.buildout`` and
 
 #. Add gocept.selenium to the list of eggs either in your setup.py, or in
    buildout.cfg, using the extra ``ztk``, i.e. ``gocept.selenium[ztk]``.
-
-#. Install Selenium RC by some means, e.g. by downloading a version from
-   `seleniumhq.org`_ . We do not recommend using the
-   ``collective.recipe.seleniumrc`` buildout recipe for
-   this since we have had some bad experiences with it related to new
-   versions of Selenium RC and Firefox.
-
-   .. _`seleniumhq.org`: http://seleniumhq.org/download/
 
 #. Run buildout to install gocept.selenium and selenium (the Python bindings
    for Selenium RC).
