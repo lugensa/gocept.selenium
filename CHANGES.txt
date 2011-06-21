@@ -4,7 +4,7 @@ Changes
 0.10.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Added some notes how to test a Zope 2 WSGI application.
 
 
 0.10.1 (2011-02-02)
