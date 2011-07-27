@@ -6,6 +6,9 @@ Changes
 
 - Added some notes how to test a Zope 2 WSGI application.
 
+- Described how to test a Zope 2/Plone application if using `plone.testing`
+  to set up test layers.
+
 
 0.10.1 (2011-02-02)
 -------------------

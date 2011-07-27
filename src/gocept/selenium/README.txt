@@ -114,7 +114,7 @@ Assuming that you already have a package that uses ``zc.buildout`` and
 
     $ java -jar /path/to/selenium-server.jar
 
-#. Run bin/test and see it work!
+#. Run `bin/test` and see it work!
 
 
 Quick start with ZTK (zope.app.wsgi)
@@ -125,11 +125,40 @@ Assuming that you already have a package that uses ``zc.buildout`` and
 start with Grok`_.
 
 
-Quick start with Zope 2/Plone
------------------------------
+Quick start with Zope 2/Plone (general)
+---------------------------------------
 
-Essentially the same, just use gocept.selenium.zope2 or gocept.selenium.plone
-instead of gocept.selenium.ztk.
+Essentially the same like `Quick start with ZTK (zope.app.testing)`_, just:
+
+* depend on `gocept.selenium[zope2]` resp. `gocept.selenium[plone]` instead
+  of `gocept.selenium[ztk]`.
+
+* use ``gocept.selenium.zope2`` resp. ``gocept.selenium.plone`` instead of
+  ``gocept.selenium.ztk``.
+
+Quick start with Zope 2/Plone (plone.testing)
+---------------------------------------------
+
+If you use `plone.testing` to set up the test layers for your Zope2
+resp. Plone package you can follow these steps:
+
+#. Depend on `gocept.selenium[zope2]` resp. `gocept.selenium[plone]` in your
+   `setup.py`.
+
+#. Create a `plone.testing` layer which loads your package and its ZCML
+   configuration. (See documentation of `plone.testing` how to do this.)
+
+#. Create a layer for the selenium tests like this::
+
+    selenium_layer = gocept.selenium.zope2.Layer(MY_PLONE_TESTING_LAYER)
+
+   (You might need to exchange ``zope2`` by ``plone`` in this statement.)
+
+#. Create a test case and run the tests like described in `Quick start with
+   ZTK (zope.app.testing)`_. But use ``gocept.selenium.zope2.TestCase`` resp.
+   ``gocept.selenium.plone.TestCase`` instead of
+   ``gocept.selenium.ztk.TestCase`` as test base class.
+
 
 
 Quick start with Grok
