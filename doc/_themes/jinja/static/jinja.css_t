@@ -28,20 +28,17 @@ body {
 
 div.document {
     width: {{ page_width }};
-    margin: 30px auto 0 auto;
+    margin: 0 auto 0 auto;
 }
 
 div.documentwrapper {
     float: left;
-    width: 100%;
-}
-
-div.bodywrapper {
-    margin: 0 0 0 {{ sidebar_width }};
+    width: 720px;
 }
 
 div.sphinxsidebar {
     width: {{ sidebar_width }};
+    margin-left: 0px;
 }
 
 hr {
@@ -49,8 +46,8 @@ hr {
 }
  
 div.body {
-    background-color: #ffffff;
-    color: #3E4349;
+    background-color: #fff;
+    color: #333;
     padding: 0 30px 0 30px;
 }
 
@@ -149,12 +146,12 @@ div.sphinxsidebar form.search input[name="q"] {
 /* -- body styles ----------------------------------------------------------- */
  
 a {
-    color: #aa0000;
+    color: #00a;
     text-decoration: underline;
 }
  
 a:hover {
-    color: #dd0000;
+    color: #00d;
     text-decoration: underline;
 }
  
@@ -373,22 +370,22 @@ tt.xref, a tt {
 
 a.reference {
     text-decoration: none;
-    border-bottom: 1px dotted #bb0000;
+    border-bottom: 1px dotted #0000bb;
 }
 
 a.reference:hover {
-    border-bottom: 1px solid #dd0000;
+    border-bottom: 1px solid #0000dd;
 }
 
 a.footnote-reference {
     text-decoration: none;
     font-size: 0.7em;
     vertical-align: top;
-    border-bottom: 1px dotted #bb0000;
+    border-bottom: 1px dotted #0000dd;
 }
 
 a.footnote-reference:hover {
-    border-bottom: 1px solid #dd0000;
+    border-bottom: 1px solid #0000dd;
 }
 
 a:hover tt {

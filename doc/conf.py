@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'gocept.selenium'
-copyright = u'2011, Zope Foundation and Contributors'
+copyright = u'2011, Zope Foundation and Contributors. <a href="http://sphinx.pocoo.org/">Sphinx</a>-Theme adapted from <a href="http://jinja.pocoo.org/docs/">Jinja</a>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -131,7 +131,12 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    'index':    ['sidebarlogo.html', 'sidebarintro.html', 'sourcelink.html',
+                 'searchbox.html'],
+    '**':       ['sidebarlogo.html', 'localtoc.html', 'relations.html',
+                 'sourcelink.html', 'searchbox.html']
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -150,10 +155,10 @@ html_static_path = ['_static']
 html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-#html_show_copyright = True
+html_show_copyright = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
