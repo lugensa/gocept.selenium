@@ -45,31 +45,16 @@ You can test any WSGI application using gocept.selenium by doing:
 Quick start for WSGI applications (Zope 2)
 ------------------------------------------
 
-When running Zope 2 as WSGI application you might need the following
-additional middleware around your WSGI application::
+When running Zope 2 as WSGI application you might see the following
+exception when running tests::
 
-    class CleanerMiddleware(object):
-        """Fix problems between WSGI server and middlewares."""
+  File ".../repoze.retry-1.0-py2.7.egg/repoze/retry/__init__.py", line 55, in __call__
+    cl = int(cl)
+   ValueError: invalid literal for int() with base 10: ''
 
-        def __init__(self, app):
-            self.app = app
-
-        def __call__(self, environ, start_response):
-            # wsgiref.simple_server.ServerHandler.setup_environ adds
-            # 'CONTENT_LENGTH' key to environ which has the value '', but
-            # repoze.retry.Retry.__call__ 1.0. expects the value to be
-            # convertable to `int` See http://bugs.repoze.org/issue171.
-            if environ.get('CONTENT_LENGTH') == '':
-                del environ['CONTENT_LENGTH']
-
-            # gocept.selenium uses wsgiref but
-            # wsgiref.simple_server.ServerHandler.start_response bails when it
-            # sees the 'Connection' header, so we frankly remove it here:
-            def clean_start_response(status, headers, exc_info):
-                headers = [(k, v) for (k, v) in headers if k != 'Connection']
-                return start_response(status, headers, exc_info)
-
-            return self.app(environ, clean_start_response)
+To fix it you can use an additional middleware around your WSGI
+application: ``gocept.selenium.wsgi.CleanerMiddleware``. It also fixes an
+issue with ``wsgiref``. See comments in the code for more information.
 
 
 Quick start with ZTK (zope.app.testing)
