@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2010 Zope Foundation and Contributors.
+# Copyright (c) 2010-2011 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -27,25 +27,25 @@ class TestStaticFilesTestCase(unittest.TestCase):
         self.testlayer.tearDown()
 
     def test_documentroot(self):
-        self.assert_(self.testlayer.documentroot.startswith('/tmp'))
+        self.assertTrue(self.testlayer.documentroot.startswith('/tmp'))
 
     def test_documentroot_initially_empty(self):
         documentroot = self.testlayer.documentroot
-        self.assert_(not os.listdir(self.testlayer.documentroot))
+        self.assertEqual([], os.listdir(self.testlayer.documentroot))
         open(os.path.join(documentroot, 'foo.txt'), 'w').write('Hello World!')
-        self.assertEquals(
+        self.assertEqual(
             ['foo.txt'], os.listdir(self.testlayer.documentroot))
 
     def test_documentroot_empty_after_testsetup(self):
         documentroot = self.testlayer.documentroot
-        self.assert_(not os.listdir(self.testlayer.documentroot))
+        self.assertEqual([], os.listdir(self.testlayer.documentroot))
         open(os.path.join(documentroot, 'bar.txt'), 'w').write('Hello World!')
-        self.assertEquals(
+        self.assertEqual(
             ['bar.txt'], os.listdir(self.testlayer.documentroot))
         self.testlayer.testSetUp()
-        self.assert_(not os.listdir(self.testlayer.documentroot))
+        self.assertEqual([], os.listdir(self.testlayer.documentroot))
 
     def test_server_startup_shutdown(self):
-        self.assert_(self.testlayer.server_thread.isAlive())
+        self.assertTrue(self.testlayer.server_thread.isAlive())
         self.testlayer.stop_server()
-        self.assert_(not self.testlayer.server)
+        self.assertIsNone(self.testlayer.server)
