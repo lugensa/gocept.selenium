@@ -109,6 +109,10 @@ class Selenese(object):
         self.selenium.do_command("open", [url, ignoreResponseCode])
 
     @passthrough
+    def selectWindow(self, name):
+        pass
+
+    @passthrough
     def addCustomRequestHeader(self, key, value):
         pass
 
@@ -405,6 +409,18 @@ class Selenese(object):
             raise self.failureException(
                 'No alert occured.')
         return self.selenium.get_alert()
+
+    @passthrough
+    def getAllWindowIds(self):
+        pass
+
+    @passthrough
+    def getAllWindowNames(self):
+        pass
+
+    @passthrough
+    def getAllWindowTitles(self):
+        pass
 
     @assert_type('locator_pattern')
     @passthrough

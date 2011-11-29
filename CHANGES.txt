@@ -4,7 +4,7 @@ Changes
 0.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- API expansion: added ``getAllWindow*`` and ``selectWindow``.
 
 
 0.11 (2011-09-15)
@@ -55,7 +55,7 @@ Changes
 ----------------
 
 - Fixed tests for the StaticFilesLayer to pass with Python 2.4 through 2.7.
-- API expandsion: ``getSelectOptions``
+- API expansion: ``getSelectOptions``
 
 
 0.7 (2010-08-16)
