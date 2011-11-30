@@ -4,7 +4,8 @@ Changes
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added a selenese assert type 'list' and added it to the window management
+  query methods.
 
 
 0.12 (2011-11-29)
