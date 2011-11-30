@@ -109,10 +109,6 @@ class Selenese(object):
         self.selenium.do_command("open", [url, ignoreResponseCode])
 
     @passthrough
-    def selectWindow(self, name):
-        pass
-
-    @passthrough
     def addCustomRequestHeader(self, key, value):
         pass
 
@@ -305,6 +301,10 @@ class Selenese(object):
     def mouseUpRightAt(self, locator, coord):
         pass
 
+    @passthrough
+    def openWindow(self, url, window_id):
+        pass
+
     def refresh(self):
         # No thanks to selenium... why would one ever *not* want to wait for
         # the page to load?
@@ -333,6 +333,10 @@ class Selenese(object):
 
     @passthrough
     def selectFrame(self):
+        pass
+
+    @passthrough
+    def selectWindow(self, window_id):
         pass
 
     @passthrough

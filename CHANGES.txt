@@ -7,6 +7,8 @@ Changes
 - Added a selenese assert type 'list' and added it to the window management
   query methods.
 
+- API expansion: added ``openWindow``.
+
 
 0.12 (2011-11-29)
 -----------------
