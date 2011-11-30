@@ -410,14 +410,17 @@ class Selenese(object):
                 'No alert occured.')
         return self.selenium.get_alert()
 
+    @assert_type('list')
     @passthrough
     def getAllWindowIds(self):
         pass
 
+    @assert_type('list')
     @passthrough
     def getAllWindowNames(self):
         pass
 
+    @assert_type('list')
     @passthrough
     def getAllWindowTitles(self):
         pass
@@ -685,6 +688,9 @@ class Selenese(object):
         elif getter.assert_type == 'locator_pattern':
             return lambda locator, pattern: self._assert_pattern(
                 getter, requested_name, pattern, locator)
+        elif getter.assert_type == 'list':
+            return lambda expected: self._assert_list(
+                getter, requested_name, expected)
         elif getter.assert_type is None:
             return lambda: self._assert(getter, requested_name)
         else:
@@ -704,6 +710,31 @@ class Selenese(object):
             raise self.failureException(
                 'Expected: %r, got: %r from %s' %
                 (pattern, result, self._call_repr(name, *args)))
+
+    def _assert_list(self, getter, name, expected):
+        result = getter()
+        if expected != result:
+            detail = ''
+            if len(expected) != len(result):
+                detail += ('Expected %s items, got %s items.\n' %
+                           (len(expected), len(result)))
+            if len(expected) < len(result):
+                detail += ('First extra element: %r\n\n' %
+                           (result[len(expected)],))
+            elif len(expected) > len(result):
+                detail += ('First missing element: %r\n\n' %
+                           (expected[len(result)],))
+            else:
+                for i, x in enumerate(expected):
+                    if x != result[i]:
+                        detail += (
+                            'First differing list item at index %s:\n'
+                            '- %r\n+ %r\n\n' % (i, x, result[i]))
+                        break
+            raise self.failureException(
+                detail + ('Expected: %s,\ngot: %s\nfrom %s' % (
+                        abbrev_repr(expected), abbrev_repr(result),
+                        self._call_repr(name))))
 
     def _negate(self, assertion, name, *args, **kw):
         try:
@@ -778,3 +809,10 @@ def selenese_pattern_equals(text, pattern):
         except KeyError:
             pass
     return matcher(text, pattern)
+
+
+def abbrev_repr(x, size=70):
+    r = repr(x)
+    if len(r) > size:
+        r = r[:size-3] + '...'
+    return r
