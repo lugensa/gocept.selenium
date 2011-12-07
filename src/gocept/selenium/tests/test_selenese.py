@@ -262,3 +262,45 @@ class PopUpTest(HTMLTestCase):
                           self.selenium.verifyElementPresent, 'css=div#popup')
         self.selenium.deselectPopUp()
         self.selenium.verifyElementPresent('css=div#parent')
+
+
+class WindowManagementTest(HTMLTestCase):
+
+    def tearDown(self):
+        for name in self.selenium.getAllWindowNames():
+            if name == u'selenium_main_app_window':
+                continue
+            self.selenium.selectWindow('name=%s' % name)
+            self.selenium.close()
+        self.selenium.selectWindow(u'null')
+
+    def test_selenium_starts_out_with_one_window_listed(self):
+        self.selenium.assertAllWindowNames([u'selenium_main_app_window'])
+        self.selenium.assertEval('window.name', u'selenium_main_app_window')
+
+    def test_opening_new_window_adds_new_id(self):
+        self.selenium.openWindow('', 'foo')
+        self.selenium.assertAllWindowNames(
+            [u'selenium_main_app_window', u'foo'])
+
+    def test_newly_opened_window_needs_to_be_selected(self):
+        self.selenium.openWindow('', 'foo')
+        self.selenium.assertEval('window.name', u'selenium_main_app_window')
+        self.selenium.selectWindow('foo')
+        self.selenium.assertEval('window.name', u'foo')
+
+    def test_open_blank_window(self):
+        self.selenium.openWindow('', '_blank')
+        names = self.selenium.getAllWindowNames()
+        self.assertEqual(2, len(names))
+        self.assertEqual(u'selenium_main_app_window', names[0])
+        self.assertTrue(names[1].startswith('selenium_blank'))
+
+    def test_selecting_null_selects_main_window(self):
+        self.selenium.openWindow('', 'foo')
+        self.selenium.selectWindow('foo')
+        self.selenium.selectWindow(u'null')
+        self.selenium.assertEval('window.name', u'selenium_main_app_window')
+
+    def test_new_window_cannot_have_name_null(self):
+        self.assertRaises(ValueError, self.selenium.openWindow, '', 'null')
