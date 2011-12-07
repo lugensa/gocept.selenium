@@ -301,9 +301,11 @@ class Selenese(object):
     def mouseUpRightAt(self, locator, coord):
         pass
 
-    @passthrough
     def openWindow(self, url, window_id):
-        pass
+        if window_id == 'null':
+            raise ValueError("Cannot name a window 'null' "
+                             "as this name is used be Selenium internally.")
+        return self.selenium.open_window(url, window_id)
 
     def refresh(self):
         # No thanks to selenium... why would one ever *not* want to wait for
@@ -420,9 +422,9 @@ class Selenese(object):
         pass
 
     @assert_type('list')
-    @passthrough
     def getAllWindowNames(self):
-        pass
+        return [name for name in self.selenium.get_all_window_names()
+                if name != 'null']
 
     @assert_type('list')
     @passthrough
