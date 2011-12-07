@@ -9,6 +9,9 @@ Changes
 
 - API expansion: added ``openWindow``.
 
+- backwards-compatible API change: ``selectWindow`` now selects the main
+  window also when passed the window id ``None`` or no argument at all.
+
 
 0.12 (2011-11-29)
 -----------------

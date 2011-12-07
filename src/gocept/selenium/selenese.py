@@ -337,9 +337,8 @@ class Selenese(object):
     def selectFrame(self):
         pass
 
-    @passthrough
-    def selectWindow(self, window_id):
-        pass
+    def selectWindow(self, window_id=None):
+        return self.selenium.select_window(window_id or 'null')
 
     @passthrough
     def submit(self, locator):

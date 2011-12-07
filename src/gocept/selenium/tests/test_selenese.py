@@ -302,5 +302,17 @@ class WindowManagementTest(HTMLTestCase):
         self.selenium.selectWindow(u'null')
         self.selenium.assertEval('window.name', u'selenium_main_app_window')
 
+    def test_selecting_none_selects_main_window(self):
+        self.selenium.openWindow('', 'foo')
+        self.selenium.selectWindow('foo')
+        self.selenium.selectWindow(None)
+        self.selenium.assertEval('window.name', u'selenium_main_app_window')
+
+    def test_select_without_arg_selects_main_window(self):
+        self.selenium.openWindow('', 'foo')
+        self.selenium.selectWindow('foo')
+        self.selenium.selectWindow()
+        self.selenium.assertEval('window.name', u'selenium_main_app_window')
+
     def test_new_window_cannot_have_name_null(self):
         self.assertRaises(ValueError, self.selenium.openWindow, '', 'null')
