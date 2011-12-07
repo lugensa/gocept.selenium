@@ -9,6 +9,8 @@ Changes
 
 - API expansion: added ``openWindow``.
 
+- API change: filter the result of ``getAllWindowNames`` to ignore 'null'.
+
 - backwards-compatible API change: ``selectWindow`` now selects the main
   window also when passed the window id ``None`` or no argument at all.
 
