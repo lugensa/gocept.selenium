@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2010-2011 Zope Foundation and Contributors.
+# Copyright (c) 2010-2012 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -36,16 +36,17 @@ class TestStaticFilesTestCase(unittest.TestCase):
         self.assertEqual(
             ['foo.txt'], os.listdir(self.testlayer.documentroot))
 
-    def test_documentroot_empty_after_testsetup(self):
+    def test_documentroot_empty_except_for_favicon_after_testsetup(self):
         documentroot = self.testlayer.documentroot
         self.assertEqual([], os.listdir(self.testlayer.documentroot))
         open(os.path.join(documentroot, 'bar.txt'), 'w').write('Hello World!')
         self.assertEqual(
             ['bar.txt'], os.listdir(self.testlayer.documentroot))
         self.testlayer.testSetUp()
-        self.assertEqual([], os.listdir(self.testlayer.documentroot))
+        self.assertEqual(
+            ['favicon.ico'], os.listdir(self.testlayer.documentroot))
 
     def test_server_startup_shutdown(self):
         self.assertTrue(self.testlayer.server_thread.isAlive())
         self.testlayer.stop_server()
-        self.assertIsNone(self.testlayer.server)
+        self.assertTrue(self.testlayer.server is None)
