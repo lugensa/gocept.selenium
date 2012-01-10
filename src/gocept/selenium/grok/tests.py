@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2010 Zope Foundation and Contributors.
+# Copyright (c) 2010-2012 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -33,7 +33,7 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
 
     def test_grok_layer(self):
         layer = self.layer
-        self.assertTrue(layer.thread.is_alive())
+        self.assertTrue(layer.thread.isAlive())
 
     def test_grok_app(self):
         self.selenium.open('/app')
