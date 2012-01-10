@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Copyright (c) 2010 Zope Foundation and Contributors.
+# Copyright (c) 2010-2012 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -54,7 +54,9 @@ class Layer(gocept.selenium.base.Layer):
 
     def tearDown(self):
         self.http.shutdown()
-        self.thread.join()
+        self.thread.join(5)
+        if not self.thread.isAlive():
+            raise RuntimeError('WSGI server could not be shut down')
         # Make the server really go away and give up the socket:
         self.http = None
         super(Layer, self).tearDown()
