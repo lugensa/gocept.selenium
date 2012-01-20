@@ -49,4 +49,4 @@ class TestStaticFilesTestCase(unittest.TestCase):
     def test_server_startup_shutdown(self):
         self.assertTrue(self.testlayer.server_thread.isAlive())
         self.testlayer.stop_server()
-        self.assertTrue(self.testlayer.server is None)
+        self.assertFalse(self.testlayer.server)
