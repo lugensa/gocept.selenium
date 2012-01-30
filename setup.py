@@ -18,7 +18,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='gocept.selenium',
-    version='0.13dev',
+    version='0.13',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     url='http://packages.python.org/gocept.selenium',
