@@ -14,6 +14,10 @@ Changes
 - backwards-compatible API change: ``selectWindow`` now selects the main
   window also when passed the window id ``None`` or no argument at all.
 
+- pinned compatible ZTK version to 1.0.1, grok version to 1.2.1, generally
+  pinned all software packages used to consistent versions for this package's
+  own testing
+
 
 0.12 (2011-11-29)
 -----------------
