@@ -4,7 +4,7 @@ Changes
 0.14 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Updated URL of bug tracker.
 
 
 0.13 (2012-01-30)

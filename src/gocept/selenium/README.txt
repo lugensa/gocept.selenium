@@ -276,7 +276,7 @@ zc.selenium -- integrates Selenium Core with zope.testing.
 Development
 -----------
 
-Report bugs at <https://intra.gocept.com/projects/projects/gocept-selenium/issues>.
+Report bugs at <https://projects.gocept.com/projects/gocept-selenium/issues>.
 
 Get the latest source with ::
 
