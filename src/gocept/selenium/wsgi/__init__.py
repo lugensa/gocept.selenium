@@ -55,7 +55,7 @@ class Layer(gocept.selenium.base.Layer):
     def tearDown(self):
         self.http.shutdown()
         self.thread.join(5)
-        if not self.thread.isAlive():
+        if self.thread.isAlive():
             raise RuntimeError('WSGI server could not be shut down')
         # Make the server really go away and give up the socket:
         self.http = None

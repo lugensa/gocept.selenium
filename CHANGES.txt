@@ -1,10 +1,11 @@
 Changes
 =======
 
-0.13.2 (unreleased)
+0.13.2 (2012-03-15)
 -------------------
 
-- Nothing changed yet.
+- Fixed WSGI flavor: There was a ``RuntimeError`` in tear down if the WSGI
+  server was shut down correctly.
 
 
 0.13.1 (2012-03-15)
