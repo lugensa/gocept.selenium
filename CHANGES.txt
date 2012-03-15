@@ -6,7 +6,7 @@ Changes
 
 - Updated URL of bug tracker.
 
-- `scripts` extra no longer requires `elementtree` on Python >= 2.5.
+- `script` extra no longer requires `elementtree` on Python >= 2.5.
 
 
 0.13 (2012-01-30)
