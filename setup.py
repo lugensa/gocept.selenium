@@ -16,6 +16,14 @@ import os.path
 from setuptools import setup, find_packages
 
 
+script_requirements = []
+try:
+    import xml.etree
+except ImportError:
+    # Python < 2.5
+    script_requirements.append('elementtree')
+
+
 setup(
     name='gocept.selenium',
     version='0.14dev',
@@ -80,9 +88,7 @@ setup(
             'PILwoTK',
             'plone.app.testing',
             ],
-        script=[
-            'elementtree',
-            ],
+        script=script_requirements,
         test_script=[
             'mock',
             ],
