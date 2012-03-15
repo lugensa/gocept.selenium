@@ -6,9 +6,14 @@ Convert HTML selenium tests to gocept.selenium based test cases.
 import re
 import os
 import glob
-from elementtree import HTMLTreeBuilder
 from string import Template
 from optparse import OptionParser
+try:
+    from xml.etree import ElementTree as HTMLTreeBuilder
+except ImportError:
+    # Python < 2.5
+    from elementtree import HTMLTreeBuilder
+
 
 module_template = Template('''\
 import unittest
