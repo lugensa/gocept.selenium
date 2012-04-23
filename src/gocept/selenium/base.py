@@ -52,10 +52,13 @@ class Layer(object):
             self.seleniumrc.quit()
 
     def setUp(self):
+        profile = selenium.webdriver.firefox.firefox_profile.FirefoxProfile(
+            '/home/wosc/.mozilla/firefox/selenium')
         try:
             self.seleniumrc = selenium.webdriver.Remote(
                 'http://%s:%s/wd/hub' % (self._server, self._port),
-                desired_capabilities=dict(browserName=self._browser))
+                desired_capabilities=dict(browserName=self._browser),
+                browser_profile=profile)
         except socket.error, e:
             raise socket.error(
                 'Failed to connect to Selenium server at %s:%s,'
