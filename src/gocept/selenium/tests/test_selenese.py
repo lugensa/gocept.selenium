@@ -14,6 +14,8 @@
 
 from gocept.selenium.selenese import camelcase_to_underscore
 from gocept.selenium.selenese import selenese_pattern_equals as match
+from gocept.selenium.selenese import split_locator
+from selenium.webdriver.common.by import By
 import glob
 import gocept.selenium.selenese
 import gocept.selenium.static
@@ -58,6 +60,27 @@ class PatternTest(unittest.TestCase):
     def test_multiline_strings(self):
         self.assert_(match('foo\nbar', 'glob:foo*'))
         self.assert_(match('foo\nbar', 'regex:^foo.*$'))
+
+
+class SplitLocatorTest(unittest.TestCase):
+
+    def test_equal_sign_is_split_into_by(self):
+        self.assertEqual((By.ID, 'foo'), split_locator('identifier=foo'))
+        self.assertEqual((By.ID, 'foo'), split_locator('id=foo'))
+        self.assertEqual((By.NAME, 'foo'), split_locator('name=foo'))
+        self.assertEqual((By.XPATH, 'foo'), split_locator('xpath=foo'))
+        self.assertEqual(
+            (By.PARTIAL_LINK_TEXT, 'foo'), split_locator('link=foo'))
+        self.assertEqual((By.CSS_SELECTOR, 'foo'), split_locator('css=foo'))
+
+    def test_prefix_document_yields_dom(self):
+        pass # nyi
+
+    def test_prefix_slashes_yields_xpath(self):
+        self.assertEqual((By.XPATH, '//foo'), split_locator('//foo'))
+
+    def test_no_prefix_yields_id(self):
+        self.assertEqual((By.ID, 'foo'), split_locator('foo'))
 
 
 class UtilsTest(unittest.TestCase):
