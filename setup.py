@@ -42,7 +42,7 @@ setup(
     license='ZPL 2.1',
     namespace_packages=['gocept'],
     install_requires=[
-        'selenium',
+        'selenium >= 2.0',
         'setuptools',
         ],
     extras_require=dict(

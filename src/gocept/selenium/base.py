@@ -15,7 +15,7 @@
 import atexit
 import gocept.selenium.selenese
 import os
-import selenium
+import selenium.webdriver
 import socket
 import sys
 
@@ -32,7 +32,7 @@ class Layer(object):
     _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
     _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
-    _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', '*firefox')
+    _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', 'firefox')
 
     # hostname and port of the local application.
     host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
@@ -48,27 +48,28 @@ class Layer(object):
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
-        if self.seleniumrc.sessionId is not None:
-            self.seleniumrc.stop()
+        if self.seleniumrc.session_id is not None:
+            self.seleniumrc.quit()
 
     def setUp(self):
-        self.seleniumrc = selenium.selenium(
-            self._server, self._port, self._browser,
-            'http://%s:%s/' % (self.host, self.port))
         try:
-            self.seleniumrc.start()
+            self.seleniumrc = selenium.webdriver.Remote(
+                'http://%s:%s/wd/hub' % (self._server, self._port),
+                desired_capabilities=dict(browserName=self._browser))
         except socket.error, e:
             raise socket.error(
-                'Failed to connect to Selenium RC server at %s:%s,'
+                'Failed to connect to Selenium server at %s:%s,'
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
         atexit.register(self._stop_selenium)
-        speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
-        if speed is not None:
-            self.seleniumrc.set_speed(speed)
 
     def tearDown(self):
-        self.seleniumrc.stop()
+        self.seleniumrc.quit()
+        # XXX upstream bug, quit should reset session_id
+        self.seleniumrc.session_id = None
+        speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
+        if speed is not None:
+            self.seleniumrc.setSpeed(speed)
 
     def testSetUp(self):
         # instantiate a fresh one per test run, so any configuration
@@ -90,8 +91,3 @@ class TestCase(object):
     @property
     def selenium(self):
         return self.layer.selenium
-
-    def setUp(self):
-        super(TestCase, self).setUp()
-        self.selenium.setContext('%s.%s' % (
-            self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
