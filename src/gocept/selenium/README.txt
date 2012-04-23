@@ -280,5 +280,5 @@ Report bugs at <https://projects.gocept.com/projects/gocept-selenium/issues>.
 
 Get the latest source with ::
 
-  svn co http://svn.zope.org/repos/main/gocept.selenium/trunk gocept.selenium
+  hg clone https://code.gocept.com/hg/public/gocept.selenium
 
