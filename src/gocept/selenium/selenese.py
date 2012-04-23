@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import re
 import selenium.common.exceptions
@@ -164,9 +165,10 @@ class Selenese(object):
     def deselectPopUp(self):
         pass
 
-    @passthrough
     def dragAndDropToObject(self, locatorSource, locatorDestination):
-        pass
+        ActionChains(self.selenium).drag_and_drop(
+            self._find(locatorSource), self._find(locatorDestination)
+            ).perform()
 
     @passthrough
     def dragAndDrop(self, locator, movement):
@@ -176,9 +178,8 @@ class Selenese(object):
     def check(self, locator):
         pass
 
-    @passthrough
     def click(self, locator):
-        pass
+        self._find(locator).click()
 
     def clickAndWait(self, locator):
         self.click(locator)
@@ -280,13 +281,20 @@ class Selenese(object):
     def mouseMoveAt(self, locator, coord):
         pass
 
-    @passthrough
     def mouseOut(self, locator):
-        pass
+        OFFSET = 10
+        element = self._find(locator)
+        width = element.size['width']
+        height = element.size['height']
+        ActionChains(self.selenium).move_to_element_with_offset(
+            element, width + OFFSET, height + OFFSET).perform()
 
-    @passthrough
     def mouseOver(self, locator):
-        pass
+        element = self._find(locator)
+        width = element.size['width']
+        height = element.size['height']
+        ActionChains(self.selenium).move_to_element_with_offset(
+            element, width / 2, height / 2).perform()
 
     @passthrough
     def mouseUp(self, locator):
@@ -381,9 +389,9 @@ class Selenese(object):
     def shiftKeyUp(self):
         pass
 
-    @passthrough
-    def type(self):
-        pass
+    def type(self, locator, value):
+        element = self._find(locator)
+        element.send_keys(value)
 
     @passthrough
     def typeKeys(self):
@@ -405,9 +413,8 @@ class Selenese(object):
     def windowFocus(self):
         pass
 
-    @passthrough
     def windowMaximize(self):
-        pass
+        self.selenium.maximize_window()
 
     # Getter
 
@@ -466,12 +473,11 @@ class Selenese(object):
         pass
 
     @assert_type('locator_pattern')
-    @passthrough
     def getEval(self, script):
         # Note: we use the locator_pattern because the script acts like a
         # locator: we pass it through and Selenium returns a result we can
         # compare with the pattern.
-        pass
+        return self.selenium.execute_script(script)
 
     @assert_type('pattern')
     @passthrough
@@ -545,9 +551,8 @@ class Selenese(object):
         pass
 
     @assert_type('locator_pattern')
-    @passthrough
     def getText(self, locator):
-        pass
+        return self._find(locator).text
 
     @assert_type('locator_pattern')
     @passthrough
@@ -555,9 +560,9 @@ class Selenese(object):
         pass
 
     @assert_type('locator_pattern')
-    @passthrough
     def getValue(self, locator):
-        pass
+        element = self._find(locator)
+        return element.get_attribute('value')
 
     @assert_type(None)
     @passthrough
@@ -572,16 +577,16 @@ class Selenese(object):
     @assert_type('locator')
     def isElementPresent(self, locator):
         try:
-            self.selenium.find_element(*split_locator(locator))
+            self._find(locator)
         except selenium.common.exceptions.NoSuchElementException:
             return False
         else:
             return True
 
     @assert_type('locator')
-    @passthrough
     def isVisible(self, locator):
-        pass
+        element = self._find(locator)
+        return element.is_displayed()
 
     @assert_type('locator')
     @passthrough
@@ -599,9 +604,9 @@ class Selenese(object):
     def getExpression(self, expression):
         pass
 
-    @passthrough
     def isTextPresent(self, pattern):
-        pass
+        body = self.selenium.find_element(By.TAG_NAME, 'body')
+        return pattern in body.text
 
     @assert_type('pattern')
     @passthrough
@@ -620,8 +625,8 @@ class Selenese(object):
         return self.assertEval(condition, 'exact:true')
 
     def assertXpathCount(self, xpath, count):
-        result = self.selenium.get_xpath_count(xpath)
-        if int(result) != int(count):
+        result = self.selenium.find_elements(By.XPATH, xpath)
+        if len(result) != int(count):
             raise self.failureException(
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, result, count))
@@ -645,6 +650,9 @@ class Selenese(object):
                 'Height of %r is %r, expected %r.' % (locator, got, height))
 
     # Internal
+
+    def _find(self, locator):
+        return self.selenium.find_element(*split_locator(locator))
 
     def __getattr__(self, name):
         requested_name = name
