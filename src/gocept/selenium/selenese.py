@@ -12,7 +12,9 @@
 #
 ##############################################################################
 
+from selenium.webdriver.common.by import By
 import re
+import selenium.common.exceptions
 import time
 import urlparse
 
@@ -568,9 +570,13 @@ class Selenese(object):
         pass
 
     @assert_type('locator')
-    @passthrough
     def isElementPresent(self, locator):
-        pass
+        try:
+            self.selenium.find_element(*split_locator(locator))
+        except selenium.common.exceptions.NoSuchElementException:
+            return False
+        else:
+            return True
 
     @assert_type('locator')
     @passthrough
@@ -822,3 +828,30 @@ def abbrev_repr(x, size=70):
     if len(r) > size:
         r = r[:size-3] + '...'
     return r
+
+
+by_map = {
+    'identifier': By.ID,
+    'id': By.ID,
+    'name': By.NAME,
+    'xpath': By.XPATH,
+    'link': By.PARTIAL_LINK_TEXT,
+    'css': By.CSS_SELECTOR,
+    }
+
+
+def split_locator(locator):
+    if locator.startswith('//'):
+        by = By.XPATH
+        value = locator
+    elif locator.startswith('document'):
+        pass
+    elif '=' in locator:
+        # XXX what about '=' in the value
+        by, value = locator.split('=', 1)
+        by = by_map[by]
+    else:
+        by = By.ID
+        value = locator
+
+    return by, value
