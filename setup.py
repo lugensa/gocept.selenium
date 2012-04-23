@@ -30,8 +30,7 @@ setup(
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     url='http://packages.python.org/gocept.selenium',
-    description='zope.testing layer that integrates Selenium-RC for '
-                'any WSGI, Zope 2, Plone, ZTK, or grok application.',
+    description='Test-friendly Python API for Selenium and integration with web application frameworks.',
     long_description=(
         open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
         '\n\n' +
