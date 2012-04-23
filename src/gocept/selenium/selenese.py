@@ -14,6 +14,7 @@
 
 import re
 import time
+import urlparse
 
 
 def camelcase_to_underscore(name):
@@ -105,8 +106,8 @@ class Selenese(object):
         self.selenium.wait_for_pop_up(windowID, timeout)
         self.selenium.select_pop_up(windowID)
 
-    def open(self, url, ignoreResponseCode=True):
-        self.selenium.do_command("open", [url, ignoreResponseCode])
+    def open(self, url):
+        self.selenium.get(urlparse.urljoin('http://' + self.server, url))
 
     @passthrough
     def addCustomRequestHeader(self, key, value):
