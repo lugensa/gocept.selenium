@@ -14,6 +14,7 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 import re
 import selenium.common.exceptions
 import time
@@ -340,9 +341,10 @@ class Selenese(object):
     def retrieveLastRemoteControlLogs(self):
         pass
 
-    @passthrough
     def select(self, locator, optionLocator):
-        pass
+        element = self._find(locator)
+        method, option = split_option_locator(optionLocator)
+        getattr(Select(element), method)(option)
 
     @passthrough
     def selectFrame(self):
@@ -863,3 +865,17 @@ def split_locator(locator):
         value = locator
 
     return by, value
+
+
+def split_option_locator(option_locator):
+    method, sep, option = option_locator.partition('=')
+    if not option:
+        return 'select_by_visible_text', option_locator
+    method = {
+        'label': 'select_by_visible_text',
+        'value': 'select_by_value',
+        'index': 'select_by_index',
+        }.get(method)
+    if not method:
+        return 'select_by_visible_text', option_locator
+    return method, option
