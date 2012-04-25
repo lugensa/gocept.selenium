@@ -14,7 +14,7 @@
 
 from gocept.selenium.selenese import camelcase_to_underscore
 from gocept.selenium.selenese import selenese_pattern_equals as match
-from gocept.selenium.selenese import split_locator
+from gocept.selenium.selenese import split_locator, split_option_locator
 from selenium.webdriver.common.by import By
 import glob
 import gocept.selenium.selenese
@@ -81,6 +81,27 @@ class SplitLocatorTest(unittest.TestCase):
 
     def test_no_prefix_yields_id(self):
         self.assertEqual((By.ID, 'foo'), split_locator('foo'))
+
+
+class SplitOptionLocatorTest(unittest.TestCase):
+
+    def test_equal_sign_is_split_into_method(self):
+        self.assertEqual(('select_by_visible_text', 'foo'),
+                         split_option_locator('label=foo'))
+        self.assertEqual(('select_by_value', 'foo'),
+                         split_option_locator('value=foo'))
+        # self.assertEqual(('select_by_???', 'foo'),
+        #                  split_option_locator('id=foo'))  # nyi
+        self.assertEqual(('select_by_index', 'foo'),
+                         split_option_locator('index=foo'))
+
+    def test_no_prefix_yields_label(self):
+        self.assertEqual(('select_by_visible_text', 'foo'),
+                         split_option_locator('foo'))
+
+    def test_invalid_prefix_yields_label(self):
+        self.assertEqual(('select_by_visible_text', 'bar=foo'),
+                         split_option_locator('bar=foo'))
 
 
 class UtilsTest(unittest.TestCase):
