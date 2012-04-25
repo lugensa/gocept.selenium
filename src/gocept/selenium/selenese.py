@@ -840,29 +840,25 @@ def abbrev_repr(x, size=70):
     return r
 
 
-by_map = {
-    'identifier': By.ID,
-    'id': By.ID,
-    'name': By.NAME,
-    'xpath': By.XPATH,
-    'link': By.PARTIAL_LINK_TEXT,
-    'css': By.CSS_SELECTOR,
-    }
-
-
 def split_locator(locator):
     if locator.startswith('//'):
-        by = By.XPATH
-        value = locator
-    elif locator.startswith('document'):
+        return By.XPATH, locator
+    if locator.startswith('document'):
         pass
-    elif '=' in locator:
-        # XXX what about '=' in the value
-        by, value = locator.split('=', 1)
-        by = by_map[by]
-    else:
-        by = By.ID
-        value = locator
+
+    by, sep, value = locator.partition('=')
+    if not value:
+        return By.ID, locator
+    by = {
+        'identifier': By.ID,
+        'id': By.ID,
+        'name': By.NAME,
+        'xpath': By.XPATH,
+        'link': By.PARTIAL_LINK_TEXT,
+        'css': By.CSS_SELECTOR,
+        }.get(by)
+    if not by:
+        return By.ID, locator
 
     return by, value
 
