@@ -82,6 +82,9 @@ class SplitLocatorTest(unittest.TestCase):
     def test_no_prefix_yields_id(self):
         self.assertEqual((By.ID, 'foo'), split_locator('foo'))
 
+    def test_invalid_prefix_yields_id(self):
+        self.assertEqual((By.ID, 'bar=foo'), split_locator('bar=foo'))
+
 
 class SplitOptionLocatorTest(unittest.TestCase):
 
