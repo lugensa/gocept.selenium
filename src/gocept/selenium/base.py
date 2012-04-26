@@ -13,11 +13,14 @@
 ##############################################################################
 
 import atexit
+import glob
 import gocept.selenium.selenese
 import os
 import selenium.webdriver
+import shutil
 import socket
 import sys
+import tempfile
 
 
 if sys.version_info < (2, 5):
@@ -51,14 +54,26 @@ class Layer(object):
         if self.seleniumrc.session_id is not None:
             self.seleniumrc.quit()
 
+        shutil.rmtree(os.path.dirname(self.profile.profile_dir))
+
+        # XXX The following is to hack around
+        # <http://code.google.com/p/selenium/issues/detail?id=1934>. The
+        # work-around conflicts with a scenario of multiple tests running in
+        # parallel, such as on a CI server.
+        for path in glob.glob(tempfile.gettempdir() + '/webdriver*duplicated'):
+            try:
+                shutil.rmtree(path)
+            except OSError:
+                pass
+
     def setUp(self):
-        profile = selenium.webdriver.firefox.firefox_profile.FirefoxProfile(
-            '/home/wosc/.mozilla/firefox/selenium')
+        self.profile = selenium.webdriver.firefox.firefox_profile.\
+            FirefoxProfile('/home/thomas/.mozilla/firefox/0ozlex42.Selenium')
         try:
             self.seleniumrc = selenium.webdriver.Remote(
                 'http://%s:%s/wd/hub' % (self._server, self._port),
                 desired_capabilities=dict(browserName=self._browser),
-                browser_profile=profile)
+                browser_profile=self.profile)
         except socket.error, e:
             raise socket.error(
                 'Failed to connect to Selenium server at %s:%s,'
@@ -67,7 +82,7 @@ class Layer(object):
         atexit.register(self._stop_selenium)
 
     def tearDown(self):
-        self.seleniumrc.quit()
+        self._stop_selenium()
         # XXX upstream bug, quit should reset session_id
         self.seleniumrc.session_id = None
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
