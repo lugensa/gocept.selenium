@@ -94,7 +94,6 @@ class Selenese(object):
         self.timeout = timeout / 1000.0
 
     def waitForPageToLoad(self):
-        self.selenium.wait_for_page_to_load(self.timeout * 1000)
         self.waitForElementPresent('css=body')
 
     def waitForPopUp(self, windowID=''):
@@ -477,7 +476,10 @@ class Selenese(object):
         # Note: we use the locator_pattern because the script acts like a
         # locator: we pass it through and Selenium returns a result we can
         # compare with the pattern.
-        return self.selenium.execute_script(script)
+        #
+        # BBB We should be glad to get typed values out of webdriver's eval
+        # but currently we try to keep gocept.selenium's API stable.
+        return str(self.selenium.execute_script(script))
 
     @assert_type('pattern')
     @passthrough
@@ -492,9 +494,10 @@ class Selenese(object):
         return self.selenium.get_prompt()
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedLabel(self, locator):
-        pass
+        element = self._find(locator)
+        option = Select(element).first_selected_option
+        return option.text
 
     @assert_type('locator_pattern')
     @passthrough
@@ -609,9 +612,8 @@ class Selenese(object):
         return pattern in body.text
 
     @assert_type('pattern')
-    @passthrough
     def getLocation(self):
-        pass
+        return self.selenium.current_url
 
     # Assertions
 
