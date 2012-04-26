@@ -54,7 +54,7 @@ class Layer(object):
         if self.seleniumrc.session_id is not None:
             self.seleniumrc.quit()
 
-        shutil.rmtree(os.path.dirname(self.profile.profile_dir))
+        shutil.rmtree(self.profile.profile_dir)
 
         # XXX The following is to hack around
         # <http://code.google.com/p/selenium/issues/detail?id=1934>. The
