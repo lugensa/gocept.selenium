@@ -95,9 +95,7 @@ class Selenese(object):
 
     def waitForPageToLoad(self):
         self.selenium.wait_for_page_to_load(self.timeout * 1000)
-
-    def waitForFrameToLoad(self):
-        self.selenium.wait_for_frame_to_load(self.timeout * 1000)
+        self.waitForElementPresent('css=body')
 
     def waitForPopUp(self, windowID=''):
         self.selenium.wait_for_pop_up(windowID, self.timeout * 1000)
