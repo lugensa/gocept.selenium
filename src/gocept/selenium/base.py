@@ -16,6 +16,7 @@ import atexit
 import glob
 import gocept.selenium.selenese
 import os
+import os.path
 import selenium.webdriver
 import shutil
 import socket
@@ -51,10 +52,17 @@ class Layer(object):
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
-        if self.seleniumrc.session_id is not None:
-            self.seleniumrc.quit()
+        if self.seleniumrc.session_id is None:
+            return
+
+        self.seleniumrc.quit()
 
         shutil.rmtree(self.profile.profile_dir)
+        if os.path.dirname(self.profile.profile_dir) != tempfile.gettempdir():
+            try:
+                os.rmdir(os.path.dirname(self.profile.profile_dir))
+            except OSError:
+                pass
 
         # XXX The following is to hack around
         # <http://code.google.com/p/selenium/issues/detail?id=1934>. The
