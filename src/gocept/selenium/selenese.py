@@ -64,27 +64,7 @@ class Selenese(object):
     # Actions
 
     @passthrough
-    def addLocationStrategy(self, name, definition):
-        pass
-
-    @passthrough
-    def addScript(self, script):
-        pass
-
-    @passthrough
     def answerOnNextPrompt(self, answer):
-        pass
-
-    @passthrough
-    def assignId(self, locator, id):
-        pass
-
-    @passthrough
-    def allowNativeXpath(self, allow):
-        pass
-
-    @passthrough
-    def ignoreAttributesWithoutValue(self, ignore):
         pass
 
     def pause(self, milliseconds):
@@ -109,10 +89,6 @@ class Selenese(object):
 
     def open(self, url):
         self.selenium.get(urlparse.urljoin('http://' + self.server, url))
-
-    @passthrough
-    def addCustomRequestHeader(self, key, value):
-        pass
 
     @passthrough
     def addSelection(self, locator, optionLocator):
@@ -151,9 +127,8 @@ class Selenese(object):
     def createCookie(self, nameAndValue, options):
         pass
 
-    @passthrough
     def deleteCookie(self, name, options):
-        pass
+        self.selenium.delete_cookie(name)
 
     @passthrough
     def deleteAllVisibleCookies(self):
@@ -168,13 +143,13 @@ class Selenese(object):
             self._find(locatorSource), self._find(locatorDestination)
             ).perform()
 
-    @passthrough
     def dragAndDrop(self, locator, movement):
-        pass
+        x, y = movement.split(',')
+        ActionChains(self.selenium).drag_and_drop_by_offset(
+            self._find(locator), int(x), int(y)).perform()
 
-    @passthrough
     def check(self, locator):
-        pass
+        self.click(locator)
 
     def click(self, locator):
         self._find(locator).click()
@@ -183,9 +158,10 @@ class Selenese(object):
         self.click(locator)
         self.waitForPageToLoad()
 
-    @passthrough
     def clickAt(self, locator, coordString):
-        pass
+        x, y = coordString.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).click().perform()
 
     @passthrough
     def contextMenu(self, locator):
@@ -235,17 +211,17 @@ class Selenese(object):
     def highlight(self, locator):
         pass
 
-    @passthrough
     def keyDown(self, locator, keySequence):
-        pass
+        ActionChains(self.selenium).key_down(
+            keySequence, self._find(locator)).perform()
 
     @passthrough
     def keyPress(self, locator, keySequence):
         pass
 
-    @passthrough
     def keyUp(self, locator, keySequence):
-        pass
+        ActionChains(self.selenium).key_up(
+            keySequence, self._find(locator)).perform()
 
     @passthrough
     def metaKeyDown(self):
@@ -330,14 +306,6 @@ class Selenese(object):
     def removeSelection(self, locator, optionLocator):
         pass
 
-    @passthrough
-    def removeScript(self, id):
-        pass
-
-    @passthrough
-    def retrieveLastRemoteControlLogs(self):
-        pass
-
     def select(self, locator, optionLocator):
         element = self._find(locator)
         method, option = split_option_locator(optionLocator)
@@ -354,10 +322,6 @@ class Selenese(object):
     def submit(self, locator):
         pass
 
-    @passthrough
-    def setBrowserLogLevel(self, level):
-        pass
-
     def getSpeed(self):
         return int(self.selenium.get_speed())
 
@@ -370,10 +334,6 @@ class Selenese(object):
 
     @passthrough
     def setMouseSpeed(self, speed):
-        pass
-
-    @passthrough
-    def setContext(self, message):
         pass
 
     @passthrough
@@ -392,21 +352,15 @@ class Selenese(object):
         element = self._find(locator)
         element.send_keys(value)
 
-    @passthrough
-    def typeKeys(self):
-        pass
+    def typeKeys(self, locator, value):
+        element = self._find(locator)
+        element.send_keys(value)
 
-    @passthrough
     def runScript(self, script):
-        pass
+        return self.getEval(script)
 
-    @passthrough
     def uncheck(self, locator):
-        pass
-
-    @passthrough
-    def useXpathLibrary(self, name):
-        pass
+        self.click(locator)
 
     @passthrough
     def windowFocus(self):
@@ -419,10 +373,10 @@ class Selenese(object):
 
     @assert_type('pattern')
     def getAlert(self):
-        if not self.selenium.is_alert_present():
-            raise self.failureException(
-                'No alert occured.')
-        return self.selenium.get_alert()
+        alert = self.selenium.switch_to_alert()
+        text = alert.text
+        alert.dismiss()
+        return text
 
     @assert_type('list')
     @passthrough
@@ -440,14 +394,14 @@ class Selenese(object):
         pass
 
     @assert_type('locator_pattern')
-    @passthrough
     def getAttribute(self, locator):
-        pass
+        locator, sep, attribute_name = locator.partition('@')
+        element = self._find(locator)
+        return element.get_attribute(attribute_name)
 
     @assert_type('pattern')
-    @passthrough
     def getTitle(self):
-        pass
+        return self.selenium.title
 
     @assert_type('pattern')
     @passthrough
