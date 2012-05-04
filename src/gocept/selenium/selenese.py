@@ -147,7 +147,7 @@ class Selenese(object):
     def dragAndDrop(self, locator, movement):
         x, y = movement.split(',')
         ActionChains(self.selenium).drag_and_drop_by_offset(
-            self._find(locator), int(x), int(y)).perform()
+            self._find(locator), float(x), float(y)).perform()
 
     def check(self, locator):
         self.click(locator)
@@ -396,7 +396,7 @@ class Selenese(object):
 
     @assert_type('locator_pattern')
     def getAttribute(self, locator):
-        locator, sep, attribute_name = locator.partition('@')
+        locator, sep, attribute_name = locator.rpartition('@')
         element = self._find(locator)
         return element.get_attribute(attribute_name)
 
@@ -814,6 +814,10 @@ def split_locator(locator):
         }.get(by)
     if not by:
         return By.ID, locator
+
+    if by is By.PARTIAL_LINK_TEXT:
+        by = By.XPATH
+        value = '//a[contains(string(.), "%s")]' % value.strip('*')
 
     return by, value
 
