@@ -155,10 +155,6 @@ class Selenese(object):
     def click(self, locator):
         self._find(locator).click()
 
-    def clickAndWait(self, locator):
-        self.click(locator)
-        self.waitForPageToLoad()
-
     def clickAt(self, locator, coordString):
         x, y = coordString.split(',')
         ActionChains(self.selenium).move_to_element_with_offset(
@@ -552,10 +548,12 @@ class Selenese(object):
         pass
 
     def getElementWidth(self, locator):
-        return int(self.selenium.get_element_width(locator))
+        element = self._find(locator)
+        return element.size['width']
 
     def getElementHeight(self, locator):
-        return int(self.selenium.get_element_height(locator))
+        element = self._find(locator)
+        return element.size['height']
 
     @assert_type('locator_pattern')
     @passthrough
@@ -588,8 +586,11 @@ class Selenese(object):
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, result, count))
 
+    # XXX works only for relative xpath locators with Webdriver
     def assertOrdered(self, locator1, locator2):
-        if not self.selenium.is_ordered(locator1, locator2):
+        if self._find(locator2).id not in set(
+            x.id for x in self.selenium.find_elements_by_xpath(
+                locator1+'/following-sibling::*')):
             raise self.failureException(
                 'Element order did not match expected %r,%r'
                 % (locator1, locator2))
