@@ -15,6 +15,7 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+import json
 import re
 import selenium.common.exceptions
 import time
@@ -433,7 +434,7 @@ class Selenese(object):
         #
         # BBB We should be glad to get typed values out of webdriver's eval
         # but currently we try to keep gocept.selenium's API stable.
-        return str(self.selenium.execute_script(script))
+        return json.dumps(self.selenium.execute_script('return ' + script))
 
     @assert_type('pattern')
     @passthrough
