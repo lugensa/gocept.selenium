@@ -532,6 +532,8 @@ class Selenese(object):
     def isElementPresent(self, locator):
         try:
             self._find(locator)
+        except selenium.common.exceptions.InvalidSelectiorException:
+            raise
         except selenium.common.exceptions.NoSuchElementException:
             return False
         else:
