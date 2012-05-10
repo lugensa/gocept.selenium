@@ -184,9 +184,8 @@ class Selenese(object):
     def controlKeyUp(self):
         pass
 
-    @passthrough
     def doubleClick(self, locator):
-        pass
+        ActionChains(self.selenium).double_click(self._find(locator)).perform()
 
     @passthrough
     def doubleClickAt(self, locator, coordString):
