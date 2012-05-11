@@ -611,7 +611,13 @@ class Selenese(object):
     # Internal
 
     def _find(self, locator):
-        return self.selenium.find_element(*split_locator(locator))
+        by, value = split_locator(locator)
+        if by:
+            return self.selenium.find_element(by, value)
+        try:
+            return self.selenium.find_element(By.ID, locator)
+        except selenium.common.exceptions.NoSuchElementException:
+            return self.selenium.find_element(By.NAME, locator)
 
     def __getattr__(self, name):
         requested_name = name
@@ -805,7 +811,8 @@ def split_locator(locator):
 
     by, sep, value = locator.partition('=')
     if not value:
-        return By.ID, locator
+        return None, locator
+
     by = {
         'identifier': By.ID,
         'id': By.ID,
@@ -814,8 +821,6 @@ def split_locator(locator):
         'link': By.PARTIAL_LINK_TEXT,
         'css': By.CSS_SELECTOR,
         }.get(by)
-    if not by:
-        return By.ID, locator
 
     if by is By.PARTIAL_LINK_TEXT:
         by = By.XPATH
