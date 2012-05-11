@@ -494,9 +494,8 @@ class Selenese(object):
         pass
 
     @assert_type('locator')
-    @passthrough
     def isChecked(self, locator):
-        pass
+        return self._find(locator).get_attribute('checked')
 
     @assert_type('locator')
     @passthrough
