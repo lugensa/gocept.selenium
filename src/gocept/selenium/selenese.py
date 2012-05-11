@@ -584,7 +584,7 @@ class Selenese(object):
         if len(result) != int(count):
             raise self.failureException(
                 'Actual count of XPath %r is %s, expected %s'
-                % (xpath, result, count))
+                % (xpath, len(result), count))
 
     # XXX works only for relative xpath locators with Webdriver
     def assertOrdered(self, locator1, locator2):
