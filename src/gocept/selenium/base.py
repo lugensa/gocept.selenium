@@ -76,17 +76,14 @@ class Layer(object):
 
     def setUp(self):
         self.profile = selenium.webdriver.firefox.firefox_profile.\
-            FirefoxProfile('/home/thomas/.mozilla/firefox/0ozlex42.Selenium')
-        from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        fb = FirefoxBinary('/opt/firefox-11/firefox')
+            FirefoxProfile('/home/wosc/.mozilla/firefox/selenium11')
+        self.profile.native_events_enabled = True
+        self.profile.update_preferences()
         try:
-            # self.seleniumrc = selenium.webdriver.Remote(
-            #     'http://%s:%s/wd/hub' % (self._server, self._port),
-            #     desired_capabilities=dict(browserName=self._browser),
-            #     browser_profile=self.profile)
-            from selenium.webdriver import Firefox
-            self.profile.native_events_enabled = True
-            self.seleniumrc = Firefox(firefox_binary=fb, firefox_profile=self.profile)
+            self.seleniumrc = selenium.webdriver.Remote(
+                'http://%s:%s/wd/hub' % (self._server, self._port),
+                desired_capabilities=dict(browserName=self._browser),
+                browser_profile=self.profile)
         except socket.error, e:
             raise socket.error(
                 'Failed to connect to Selenium server at %s:%s,'
