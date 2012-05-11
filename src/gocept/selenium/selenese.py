@@ -353,7 +353,7 @@ class Selenese(object):
         element.send_keys(value)
 
     def runScript(self, script):
-        return self.getEval(script)
+        self.selenium.execute_script(script)
 
     def uncheck(self, locator):
         self.click(locator)
