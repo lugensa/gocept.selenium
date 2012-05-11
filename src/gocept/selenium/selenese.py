@@ -540,7 +540,7 @@ class Selenese(object):
     @assert_type('locator')
     def isVisible(self, locator):
         element = self._find(locator)
-        return element.is_displayed()
+        return element.value_of_css_property('display') != 'none'
 
     @assert_type('locator')
     @passthrough
