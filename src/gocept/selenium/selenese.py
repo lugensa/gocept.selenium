@@ -821,6 +821,8 @@ def split_locator(locator):
         'link': By.PARTIAL_LINK_TEXT,
         'css': By.CSS_SELECTOR,
         }.get(by)
+    if not by:
+        return None, locator
 
     if by is By.PARTIAL_LINK_TEXT:
         by = By.XPATH
