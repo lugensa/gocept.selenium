@@ -57,12 +57,12 @@ class Layer(object):
 
         self.seleniumrc.quit()
 
-        shutil.rmtree(self.profile.profile_dir)
-        if os.path.dirname(self.profile.profile_dir) != tempfile.gettempdir():
-            try:
-                os.rmdir(os.path.dirname(self.profile.profile_dir))
-            except OSError:
-                pass
+        # shutil.rmtree(self.profile.profile_dir)
+        # if os.path.dirname(self.profile.profile_dir) != tempfile.gettempdir():
+        #     try:
+        #         os.rmdir(os.path.dirname(self.profile.profile_dir))
+        #     except OSError:
+        #         pass
 
         # XXX The following is to hack around
         # <http://code.google.com/p/selenium/issues/detail?id=1934>. The
