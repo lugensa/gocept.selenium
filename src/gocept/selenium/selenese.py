@@ -343,7 +343,7 @@ class Selenese(object):
 
     def type(self, locator, value):
         element = self._find(locator)
-        element.send_keys(value + '\n')
+        element.send_keys(value)
 
     def typeKeys(self, locator, value):
         element = self._find(locator)
