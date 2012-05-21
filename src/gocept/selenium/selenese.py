@@ -260,11 +260,8 @@ class Selenese(object):
             element, width + OFFSET, height + OFFSET).perform()
 
     def mouseOver(self, locator):
-        element = self._find(locator)
-        width = element.size['width']
-        height = element.size['height']
-        ActionChains(self.selenium).move_to_element_with_offset(
-            element, width / 2, height / 2).perform()
+        ActionChains(self.selenium).move_to_element(
+            self._find(locator)).perform()
 
     @passthrough
     def mouseUp(self, locator):
