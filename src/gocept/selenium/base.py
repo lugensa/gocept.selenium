@@ -13,7 +13,6 @@
 ##############################################################################
 
 import atexit
-import glob
 import gocept.selenium.selenese
 import os
 import os.path
@@ -61,16 +60,6 @@ class Layer(object):
         if os.path.dirname(self.profile.profile_dir) != tempfile.gettempdir():
             try:
                 os.rmdir(os.path.dirname(self.profile.profile_dir))
-            except OSError:
-                pass
-
-        # XXX The following is to hack around
-        # <http://code.google.com/p/selenium/issues/detail?id=1934>. The
-        # work-around conflicts with a scenario of multiple tests running in
-        # parallel, such as on a CI server.
-        for path in glob.glob(tempfile.gettempdir() + '/webdriver*duplicated'):
-            try:
-                shutil.rmtree(path)
             except OSError:
                 pass
 
