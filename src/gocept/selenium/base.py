@@ -63,6 +63,14 @@ class Layer(object):
             except OSError:
                 pass
 
+        if not os.environ.get('GOCEPT_SELENIUM_KEEP_NATIVE_FF_EVENTS_LOG'):
+            native_ff_events_log = os.path.join(
+                tempfile.gettempdir(), 'native_ff_events_log')
+            try:
+                os.unlink(native_ff_events_log)
+            except OSError:
+                pass
+
     def setUp(self):
         self.profile = selenium.webdriver.firefox.firefox_profile.\
             FirefoxProfile(os.path.expanduser('~/.mozilla/firefox/selenium'))
