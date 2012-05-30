@@ -65,7 +65,7 @@ class Layer(object):
 
     def setUp(self):
         self.profile = selenium.webdriver.firefox.firefox_profile.\
-            FirefoxProfile('/home/wosc/.mozilla/firefox/selenium11')
+            FirefoxProfile(os.path.expanduser('~/.mozilla/firefox/selenium'))
         self.profile.native_events_enabled = True
         self.profile.update_preferences()
         try:
