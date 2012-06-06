@@ -6,6 +6,7 @@ Changes
 
 - API expansion: Added ``assertCssCount``. Thus requiring selenium_ >= 2.0.
 - Added Trove classifiers to package metadata.
+- Moved code to new repository, see Development_.
 
 .. _selenium : http://pypi.python.org/pypi/selenium
 
