@@ -26,7 +26,7 @@ except ImportError:
 
 setup(
     name='gocept.selenium',
-    version='0.14.0dev',
+    version='0.14',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     url='http://packages.python.org/gocept.selenium',
