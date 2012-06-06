@@ -1,10 +1,13 @@
 Changes
 =======
 
-0.13.3 (unreleased)
+0.14 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- API expansion: Added ``assertCssCount``. Thus requiring selenium_ >= 2.0.
+- Added Trove classifiers to package metadata.
+
+.. _selenium : http://pypi.python.org/pypi/selenium
 
 
 0.13.2 (2012-03-15)

@@ -619,6 +619,13 @@ class Selenese(object):
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, result, count))
 
+    def assertCssCount(self, css, count):
+        result = self.selenium.get_css_count(css)
+        if int(result) != int(count):
+            raise self.failureException(
+                'Actual count of CSS %r is %s, expected %s'
+                % (css, result, count))
+
     def assertOrdered(self, locator1, locator2):
         if not self.selenium.is_ordered(locator1, locator2):
             raise self.failureException(

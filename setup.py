@@ -26,11 +26,46 @@ except ImportError:
 
 setup(
     name='gocept.selenium',
-    version='0.13.3dev',
+    version='0.14.0dev',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     url='http://packages.python.org/gocept.selenium',
-    description='Test-friendly Python API for Selenium and integration with web application frameworks.',
+    description=('Test-friendly Python API for Selenium and integration with '
+                 'web application frameworks.'),
+    classifiers=[
+        'Development Status :: 6 - Mature',
+        'Environment :: Console',
+        'Environment :: Web Environment',
+        'Framework :: BFG',
+        'Framework :: Plone',
+        'Framework :: Plone :: 3.2',
+        'Framework :: Plone :: 3.3',
+        'Framework :: Plone :: 4.0',
+        'Framework :: Plone :: 4.1',
+        'Framework :: Plone :: 4.2',
+        'Framework :: Plone :: 4.3',
+        'Framework :: Pylons',
+        'Framework :: Pyramid',
+        'Framework :: Zope2',
+        'Framework :: Zope3',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved',
+        'License :: OSI Approved :: Zope Public License',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.4',
+        'Programming Language :: Python :: 2.5',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2 :: Only',
+        'Programming Language :: Python :: Implementation',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Zope',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Testing',
+        ],
     long_description=(
         open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
         '\n\n' +
@@ -42,7 +77,7 @@ setup(
     license='ZPL 2.1',
     namespace_packages=['gocept'],
     install_requires=[
-        'selenium',
+        'selenium >= 2.0',
         'setuptools',
         ],
     extras_require=dict(
