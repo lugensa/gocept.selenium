@@ -204,6 +204,23 @@ class AssertionTest(HTMLTestCase):
         self.selenium.assertXpathCount("//div", 4)
         self.selenium.assertXpathCount("//div", '4')
 
+    def test_csscount_should_convert_to_ints(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertCssCount("css=div", 4)
+        self.selenium.assertCssCount("css=div", '4')
+
+    def test_raises_nice_exception_on_mismatch(self):
+        self.selenium.open('/divs.html')
+        try:
+            self.selenium.assertCssCount("css=div", 3)
+        except AssertionError, e:
+            self.assertEqual("Actual count of CSS 'css=div' is 4, expected 3",
+                             str(e))
+        except Exception, e:
+            self.fail('Wrong assertion raised %r' % e)
+        else:
+            self.fail('Did not raise an exception')
+
 
 class PopUpTest(HTMLTestCase):
 
