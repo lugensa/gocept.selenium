@@ -1,8 +1,8 @@
 Changes
 =======
 
-0.14 (unreleased)
--------------------
+0.14 (2012-06-06)
+-----------------
 
 - API expansion: Added ``assertCssCount``. Thus requiring selenium_ >= 2.0.
 - Added Trove classifiers to package metadata.
