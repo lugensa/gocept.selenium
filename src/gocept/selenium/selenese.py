@@ -146,8 +146,11 @@ class Selenese(object):
 
     def dragAndDrop(self, locator, movement):
         x, y = movement.split(',')
-        ActionChains(self.selenium).drag_and_drop_by_offset(
-            self._find(locator), float(x), float(y)).perform()
+        action = ActionChains(self.selenium)
+        action.click_and_hold(self._find(locator))
+        action.move_by_offset(int(float(x)), int(float(y)))
+        action.release(None)
+        action.perform()
 
     def check(self, locator):
         self.click(locator)
