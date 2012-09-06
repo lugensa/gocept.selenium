@@ -64,7 +64,7 @@ class Layer(gocept.selenium.base.Layer):
 
     def serve(self):
         if hasattr(self.http, 'shutdown'):
-            self.serve_forever()
+            self.http.serve_forever()
         else:
             self._running = True
             while self._running:
