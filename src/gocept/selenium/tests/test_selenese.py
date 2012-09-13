@@ -70,7 +70,8 @@ class SplitLocatorTest(unittest.TestCase):
         self.assertEqual((By.NAME, 'foo'), split_locator('name=foo'))
         self.assertEqual((By.XPATH, 'foo'), split_locator('xpath=foo'))
         self.assertEqual(
-            (By.PARTIAL_LINK_TEXT, 'foo'), split_locator('link=foo'))
+            (By.XPATH, '//a[contains(string(.), "foo")]'),
+            split_locator('link=foo'))
         self.assertEqual((By.CSS_SELECTOR, 'foo'), split_locator('css=foo'))
 
     def test_prefix_document_yields_dom(self):
