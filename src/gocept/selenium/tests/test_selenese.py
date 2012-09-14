@@ -19,6 +19,7 @@ import gocept.selenium.selenese
 import gocept.selenium.static
 import os
 import pkg_resources
+import random
 import shutil
 import time
 import unittest
@@ -222,57 +223,57 @@ class AssertionTest(HTMLTestCase):
             self.fail('Did not raise an exception')
 
 
+popup_test_count = 0
+
+
 class PopUpTest(HTMLTestCase):
 
     def setUp(self):
+        global popup_test_count
+        popup_test_count += 1
         super(PopUpTest, self).setUp()
-        self.selenium.open('/launch-popup.html')
+        self.popup_id = 'gocept.selenium-popup%s' % popup_test_count
+        self.selenium.open('/launch-popup.html?%s' % self.popup_id)
 
     def tearDown(self):
         try:
-            self.selenium.selectPopUp(wait=False)
+            self.selenium.selectPopUp(self.popup_id, wait=False)
         except Exception:
             pass
-        if self.selenium.getLocation().endswith('/popup.html'):
+        else:
             self.selenium.close()
             self.selenium.deselectPopUp()
         self.selenium.setTimeout(30)
         super(PopUpTest, self).tearDown()
 
-    def test_wait_for_and_select_popup(self):
-        # smoke tests for calls not otherwise used in this test class
-        self.selenium.waitForPopUp('gocept.selenium-popup')
-        self.selenium.waitForPopUp()
-        self.selenium.selectPopUp()
-
     def test_wait_for_popup_times_out(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.close()
         self.selenium.deselectPopUp()
         self.selenium.setTimeout(0)
         self.assertRaises(Exception, self.selenium.waitForPopUp,
-                          'gocept.selenium-popup')
+                          self.popup_id)
         self.assertRaises(Exception, self.selenium.waitForPopUp)
         self.selenium.setTimeout(1)
         self.assertRaises(Exception, self.selenium.waitForPopUp,
-                          'gocept.selenium-popup')
+                          self.popup_id)
         self.assertRaises(Exception, self.selenium.waitForPopUp)
 
     def test_select_popup(self):
         self.assertRaises(Exception,
                           self.selenium.selectPopUp,
-                          'gocept.selenium-popup', wait=False)
-        self.selenium.selectPopUp('gocept.selenium-popup')
+                          self.popup_id, wait=False)
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
 
     def test_deselect_popup(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.deselectPopUp()
         self.selenium.verifyElementNotPresent('css=div#popup')
         self.selenium.verifyElementPresent('css=div#parent')
 
     def test_close(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
         self.selenium.close()
         self.assertRaises(Exception,

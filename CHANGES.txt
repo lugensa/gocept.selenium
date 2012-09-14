@@ -6,6 +6,8 @@ Changes
 
 - WSGI-Layer is comptabile with Python 2.4 and 2.5.
 
+- Fixed selenese popup tests.
+
 
 0.14 (2012-06-06)
 -----------------
