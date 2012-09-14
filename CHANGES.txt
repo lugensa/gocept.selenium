@@ -4,7 +4,7 @@ Changes
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixed selenese popup tests.
 
 
 0.15 (2012-09-14)
@@ -15,8 +15,6 @@ Changes
   (Patch by Tom Gross <tom@toms-projekte.de>).
 - XHTML support for selenium tables
   (Patch by Tom Gross <tom@toms-projekte.de>).
-
-- Fixed selenese popup tests.
 
 
 0.14 (2012-06-06)
