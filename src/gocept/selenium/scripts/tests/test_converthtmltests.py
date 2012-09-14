@@ -18,6 +18,7 @@ PLONE3LOGIN_METHOD = '''\
 LAYER = "module.layer"
 
 PLONE3LOGIN_MODULE = '''\
+# -*- coding: utf-8 -*-
 import unittest
 
 import gocept.selenium.plonetesting
@@ -137,7 +138,8 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'plone3login.html')
 
-        testname, commands = parse_file(filename)
+        testname, commands, encoding = parse_file(filename)
+        self.assertEquals(encoding, 'utf-8')
         self.assertEquals(testname, 'plone3login')
         self.assertEquals(len(commands), 5)
         self.assertEquals('        selenium.open("/plone/login_form")',
@@ -150,7 +152,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'notitle.html')
 
-        testname, commands = parse_file(filename)
+        testname, commands, encoding = parse_file(filename)
         self.assertEquals(None, testname)
 
     def test_parse_file_no_commands(self):
@@ -160,7 +162,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'nocommands.html')
 
-        testname, commands = parse_file(filename)
+        testname, commands, encoding = parse_file(filename)
         self.assertEquals('nocommands', testname)
         self.assertEquals(len(commands), 0)
 
@@ -196,6 +198,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
 
         tests = [test for test in parse_directory(tests_dir, False)]
+        encoding = tests.pop(0)
         self.assertEquals(len(tests), 1)
         self.assertEquals(tests[0], PLONE3LOGIN_METHOD)
 
@@ -211,7 +214,7 @@ class TestConversion(unittest.TestCase):
     def test_make_module(self):
         from gocept.selenium.scripts.converthtmltests import make_module
 
-        module = make_module([PLONE3LOGIN_METHOD], LAYER, 'module')
+        module = make_module([PLONE3LOGIN_METHOD], LAYER, 'module', 'utf-8')
         self.assertEquals(module, PLONE3LOGIN_MODULE)
 
     def test_main(self):
