@@ -7,6 +7,8 @@ Changes
 - WSGI-Layer is comptabile with Python 2.4 and 2.5.
 - Encoding support in converthtmltests
   (Patch by Tom Gross <tom@toms-projekte.de>).
+- XHTML support for selenium tables
+  (Patch by Tom Gross <tom@toms-projekte.de>).
 
 
 0.14 (2012-06-06)
