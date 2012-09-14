@@ -10,9 +10,25 @@ from string import Template
 from optparse import OptionParser
 try:
     from xml.etree import ElementTree as HTMLTreeBuilder
+    from xml.etree.ElementTree import QName
 except ImportError:
     # Python < 2.5
     from elementtree import HTMLTreeBuilder
+
+    class QName(object):
+	def __init__(self, text_or_uri, tag=None):
+	    if tag:
+		text_or_uri = "{%s}%s" % (text_or_uri, tag)
+	    self.text = text_or_uri
+	def __str__(self):
+	    return self.text
+	def __hash__(self):
+	    return hash(self.text)
+	def __cmp__(self, other):
+	    if isinstance(other, QName):
+		return cmp(self.text, other.text)
+	    return cmp(self.text, other)
+
 
 
 module_template = Template('''\
@@ -83,6 +99,7 @@ DIRECTORY_REQUIRED = 'Source directory is required.'
 LAYER_WITH_MODULE = 'Layer (-l) should include a module.'
 ONE_DIRECTORY = 'Only one source directory should be provided.'
 DIRECTORY_NOT_EXIST = 'Source directory does not exist.'
+XHTML_NAMESPACE = 'http://www.w3.org/1999/xhtml'
 
 
 def parse_options(parser, args=None):
@@ -125,21 +142,22 @@ def parse_directory(directory, verbose):
 
 def parse_file(filename):
     tree = HTMLTreeBuilder.parse(filename)
-    root = tree.getroot()
 
     try:
-        testname = root.find('.//title').text
+        testname = tree.find('.//%s' % QName(XHTML_NAMESPACE, 'title')).text
     except AttributeError:
         return None, None, None
-    content_type = root.find(".//meta[@http-equiv='Content-Type']").get('content')
+    content_type = tree.find(".//%s" % QName(XHTML_NAMESPACE,
+			"meta[@http-equiv='Content-Type']")).get('content')
     matched = encoding_regexp.search(content_type)
     if matched is not None:
        encoding = matched.group(1).lower()
     else:
        encoding = 'utf-8'
     commands = []
-    for row in root.findall('.//tbody/tr'):
-        command = formatcommand(*[td.text for td in row.findall('td')])
+    for row in tree.findall('.//%s/%s' % (QName(XHTML_NAMESPACE, 'tbody'),
+	                                  QName(XHTML_NAMESPACE, 'tr'))):
+        command = formatcommand(*[td.text for td in row.findall(str(QName(XHTML_NAMESPACE, 'td')))])
         commands.append(command)
     return testname, commands, encoding
 
