@@ -13,16 +13,14 @@
 ##############################################################################
 
 import gocept.selenium.base
-import unittest
+import unittest2 as unittest
 
 
 class LayerTest(unittest.TestCase):
 
     def test_connection_refused_should_raise_readable_error(self):
         layer = gocept.selenium.base.Layer()
-        layer._port = 0 # reserved by IANA
-        try:
+        layer._port = 0  # reserved by IANA
+        with self.assertRaisesRegexp(
+            Exception, 'Failed to connect to Selenium server'):
             layer.setUp()
-        except Exception, e:
-            self.assertTrue(str(e).startswith(
-                'Failed to connect to Selenium RC'))

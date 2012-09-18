@@ -44,6 +44,7 @@ setup(
     install_requires=[
         'selenium >= 2.0',
         'setuptools',
+        'unittest2',
         ],
     extras_require=dict(
         grok=[
