@@ -14,6 +14,7 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import json
 import re
@@ -64,9 +65,8 @@ class Selenese(object):
 
     # Actions
 
-    @passthrough
     def answerOnNextPrompt(self, answer):
-        pass
+        raise NotImplementedError()
 
     def pause(self, milliseconds):
         time.sleep(milliseconds / 1000.0)
@@ -77,67 +77,68 @@ class Selenese(object):
     def waitForPageToLoad(self):
         self.waitForElementPresent('css=body')
 
+    def _popup_exists(self, window_id=''):
+        handles = self.selenium.window_handles
+        if window_id:
+            return window_id in handles
+        else:
+            return len(handles) > 1
+
     def waitForPopUp(self, windowID=''):
-        self.selenium.wait_for_pop_up(windowID, self.timeout * 1000)
+        deadline = time.time() + self.timeout
+        while time.time() < deadline:
+            if self._popup_exists(windowID):
+                break
+            time.sleep(0.01)
+        else:
+            raise RuntimeError(
+                'Timed out waiting for pop-up window %r.' % windowID)
 
     def selectPopUp(self, windowID='', wait=True):
-        if wait:
-            timeout = self.timeout * 1000
-        else:
-            timeout = 0
-        self.selenium.wait_for_pop_up(windowID, timeout)
-        self.selenium.select_pop_up(windowID)
+        if not windowID:
+            windowID = self.selenium.window_handles[1]
+        if not wait and not self._popup_exists(windowID):
+            raise RuntimeError('Pop-up window %r not available.' % windowID)
+        self.selenium.switch_to_window(windowID)
 
     def open(self, url):
         self.selenium.get(urlparse.urljoin('http://' + self.server, url))
 
-    @passthrough
-    def addSelection(self, locator, optionLocator):
-        pass
-
-    @passthrough
     def altKeyDown(self):
-        pass
+        ActionChains(self.selenium).key_down(Keys.ALT).perform()
 
-    @passthrough
     def altKeyUp(self):
-        pass
+        ActionChains(self.selenium).key_up(Keys.ALT).perform()
 
-    @passthrough
     def attachFile(self, locator, fileURL):
-        pass
+        # see http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_WebDriver_support_file_uploads?
+        self._find(locator).send_keys(fileURL)
 
-    @passthrough
     def captureNetworkTraffic(self, type_):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def captureScreenshot(self, filename):
-        pass
+        self.selenium.get_screenshot_as_file(filename)
 
-    @passthrough
     def captureScreenshotToString(self):
-        pass
+        self.selenium.get_screenshot_as_base64()
 
-    @passthrough
     def close(self):
-        self.selenium.deselectPopUp()
-        pass
+        self.selenium.close()
 
-    @passthrough
     def createCookie(self, nameAndValue, options):
+        # XXX not yet implemented
+        #self.selenium.add_cookie(...)
         pass
 
     def deleteCookie(self, name, options):
         self.selenium.delete_cookie(name)
 
-    @passthrough
     def deleteAllVisibleCookies(self):
-        pass
+        self.selenium.delete_all_cookies()
 
-    @passthrough
     def deselectPopUp(self):
-        pass
+        self.selectWindow()
 
     def dragAndDropToObject(self, locatorSource, locatorDestination):
         ActionChains(self.selenium).drag_and_drop(
@@ -163,96 +164,88 @@ class Selenese(object):
         ActionChains(self.selenium).move_to_element_with_offset(
             self._find(locator), int(x), int(y)).click().perform()
 
-    @passthrough
     def contextMenu(self, locator):
-        pass
+        ActionChains(self.selenium).context_click(self._find(locator)).perform()
 
-    @passthrough
     def contextMenuAt(self, locator, coordString):
-        pass
+        x, y = coordString.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).context_click().perform()
 
-    @passthrough
     def chooseOKOnNextConfirmation(self):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def chooseCancelOnNextConfirmation(self):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def controlKeyDown(self):
-        pass
+        ActionChains(self.selenium).key_down(Keys.CONTROL).perform()
 
-    @passthrough
     def controlKeyUp(self):
-        pass
+        ActionChains(self.selenium).key_up(Keys.CONTROL).perform()
 
     def doubleClick(self, locator):
         ActionChains(self.selenium).double_click(self._find(locator)).perform()
 
-    @passthrough
     def doubleClickAt(self, locator, coordString):
-        pass
+        x, y = coordString.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).double_click().perform()
 
-    @passthrough
     def fireEvent(self, locator, eventName):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def focus(self, locator):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def goBack(self):
-        pass
+        self.selenium.back()
 
-    @passthrough
     def highlight(self, locator):
-        pass
+        raise NotImplementedError()
 
     def keyDown(self, locator, keySequence):
         ActionChains(self.selenium).key_down(
             keySequence, self._find(locator)).perform()
 
-    @passthrough
     def keyPress(self, locator, keySequence):
+        # XXX not yet implemented
         pass
 
     def keyUp(self, locator, keySequence):
         ActionChains(self.selenium).key_up(
             keySequence, self._find(locator)).perform()
 
-    @passthrough
     def metaKeyDown(self):
-        pass
+        ActionChains(self.selenium).key_down(Keys.META).perform()
 
-    @passthrough
     def metaKeyUp(self):
-        pass
+        ActionChains(self.selenium).key_up(Keys.META).perform()
 
-    @passthrough
     def mouseDown(self, locator):
-        pass
+        ActionChains(self.selenium).click_and_hold(self._find(locator)).perform()
 
-    @passthrough
     def mouseDownAt(self, locator, coord):
-        pass
+        x, y = coord.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).click_and_hold().perform()
 
-    @passthrough
     def mouseDownRight(self, locator):
+        # XXX not yet implemented
         pass
 
-    @passthrough
     def mouseDownRightAt(self, locator, coord):
+        # XXX not yet implemented
         pass
 
-    @passthrough
     def mouseMove(self, locator):
-        pass
+        ActionChains(self.selenium).move_to_element(
+            self._find(locator)).perform()
 
-    @passthrough
     def mouseMoveAt(self, locator, coord):
-        pass
+        x, y = coord.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).perform()
 
     def mouseOut(self, locator):
         OFFSET = 10
@@ -266,83 +259,80 @@ class Selenese(object):
         ActionChains(self.selenium).move_to_element(
             self._find(locator)).perform()
 
-    @passthrough
     def mouseUp(self, locator):
-        pass
+        ActionChains(self.selenium).release(self._find(locator)).perform()
 
-    @passthrough
     def mouseUpAt(self, locator, coord):
-        pass
+        x, y = coord.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).release().perform()
 
-    @passthrough
     def mouseUpRight(self, locator):
+        # XXX not yet implemented
         pass
 
-    @passthrough
     def mouseUpRightAt(self, locator, coord):
+        # XXX not yet implemented
         pass
 
     def openWindow(self, url, window_id):
-        if window_id == 'null':
-            raise ValueError("Cannot name a window 'null' "
-                             "as this name is used be Selenium internally.")
-        return self.selenium.open_window(url, window_id)
+        # XXX not yet implemented
+        # must be implemented via JavaScript
+        pass
 
     def refresh(self):
-        # No thanks to selenium... why would one ever *not* want to wait for
-        # the page to load?
         self.selenium.refresh()
         self.waitForPageToLoad()
 
-    @passthrough
     def removeAllSelections(self, locator):
-        pass
+        Select(self._find(locator)).deselect_all()
 
-    @passthrough
     def removeSelection(self, locator, optionLocator):
-        pass
+        element = self._find(locator)
+        method, option = split_option_locator(optionLocator, deselect=True)
+        getattr(Select(element), method)(option)
 
     def select(self, locator, optionLocator):
         element = self._find(locator)
         method, option = split_option_locator(optionLocator)
         getattr(Select(element), method)(option)
 
-    @passthrough
-    def selectFrame(self):
+    addSelection = select
+
+    def selectFrame(self, locator):
+        # XXX not yet implemented
         pass
 
     def selectWindow(self, window_id=None):
-        return self.selenium.select_window(window_id or 'null')
+        if not window_id:
+            window_id = self.selenium.window_handles[0]
+        return self.selenium.switch_to_window(window_id)
 
-    @passthrough
     def submit(self, locator):
-        pass
+        self._find(locator).submit()
 
     def getSpeed(self):
-        return int(self.selenium.get_speed())
+        # XXX not yet implemented
+        pass
 
-    @passthrough
     def setSpeed(self, speed):
+        # XXX not yet implemented
         pass
 
     def getMouseSpeed(self):
-        return int(self.selenium.get_mouse_speed())
+        raise NotImplementedError()
 
-    @passthrough
     def setMouseSpeed(self, speed):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def setCursorPosition(self, locator, position):
-        pass
+        raise NotImplementedError()
 
-    @passthrough
     def shiftKeyDown(self):
-        pass
+        ActionChains(self.selenium).key_down(Keys.SHIFT).perform()
 
-    @passthrough
     def shiftKeyUp(self):
-        pass
+        ActionChains(self.selenium).key_up(Keys.SHIFT).perform()
 
     def type(self, locator, value):
         element = self._find(locator)
@@ -358,8 +348,8 @@ class Selenese(object):
     def uncheck(self, locator):
         self.click(locator)
 
-    @passthrough
     def windowFocus(self):
+        # XXX not yet implemented
         pass
 
     def windowMaximize(self):
@@ -375,18 +365,17 @@ class Selenese(object):
         return text
 
     @assert_type('list')
-    @passthrough
     def getAllWindowIds(self):
-        pass
+        return self.selenium.window_handles
 
     @assert_type('list')
     def getAllWindowNames(self):
-        return [name for name in self.selenium.get_all_window_names()
-                if name != 'null']
+        # XXX not yet implemented
+        pass
 
     @assert_type('list')
-    @passthrough
     def getAllWindowTitles(self):
+        # XXX not yet implemented
         pass
 
     @assert_type('locator_pattern')
@@ -400,26 +389,21 @@ class Selenese(object):
         return self.selenium.title
 
     @assert_type('pattern')
-    @passthrough
     def getBodyText(self):
-        pass
+        return self._find('//body').text
 
     @assert_type('pattern')
     def getConfirmation(self):
-        if not self.selenium.is_confirmation_present():
-            raise self.failureException(
-                'No confirmation occured.')
-        return self.selenium.get_confirmation()
+        confirmation = self.selenium.switch_to_alert()
+        return confirmation.text
 
     @assert_type('pattern')
-    @passthrough
     def getCookie(self):
-        pass
+        return self.selenium.get_cookies()
 
     @assert_type('locator_pattern')
-    @passthrough
     def getCookieByName(self, name):
-        pass
+        return self.selenium.get_cookie(name)
 
     @assert_type('locator_pattern')
     def getEval(self, script):
@@ -432,16 +416,13 @@ class Selenese(object):
         return json.dumps(self.selenium.execute_script('return ' + script))
 
     @assert_type('pattern')
-    @passthrough
     def getHtmlSource(self):
-        pass
+        return self.selenium.page_source
 
     @assert_type('pattern')
     def getPrompt(self):
-        if not self.selenium.is_prompt_present():
-            raise self.failureException(
-                'No prompt occured.')
-        return self.selenium.get_prompt()
+        prompt = self.selenium.switch_to_alert()
+        return prompt.text
 
     @assert_type('locator_pattern')
     def getSelectedLabel(self, locator):
@@ -517,8 +498,8 @@ class Selenese(object):
         return element.get_attribute('value')
 
     @assert_type(None)
-    @passthrough
     def isAlertPresent(self):
+        # XXX not yet implemented
         pass
 
     @assert_type(None)
@@ -806,6 +787,7 @@ def split_locator(locator):
     if locator.startswith('//'):
         return By.XPATH, locator
     if locator.startswith('document'):
+        # XXX not yet implemented
         pass
 
     by, sep, value = locator.partition('=')
@@ -830,15 +812,17 @@ def split_locator(locator):
     return by, value
 
 
-def split_option_locator(option_locator):
+def split_option_locator(option_locator, deselect=False):
+    # XXX implement locating by ID
+    prefix = 'deselect' if deselect else 'select'
     method, sep, option = option_locator.partition('=')
     if not option:
-        return 'select_by_visible_text', option_locator
+        return prefix + '_by_visible_text', option_locator
     method = {
-        'label': 'select_by_visible_text',
-        'value': 'select_by_value',
-        'index': 'select_by_index',
+        'label': prefix + '_by_visible_text',
+        'value': prefix + '_by_value',
+        'index': prefix + '_by_index',
         }.get(method)
     if not method:
-        return 'select_by_visible_text', option_locator
+        return prefix + '_by_visible_text', option_locator
     return method, option
