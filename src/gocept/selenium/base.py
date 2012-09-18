@@ -18,9 +18,9 @@ import os
 import os.path
 import selenium.webdriver
 import shutil
-import socket
 import sys
 import tempfile
+import urllib2
 
 
 if sys.version_info < (2, 5):
@@ -81,8 +81,8 @@ class Layer(object):
                 'http://%s:%s/wd/hub' % (self._server, self._port),
                 desired_capabilities=dict(browserName=self._browser),
                 browser_profile=self.profile)
-        except socket.error, e:
-            raise socket.error(
+        except urllib2.URLError, e:
+            raise urllib2.URLError(
                 'Failed to connect to Selenium server at %s:%s,'
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
