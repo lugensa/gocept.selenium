@@ -12,19 +12,18 @@
 #
 ##############################################################################
 
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 import BaseHTTPServer
+import gocept.selenium.base
 import os
 import os.path
 import posixpath
 import shutil
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 import tempfile
 import threading
 import time
-import unittest
+import unittest2 as unittest
 import urllib
-
-import gocept.selenium.base
 
 _suffix = 'gocept.selenium.static'
 
