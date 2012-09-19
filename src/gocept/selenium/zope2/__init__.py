@@ -17,8 +17,11 @@ import Testing.ZopeTestCase
 import Testing.ZopeTestCase.ZopeLite
 import Testing.ZopeTestCase.threadutils
 import Testing.ZopeTestCase.utils
+import ZServer.HTTPServer
 import Zope2
+import asyncore
 import gocept.selenium.base
+import time
 
 
 class Layer(gocept.selenium.base.Layer):
@@ -33,6 +36,16 @@ class Layer(gocept.selenium.base.Layer):
             args=(self.host, self.port, log))
         thread.setDaemon(True)
         thread.start()
+
+        # Find actually bound port
+        i = 0
+        while not self.port and i < 1000:
+            i += 1
+            time.sleep(0.025)
+            for dispatcher in asyncore.socket_map.values():
+                if isinstance(dispatcher, ZServer.HTTPServer.zhttp_server):
+                    self.port = dispatcher.server_port
+                    break
 
         # notify ZopeTestCase infrastructure that a ZServer has been started
         Testing.ZopeTestCase.utils._Z2HOST = self.host

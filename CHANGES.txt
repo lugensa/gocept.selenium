@@ -6,6 +6,9 @@ Changes
 
 - Fixed selenese popup tests.
 
+- Open a random port for the server process by default: When the environment
+  variable `GOCEPT_SELENIUM_APP_PORT` is not set, a random free port is bound.
+  This allows parallel testing, for instance (#11323).
 
 0.15 (2012-09-14)
 -----------------
