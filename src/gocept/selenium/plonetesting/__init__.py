@@ -41,6 +41,10 @@ class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
         ZSERVER.host = self.host
         ZSERVER.port = self.port
 
+    def setUp(self):
+        _, self.port = ZSERVER.zserver.socket.getsockname()
+        super(Layer, self).setUp()
+
     def testSetUp(self):
         super(Layer, self).testSetUp()
         # conform to the plone.testing contract that layers expose interesting
