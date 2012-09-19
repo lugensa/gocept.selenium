@@ -44,14 +44,13 @@ class Layer(gocept.selenium.base.Layer):
         return app
 
     def setUp(self):
-        super(Layer, self).setUp()
-
         self.http = WSGIServer((self.host, self.port), LogWSGIRequestHandler)
+        self.port = self.http.server_port
         self.http.set_app(self.setup_wsgi_stack(self.application))
-
         self.thread = threading.Thread(target=self.serve)
         self.thread.daemon = True
         self.thread.start()
+        super(Layer, self).setUp()
 
     def tearDown(self):
         self.shutdown()
