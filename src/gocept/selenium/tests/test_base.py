@@ -20,6 +20,7 @@ class LayerTest(unittest.TestCase):
 
     def test_connection_refused_should_raise_readable_error(self):
         layer = gocept.selenium.base.Layer()
+        layer.port = 1234  # doesn't matter, but > 0
         layer._port = 0 # reserved by IANA
         try:
             layer.setUp()
