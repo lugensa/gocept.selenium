@@ -13,10 +13,11 @@
 ##############################################################################
 
 from zope.server.taskthreads import ThreadedTaskDispatcher
+import asyncore
 import gocept.selenium.base
 import gocept.selenium.selenese
-import asyncore
 import threading
+import time
 import zope.app.server.wsgi
 import zope.app.testing.functional
 import zope.app.wsgi
@@ -33,6 +34,8 @@ class Layer(gocept.selenium.base.Layer):
         self.thread = threading.Thread(target=self.run_server)
         self.thread.setDaemon(True)
         self.thread.start()
+        time.sleep(0.025)
+        _, self.port = self.http.socket.getsockname()
         super(Layer, self).setUp()
 
     def tearDown(self):
