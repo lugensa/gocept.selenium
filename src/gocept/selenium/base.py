@@ -36,7 +36,7 @@ class Layer(object):
 
     # hostname and port of the local application.
     host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
-    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 5698))
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
 
     def __init__(self, *bases):
         self.__bases__ = bases
@@ -52,6 +52,8 @@ class Layer(object):
             self.seleniumrc.stop()
 
     def setUp(self):
+        assert self.port > 0
+        assert self.host
         self.seleniumrc = selenium.selenium(
             self._server, self._port, self._browser,
             'http://%s:%s/' % (self.host, self.port))
