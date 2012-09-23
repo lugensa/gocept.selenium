@@ -7,11 +7,14 @@ Changelog
 
 - Fixed selenese popup tests.
 
+- Open a random port for the server process by default: When the environment
+  variable `GOCEPT_SELENIUM_APP_PORT` is not set, a random free port is bound.
+  This allows parallel testing, for instance (#11323).
 
 0.15 (2012-09-14)
 -----------------
 
-- WSGI-Layer is comptabile with Python 2.4 and 2.5.
+- WSGI-Layer is comptabile with Python 2.5.
 - Encoding support in converthtmltests
   (Patch by Tom Gross <tom@toms-projekte.de>).
 - XHTML support for selenium tables

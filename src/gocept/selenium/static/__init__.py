@@ -91,10 +91,10 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         super(StaticFilesLayer, self).__init__()
 
     def setUp(self):
-        super(StaticFilesLayer, self).setUp()
         self.server = None
         self.documentroot = tempfile.mkdtemp(suffix=_suffix)
         self.start_server()
+        super(StaticFilesLayer, self).setUp()
 
     def start_server(self):
         StaticFileRequestHandler.documentroot = self.documentroot
@@ -107,6 +107,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         # Wait a little as it sometimes takes a while to get the server
         # started.
         time.sleep(0.25)
+        self.port = self.server.server_port
 
     def stop_server(self):
         if self.server is None:
