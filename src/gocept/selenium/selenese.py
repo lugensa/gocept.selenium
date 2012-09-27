@@ -24,25 +24,6 @@ import time
 import urlparse
 
 
-def camelcase_to_underscore(name):
-    new = ''
-    for char in name:
-        if char.isupper():
-            new += '_'
-        new += char
-    return new.lower()
-
-
-def passthrough(func):
-    name = camelcase_to_underscore(func.__name__)
-
-    def inner(self, *args, **kw):
-        return getattr(self.selenium, name)(*args, **kw)
-
-    inner.__name__ = func.__name__
-    return inner
-
-
 def assert_type(type):
     def decorate(func):
         func.assert_type = type

@@ -12,7 +12,6 @@
 #
 ##############################################################################
 
-from gocept.selenium.selenese import camelcase_to_underscore
 from gocept.selenium.selenese import selenese_pattern_equals as match
 from gocept.selenium.selenese import split_locator, split_option_locator
 from selenium.webdriver.common.by import By
@@ -106,13 +105,6 @@ class SplitOptionLocatorTest(unittest.TestCase):
     def test_invalid_prefix_yields_label(self):
         self.assertEqual(('select_by_visible_text', 'bar=foo'),
                          split_option_locator('bar=foo'))
-
-
-class UtilsTest(unittest.TestCase):
-
-    def test_camelcaseconvert(self):
-        self.assertEquals('asdf', camelcase_to_underscore('asdf'))
-        self.assertEquals('foo_bar', camelcase_to_underscore('fooBar'))
 
 
 class NonexistentNameTest(unittest.TestCase):
