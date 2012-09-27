@@ -125,7 +125,7 @@ class Selenese(object):
     def dragAndDropToObject(self, locatorSource, locatorDestination):
         ActionChains(self.selenium).drag_and_drop(
             self._find(locatorSource), self._find(locatorDestination)
-            ).perform()
+        ).perform()
 
     def dragAndDrop(self, locator, movement):
         x, y = movement.split(',')
@@ -147,7 +147,8 @@ class Selenese(object):
             self._find(locator), int(x), int(y)).click().perform()
 
     def contextMenu(self, locator):
-        ActionChains(self.selenium).context_click(self._find(locator)).perform()
+        ActionChains(self.selenium).context_click(
+            self._find(locator)).perform()
 
     def contextMenuAt(self, locator, coordString):
         x, y = coordString.split(',')
@@ -205,7 +206,8 @@ class Selenese(object):
         ActionChains(self.selenium).key_up(Keys.META).perform()
 
     def mouseDown(self, locator):
-        ActionChains(self.selenium).click_and_hold(self._find(locator)).perform()
+        ActionChains(self.selenium).click_and_hold(
+            self._find(locator)).perform()
 
     def mouseDownAt(self, locator, coord):
         x, y = coord.split(',')
@@ -681,8 +683,8 @@ class Selenese(object):
                         break
             raise self.failureException(
                 detail + ('Expected: %s,\ngot: %s\nfrom %s' % (
-                        abbrev_repr(expected), abbrev_repr(result),
-                        self._call_repr(name))))
+                abbrev_repr(expected), abbrev_repr(result),
+                self._call_repr(name))))
 
     def _negate(self, assertion, name, *args, **kw):
         try:
@@ -784,7 +786,7 @@ def split_locator(locator):
         'xpath': By.XPATH,
         'link': By.PARTIAL_LINK_TEXT,
         'css': By.CSS_SELECTOR,
-        }.get(by)
+    }.get(by)
     if not by:
         return None, locator
 
@@ -805,7 +807,7 @@ def split_option_locator(option_locator, deselect=False):
         'label': prefix + '_by_visible_text',
         'value': prefix + '_by_value',
         'index': prefix + '_by_index',
-        }.get(method)
+    }.get(method)
     if not method:
         return prefix + '_by_visible_text', option_locator
     return method, option
