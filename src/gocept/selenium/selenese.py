@@ -262,8 +262,8 @@ class Selenese(object):
         pass
 
     def openWindow(self, url, window_id):
-        # XXX not yet implemented; must be implemented via JavaScript
-        pass
+        self.selenium.execute_script(
+            'window.open("%s", "%s")' % (url, window_id))
 
     def refresh(self):
         self.selenium.refresh()
