@@ -204,7 +204,6 @@ class AssertionTest(HTMLTestCase):
         # Smoke test: just check that we don't break
         self.selenium.deleteCookie('foo', '/')
 
-    @unittest.skip('not yet implemented')
     def test_selectFrame_frame_doesnt_exist(self):
         self.assertRaises(Exception, self.selenium.selectFrame, 'foo')
 
@@ -223,14 +222,12 @@ class AssertionTest(HTMLTestCase):
         self.selenium.open('/')
         self.selenium.verifyAlertNotPresent()
 
-    @unittest.skip('not yet implemented')
     def test_alert_present(self):
         self.selenium.open('/alert.html')
-        time.sleep(0.6)
+        time.sleep(3.1)
         self.selenium.verifyAlertPresent()
         self.selenium.getAlert()
 
-    @unittest.skip('not yet implemented')
     def test_wait_for_alert(self):
         self.selenium.open('/alert.html')
         self.selenium.verifyAlertNotPresent()
