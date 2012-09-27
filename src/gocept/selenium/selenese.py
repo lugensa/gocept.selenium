@@ -474,7 +474,7 @@ class Selenese(object):
         except NoSuchElementException:
             return False
 
-    @passthrough
+    @assert_type('locator')
     def getSelectOptions(self, locator):
         select = Select(self._find(locator))
         return [x.text for x in select.options]
@@ -484,17 +484,16 @@ class Selenese(object):
         return self._find(locator).get_attribute('checked')
 
     @assert_type('locator')
-    @passthrough
     def isCookiePresent(self, name):
-        pass
+        return self.selenium.get_cookie(name) is not None
 
     @assert_type('locator_pattern')
     def getText(self, locator):
         return self._find(locator).text
 
     @assert_type('locator_pattern')
-    @passthrough
     def getTable(self, locator):
+        # XXX not yet implemented
         pass
 
     @assert_type('locator_pattern')
@@ -508,8 +507,8 @@ class Selenese(object):
         pass
 
     @assert_type(None)
-    @passthrough
     def isPromptPresent(self):
+        # XXX not yet implemented
         pass
 
     @assert_type('locator')
@@ -529,9 +528,8 @@ class Selenese(object):
         return element.value_of_css_property('display') != 'none'
 
     @assert_type('locator')
-    @passthrough
     def isEditable(self, locator):
-        pass
+        return not self._find(locator).get_attribute('disabled')
 
     def getElementWidth(self, locator):
         element = self._find(locator)
@@ -542,9 +540,8 @@ class Selenese(object):
         return element.size['height']
 
     @assert_type('locator_pattern')
-    @passthrough
     def getExpression(self, expression):
-        pass
+        return self.getEval(expression)
 
     def isTextPresent(self, pattern):
         body = self.selenium.find_element(By.TAG_NAME, 'body')
