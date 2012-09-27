@@ -109,9 +109,9 @@ class Selenese(object):
         self.selenium.close()
 
     def createCookie(self, nameAndValue, options):
-        # XXX not yet implemented
-        #self.selenium.add_cookie(...)
-        pass
+        options = urlparse.parse_qs(options)
+        options['name'], options['value'] = nameAndValue.split('=', 1)
+        self.selenium.add_cookie(options)
 
     def deleteCookie(self, name, options):
         self.selenium.delete_cookie(name)
@@ -192,8 +192,8 @@ class Selenese(object):
             keySequence, self._find(locator)).perform()
 
     def keyPress(self, locator, keySequence):
-        # XXX not yet implemented
-        pass
+        ActionChains(self.selenium).key_down(
+            keySequence, self._find(locator)).key_up(keySequence).perform()
 
     def keyUp(self, locator, keySequence):
         ActionChains(self.selenium).key_up(
@@ -216,11 +216,13 @@ class Selenese(object):
 
     def mouseDownRight(self, locator):
         # XXX not yet implemented
-        pass
+        # ActionChains only has click_and_hold; I *guess* one could pass in
+        # button=2 manually somehow, just like context_click does
+        raise NotImplementedError()
 
     def mouseDownRightAt(self, locator, coord):
-        # XXX not yet implemented
-        pass
+        # XXX not yet implemented, see mouseDownRight
+        raise NotImplementedError()
 
     def mouseMove(self, locator):
         ActionChains(self.selenium).move_to_element(
@@ -252,16 +254,15 @@ class Selenese(object):
             self._find(locator), int(x), int(y)).release().perform()
 
     def mouseUpRight(self, locator):
-        # XXX not yet implemented
+        # XXX not yet implemented, see mouseDownRight
         pass
 
     def mouseUpRightAt(self, locator, coord):
-        # XXX not yet implemented
+        # XXX not yet implemented, see mouseDownRight
         pass
 
     def openWindow(self, url, window_id):
-        # XXX not yet implemented
-        # must be implemented via JavaScript
+        # XXX not yet implemented; must be implemented via JavaScript
         pass
 
     def refresh(self):
@@ -285,6 +286,7 @@ class Selenese(object):
 
     def selectFrame(self, locator):
         # XXX not yet implemented
+        # self.selenium.switch_to_frame(split_frame_locator(locator))
         pass
 
     def selectWindow(self, window_id=None):
@@ -296,12 +298,12 @@ class Selenese(object):
         self._find(locator).submit()
 
     def getSpeed(self):
-        # XXX not yet implemented
-        pass
+        # XXX Python bindings do not expose Command.GET_SPEED
+        raise NotImplementedError()
 
     def setSpeed(self, speed):
-        # XXX not yet implemented
-        pass
+        # XXX Python bindings do not expose Command.SET_SPEED
+        raise NotImplementedError()
 
     def getMouseSpeed(self):
         raise NotImplementedError()
@@ -333,8 +335,7 @@ class Selenese(object):
         self.click(locator)
 
     def windowFocus(self):
-        # XXX not yet implemented
-        pass
+        self.selenium.switch_to_window(self.selenium.current_window_handle)
 
     def windowMaximize(self):
         self.selenium.maximize_window()
@@ -354,13 +355,11 @@ class Selenese(object):
 
     @assert_type('list')
     def getAllWindowNames(self):
-        # XXX not yet implemented
-        pass
+        raise NotImplementedError()
 
     @assert_type('list')
     def getAllWindowTitles(self):
-        # XXX not yet implemented
-        pass
+        raise NotImplementedError()
 
     @assert_type('locator_pattern')
     def getAttribute(self, locator):
@@ -476,8 +475,10 @@ class Selenese(object):
 
     @assert_type('locator_pattern')
     def getTable(self, locator):
-        # XXX not yet implemented
-        pass
+        # XXX Webdriver has no API for this, we'd have to re-create this
+        # manually -- and I guess nobody uses this and goes for direct xpath
+        # instead, anyway.
+        raise NotImplementedError()
 
     @assert_type('locator_pattern')
     def getValue(self, locator):
