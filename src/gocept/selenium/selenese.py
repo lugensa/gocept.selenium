@@ -541,9 +541,7 @@ class Selenese(object):
             raise self.failureException('Text %r not present' % pattern)
 
     def assertCondition(self, condition):
-        # XXX comparing to `true` on a string-exact match might not be a good
-        # idea as implicit bool conversion might happen in original Selenese.
-        return self.assertEval(condition, 'exact:true')
+        return self.assertEval(condition, 'true')
 
     def assertXpathCount(self, xpath, count):
         result = self.selenium.find_elements(By.XPATH, xpath)
@@ -798,7 +796,7 @@ def split_locator(locator):
 
 
 def split_option_locator(option_locator, deselect=False):
-    # XXX implement locating by ID
+    # XXX not yet implemented: locating by ID
     prefix = 'deselect' if deselect else 'select'
     method, sep, option = option_locator.partition('=')
     if not option:
