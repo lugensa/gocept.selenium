@@ -485,13 +485,16 @@ class Selenese(object):
 
     @assert_type(None)
     def isAlertPresent(self):
-        # XXX not yet implemented
-        pass
+        alert = self.selenium.switch_to_alert()
+        try:
+            alert.text
+            return True
+        except selenium.common.exceptions.NoAlertPresentException:
+            return False
 
     @assert_type(None)
     def isPromptPresent(self):
-        # XXX not yet implemented
-        pass
+        return self.isAlertPresent()
 
     @assert_type('locator')
     def isElementPresent(self, locator):
