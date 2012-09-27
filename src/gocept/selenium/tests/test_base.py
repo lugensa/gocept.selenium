@@ -20,7 +20,7 @@ class LayerTest(unittest.TestCase):
 
     def test_connection_refused_should_raise_readable_error(self):
         layer = gocept.selenium.base.Layer()
-        layer._port = 0  # reserved by IANA
+        layer._port = 4445  # default port is 4444
         with self.assertRaisesRegexp(
             Exception, 'Failed to connect to Selenium server'):
             layer.setUp()
