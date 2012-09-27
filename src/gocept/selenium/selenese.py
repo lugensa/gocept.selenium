@@ -285,9 +285,7 @@ class Selenese(object):
     addSelection = select
 
     def selectFrame(self, locator):
-        # XXX not yet implemented
-        # self.selenium.switch_to_frame(split_frame_locator(locator))
-        pass
+        self.selenium.switch_to_frame(split_frame_locator(locator))
 
     def selectWindow(self, window_id=None):
         if not window_id:
@@ -810,3 +808,14 @@ def split_option_locator(option_locator, deselect=False):
     if not method:
         return prefix + '_by_visible_text', option_locator
     return method, option
+
+
+def split_frame_locator(frame_locator):
+    valid_selectors = ['name', 'index']
+    by, sep, value = frame_locator.partition('=')
+    if by in ['relative', 'dom']:
+        raise NotImplementedError()
+    elif by not in valid_selectors:
+        raise ValueError('Invalid frame selector %r, valid are %r'
+                         % (by, valid_selectors))
+    return value
