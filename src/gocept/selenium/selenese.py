@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -426,53 +427,57 @@ class Selenese(object):
 
     @assert_type('locator_pattern')
     def getSelectedLabel(self, locator):
-        element = self._find(locator)
-        option = Select(element).first_selected_option
-        return option.text
+        select = Select(self._find(locator))
+        return select.first_selected_option.text
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedLabels(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return [x.text for x in select.all_selected_options]
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedValue(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return select.first_selected_option.text.get_attribute('value')
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedValues(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return [x.get_attribute('value') for x in select.all_selected_options]
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedIndex(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return select.first_selected_option.get_attribute('index')
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedIndexes(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return [x.get_attribute('index') for x in select.all_selected_options]
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedId(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return select.first_selected_option.id
 
     @assert_type('locator_pattern')
-    @passthrough
     def getSelectedIds(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return [x.id for x in select.all_selected_options]
 
     @assert_type('locator')
-    @passthrough
     def isSomethingSelected(self, locator):
-        pass
+        select = Select(self._find(locator))
+        try:
+            select.first_selected_option
+            return True
+        except NoSuchElementException:
+            return False
 
     @passthrough
     def getSelectOptions(self, locator):
-        pass
+        select = Select(self._find(locator))
+        return [x.text for x in select.options]
 
     @assert_type('locator')
     def isChecked(self, locator):
