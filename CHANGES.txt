@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.16 (unreleased)
+0.16 (2012-10-10)
 -----------------
 
 - Fixed selenese popup tests.
