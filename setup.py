@@ -77,6 +77,7 @@ setup(
     license='ZPL 2.1',
     namespace_packages=['gocept'],
     install_requires=[
+        'httpagentparser',
         'selenium >= 2.0',
         'setuptools',
         ],

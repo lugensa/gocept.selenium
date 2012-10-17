@@ -247,6 +247,7 @@ class PopUpTest(HTMLTestCase):
         super(PopUpTest, self).tearDown()
 
     def test_wait_for_popup_times_out(self):
+        self.skip_unless_browser('Firefox', '>=16.0')
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.close()
         self.selenium.deselectPopUp()
