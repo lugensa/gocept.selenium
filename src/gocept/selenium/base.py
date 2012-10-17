@@ -13,8 +13,11 @@
 ##############################################################################
 
 import atexit
+import distutils.versionpredicate
 import gocept.selenium.selenese
+import httpagentparser
 import os
+import re
 import selenium
 import socket
 import sys
@@ -97,3 +100,18 @@ class TestCase(object):
         super(TestCase, self).setUp()
         self.selenium.setContext('%s.%s' % (
             self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
+
+    def skip_unless_browser(self, browser_name, browser_version=None):
+        agent = httpagentparser.detect(
+            self.selenium.getEval('window.navigator.userAgent'))
+        if re.match(browser_name, agent['browser']['name']) is None:
+            self.skipTest('Require browser %s, but have %s.' % (
+                browser_name, agent['browser']['name']))
+        if browser_version:
+            requirement = distutils.versionpredicate.VersionPredicate(
+                'Browser (%s)' % browser_version)
+            if not requirement.satisfied_by(
+                str(agent['browser']['version'])):
+                self.skipTest('Require %s%s, got %s %s' % (
+                    browser_name, browser_version,
+                    agent['browser']['name'], agent['browser']['version']))
