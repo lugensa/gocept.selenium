@@ -24,6 +24,9 @@ import shutil
 import time
 import unittest
 
+# XXX
+import gocept.selenium.base
+
 
 class PatternTest(unittest.TestCase):
 
@@ -246,8 +249,9 @@ class PopUpTest(HTMLTestCase):
         self.selenium.setTimeout(30)
         super(PopUpTest, self).tearDown()
 
+
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_wait_for_popup_times_out(self):
-        self.skip_unless_browser('Firefox', '>=16.0')
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.close()
         self.selenium.deselectPopUp()
