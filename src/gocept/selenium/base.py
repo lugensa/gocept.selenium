@@ -101,17 +101,30 @@ class TestCase(object):
         self.selenium.setContext('%s.%s' % (
             self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
 
-    def skip_unless_browser(self, browser_name, browser_version=None):
+
+class skipUnlessBrowser(object):
+
+    def __init__(self, name, version=None):
+        self.required_name = name
+        self.required_version = version
+
+    def __call__(self, f):
+        def test(test_case, *args, **kw):
+            self.skip_unless_requirements_met(test_case)
+            return f(test_case, *args, **kw)
+        return test
+
+    def skip_unless_requirements_met(self, test_case):
         agent = httpagentparser.detect(
-            self.selenium.getEval('window.navigator.userAgent'))
-        if re.match(browser_name, agent['browser']['name']) is None:
-            self.skipTest('Require browser %s, but have %s.' % (
-                browser_name, agent['browser']['name']))
-        if browser_version:
+            test_case.selenium.getEval('window.navigator.userAgent'))
+        if re.match(self.required_name, agent['browser']['name']) is None:
+            test_case.skipTest('Require browser %s, but have %s.' % (
+                self.required_name, agent['browser']['name']))
+        if self.required_version:
             requirement = distutils.versionpredicate.VersionPredicate(
-                'Browser (%s)' % browser_version)
+                'Browser (%s)' % self.required_version)
             if not requirement.satisfied_by(
                 str(agent['browser']['version'])):
-                self.skipTest('Require %s%s, got %s %s' % (
-                    browser_name, browser_version,
+                test_case.skipTest('Require %s%s, got %s %s' % (
+                    self.required_name, self.required_version,
                     agent['browser']['name'], agent['browser']['version']))
