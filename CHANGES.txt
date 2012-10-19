@@ -5,7 +5,8 @@ Changelog
 0.17 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added ``gocept.selenium.skipUnlessBrowser`` decorator to skip tests unless
+  ceratins browser requirements are met.
 
 
 0.16 (2012-10-10)
