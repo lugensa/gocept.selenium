@@ -15,6 +15,7 @@
 from gocept.selenium.selenese import camelcase_to_underscore
 from gocept.selenium.selenese import selenese_pattern_equals as match
 import glob
+import gocept.selenium
 import gocept.selenium.selenese
 import gocept.selenium.static
 import os
@@ -23,9 +24,6 @@ import random
 import shutil
 import time
 import unittest
-
-# XXX
-import gocept.selenium.base
 
 
 class PatternTest(unittest.TestCase):
@@ -189,12 +187,14 @@ class AssertionTest(HTMLTestCase):
         self.selenium.open('/')
         self.selenium.verifyAlertNotPresent()
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_alert_present(self):
         self.selenium.open('/alert.html')
         time.sleep(0.6)
         self.selenium.verifyAlertPresent()
         self.selenium.getAlert()
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_wait_for_alert(self):
         self.selenium.open('/alert.html')
         self.selenium.verifyAlertNotPresent()
@@ -235,8 +235,6 @@ class PopUpTest(HTMLTestCase):
         global popup_test_count
         popup_test_count += 1
         super(PopUpTest, self).setUp()
-        self.popup_id = 'gocept.selenium-popup%s' % popup_test_count
-        self.selenium.open('/launch-popup.html?%s' % self.popup_id)
 
     def tearDown(self):
         try:
@@ -249,9 +247,13 @@ class PopUpTest(HTMLTestCase):
         self.selenium.setTimeout(30)
         super(PopUpTest, self).tearDown()
 
+    def open_popup(self):
+        self.popup_id = 'gocept.selenium-popup%s' % popup_test_count
+        self.selenium.open('/launch-popup.html?%s' % self.popup_id)
 
     @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_wait_for_popup_times_out(self):
+        self.open_popup()
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.close()
         self.selenium.deselectPopUp()
@@ -264,20 +266,26 @@ class PopUpTest(HTMLTestCase):
                           self.popup_id)
         self.assertRaises(Exception, self.selenium.waitForPopUp)
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_select_popup(self):
+        self.open_popup()
         self.assertRaises(Exception,
                           self.selenium.selectPopUp,
                           self.popup_id, wait=False)
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_deselect_popup(self):
+        self.open_popup()
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.deselectPopUp()
         self.selenium.verifyElementNotPresent('css=div#popup')
         self.selenium.verifyElementPresent('css=div#parent')
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_close(self):
+        self.open_popup()
         self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
         self.selenium.close()
