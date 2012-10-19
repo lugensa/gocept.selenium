@@ -89,3 +89,17 @@ class TestBrowserSkip(unittest.TestCase):
     def test_missing_restriction_should_raise_ValueError(self):
         self.assertRaises(ValueError,
                           lambda: self.call_test('Firefox', '16.0'))
+
+    def test_class_decorator_should_raise_ValueError(self):
+        # Since the wohle selenium needs to be available to actually find out
+        # the browser version it's quite hard to decorate an entire class. Thus
+        # we fail in a useful way.
+        from gocept.selenium.base import skipUnlessBrowser
+        try:
+            @skipUnlessBrowser('hurz')
+            class MyTest(object):
+                pass
+        except ValueError:
+            pass
+        else:
+            self.fail('ValueError not raised')
