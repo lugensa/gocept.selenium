@@ -53,18 +53,39 @@ class TestBrowserSkip(unittest.TestCase):
 
 
     def test_browser_name_missmatch_should_skip(self):
-        self.call_test('aname').skipTest.assert_called()
+        self.assertTrue(self.call_test('aname').skipTest.called)
 
     def test_browser_name_mismatch_should_not_run_test(self):
         self.call_test('blubs')
         self.assertFalse(self._inner_ran)
 
     def test_browser_name_match_should_not_skip(self):
-        self.call_test('Firefox').skipTest.assert_called()
+        self.assertFalse(self.call_test('Firefox').skipTest.called)
 
     def test_browser_name_match_should_run_test(self):
         self.call_test('Firefox')
         self.assertTrue(self._inner_ran)
 
     def test_version_mismatch_should_skip(self):
-        pass
+        self.assertTrue(self.call_test('Firefox', '<16.0').skipTest.called)
+
+    def test_version_mismatch_should_not_run_test(self):
+        self.call_test('Firefox', '<16.0')
+        self.assertFalse(self._inner_ran)
+
+    def test_version_match_should_not_skip(self):
+        self.assertFalse(self.call_test('Firefox', '>=16.0').called)
+
+    def test_version_match_should_run_test(self):
+        self.call_test('Firefox', '>=16.0')
+        self.assertTrue(self._inner_ran)
+
+    def test_invalid_version_number_should_raise_ValueError(self):
+        # Note that versionpredicate uses stict version numbers. We gotta see
+        # if this is useable in the real world.
+        self.assertRaises(ValueError,
+                          lambda: self.call_test('Firefox', '>1b7'))
+
+    def test_missing_restriction_should_raise_ValueError(self):
+        self.assertRaises(ValueError,
+                          lambda: self.call_test('Firefox', '16.0'))
