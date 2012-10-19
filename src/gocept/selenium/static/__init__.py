@@ -75,7 +75,7 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
         # We fire a last request at the server in order to take it out of the
         # while loop in `self.serve_until_shutdown`.
         try:
-            urllib.urlopen('http://%s:%s/' % (self.server_name,
+            urllib.urlopen('http://%s:%s/' % (self.server_address[0],
                                               self.server_port))
         except IOError:
             # If the server is already shut down, we receive a socket error,
