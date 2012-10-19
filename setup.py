@@ -30,8 +30,9 @@ install_requires = [
     'selenium >= 2.0',
     'setuptools']
 
+tests_require = ['mock']
 if sys.version_info < (2, 7):
-    install_requires.append('unittest2')
+    tests_require.append('unittest2')
 
 
 setup(
@@ -130,9 +131,7 @@ setup(
             'plone.app.testing',
             ],
         script=script_requirements,
-        test_script=[
-            'mock',
-            ],
+        test=tests_require,
     ),
     entry_points={
           'console_scripts': [
