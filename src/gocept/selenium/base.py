@@ -109,6 +109,8 @@ class skipUnlessBrowser(object):
         self.required_version = version
 
     def __call__(self, f):
+        if isinstance(f, type):
+            raise ValueError('%s cannot be used as class decorator')
         def test(test_case, *args, **kw):
             self.skip_unless_requirements_met(test_case)
             return f(test_case, *args, **kw)
