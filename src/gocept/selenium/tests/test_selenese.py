@@ -123,7 +123,7 @@ class NonexistentNameTest(unittest.TestCase):
                          "selenese method 'assert_with_wrong_assert_type'.")
 
 
-class HTMLTestCase(gocept.selenium.static.TestCase):
+class HTMLTestCase(gocept.selenium.static.TestCase, unittest.TestCase):
 
     def setUp(self):
         super(HTMLTestCase, self).setUp()
