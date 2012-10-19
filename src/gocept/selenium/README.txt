@@ -293,6 +293,11 @@ skipping tests in these cases, there is a test decorator
 .. NOTE:: ``skipUnlessBrowser`` *only* supports skipping test methods. It cannot
          be used as class decorator.
 
+.. WARNING::
+    The version test is only supported for Python >= 2.5. For Python < 2.5
+    *only* a name check can be performed. Giving a version number will skip the
+    test unconditionally.
+
 
 Similar packages
 ----------------

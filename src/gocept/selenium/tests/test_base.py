@@ -13,7 +13,12 @@
 ##############################################################################
 
 import mock
-import unittest
+import sys
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class LayerTest(unittest.TestCase):
@@ -73,19 +78,32 @@ class TestBrowserSkip(unittest.TestCase):
         self.call_test('Firefox', '<16.0')
         self.assertFalse(self._inner_ran)
 
+    @unittest.skipUnless(sys.version_info >= (2, 5), 'requires 2.5')
     def test_version_match_should_not_skip(self):
-        self.assertFalse(self.call_test('Firefox', '>=16.0').called)
+        self.assertFalse(self.call_test('Firefox', '>=16.0').skipTest.called)
 
+    @unittest.skipUnless(sys.version_info >= (2, 5), 'requires 2.5')
     def test_version_match_should_run_test(self):
         self.call_test('Firefox', '>=16.0')
         self.assertTrue(self._inner_ran)
 
+    @unittest.skipUnless(sys.version_info < (2, 5), 'requires 2.4')
+    def test_given_version_should_skip_test_for_less_than_py25(self):
+        self.assertTrue(self.call_test('Firefox', '>=16.0').skipTest.called)
+
+    @unittest.skipUnless(sys.version_info < (2, 5), 'requires 2.4')
+    def test_given_version_should_not_run_test_for_less_than_py25(self):
+        self.call_test('Firefox', '>=16.0')
+        self.assertFalse(self._inner_ran)
+
+    @unittest.skipUnless(sys.version_info >= (2, 5), 'requires 2.5')
     def test_invalid_version_number_should_raise_ValueError(self):
         # Note that versionpredicate uses stict version numbers. We gotta see
         # if this is useable in the real world.
         self.assertRaises(ValueError,
                           lambda: self.call_test('Firefox', '>1b7'))
 
+    @unittest.skipUnless(sys.version_info >= (2, 5), 'requires 2.5')
     def test_missing_restriction_should_raise_ValueError(self):
         self.assertRaises(ValueError,
                           lambda: self.call_test('Firefox', '16.0'))
@@ -96,9 +114,9 @@ class TestBrowserSkip(unittest.TestCase):
         # we fail in a useful way.
         from gocept.selenium.base import skipUnlessBrowser
         try:
-            @skipUnlessBrowser('hurz')
             class MyTest(object):
                 pass
+            skipUnlessBrowser('hurz')(MyTest)
         except ValueError:
             pass
         else:
