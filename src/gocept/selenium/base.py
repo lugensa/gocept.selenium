@@ -36,12 +36,6 @@ else:
     have_predicate = True
 
 
-if sys.version_info < (2, 5) and unittest.__name__ == 'unittest':
-    TEST_METHOD_NAME = '_TestCase__testMethodName'
-else:
-    TEST_METHOD_NAME = '_testMethodName'
-
-
 class Layer(object):
 
     # hostname and port of the Selenium RC server
@@ -95,7 +89,11 @@ class Layer(object):
             self.seleniumrc, self.host, self.port)
 
 
-class TestCase(unittest.TestCase):
+TEST_METHOD_NAMES = ('_TestCase__testMethodName', '_testMethodName')
+
+
+
+class TestCase(object):
     # the various flavours (ztk, zope2, grok, etc.) are supposed to provide
     # their own TestCase as needed, and mix this class in to get the
     # convenience functionality.
@@ -111,8 +109,13 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         super(TestCase, self).setUp()
-        self.selenium.setContext('%s.%s' % (
-            self.__class__.__name__, getattr(self, TEST_METHOD_NAME)))
+        for attr in TEST_METHOD_NAMES:
+            method_name = getattr(self, attr, None)
+            if method_name:
+                break
+        assert method_name
+        self.selenium.setContext('%s.%s' % (self.__class__.__name__,
+                                            method_name))
 
 
 class skipUnlessBrowser(object):
