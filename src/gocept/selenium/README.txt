@@ -267,6 +267,30 @@ variable::
 
 This example will introduce a 500 millisecond pause between tests.
 
+
+Test helpers
+------------
+
+Skipping tests for certain browsers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are cases when a test should does not pass on certain browsers. This is
+either due to the application using browser features which are not supported by
+the browser, or due to selenium not working well with the browser. To aid in
+skipping tests in these cases, there is a test decorator
+``gocept.selenium.skipUnlessBrowser(name, version=None)``:
+
+    >>> class TestClass(...):
+    ...
+    ... @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
+    ... def test_fancy_things(self):
+    ...     ...
+
+
+.. NOTE:: ``skipUnlessBrowser`` *only* supports skipping test methods. It cannot
+         be used as class decorator.
+
+
 Similar packages
 ----------------
 
