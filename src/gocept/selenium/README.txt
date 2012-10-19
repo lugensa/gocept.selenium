@@ -256,9 +256,12 @@ instruct the browser which host and port to connect to::
     GOCEPT_SELENIUM_APP_HOST=10.0.0.15
     GOCEPT_SELENIUM_APP_PORT=8001
 
+The default for the port to bind is 0 which let the kernel choose a random,
+free port.  
+
 When you are testing an application on one machine, you can access the running
-application from another machine if you set ``GOCEPT_SELENIUM_APP_HOST = 0.0.0.0``
-instead of the default ``localhost``.
+application from another machine if you set ``GOCEPT_SELENIUM_APP_HOST =
+0.0.0.0`` instead of the default ``localhost``. 
 
 You can set the speed with which the tests are run through an environment
 variable::
