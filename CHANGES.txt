@@ -8,6 +8,8 @@ Changelog
 - Added ``gocept.selenium.skipUnlessBrowser`` decorator to skip tests unless
   ceratins browser requirements are met.
 
+- Fix: The static test server did not shutdown in some situations.
+
 
 0.16 (2012-10-10)
 -----------------
