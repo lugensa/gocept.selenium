@@ -12,8 +12,9 @@
 #
 ##############################################################################
 
-import os.path
 from setuptools import setup, find_packages
+import os.path
+import sys
 
 
 script_requirements = []
@@ -22,6 +23,15 @@ try:
 except ImportError:
     # Python < 2.5
     script_requirements.append('elementtree')
+
+
+install_requires = [
+    'httpagentparser',
+    'selenium >= 2.0',
+    'setuptools']
+
+if sys.version_info < (2, 7):
+    install_requires.append('unittest2')
 
 
 setup(
@@ -76,11 +86,7 @@ setup(
     zip_safe=False,
     license='ZPL 2.1',
     namespace_packages=['gocept'],
-    install_requires=[
-        'httpagentparser',
-        'selenium >= 2.0',
-        'setuptools',
-        ],
+    install_requires=install_requires,
     extras_require=dict(
         grok=[
             'zope.app.appsetup',
