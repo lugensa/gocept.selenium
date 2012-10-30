@@ -312,5 +312,5 @@ Report bugs at <https://projects.gocept.com/projects/gocept-selenium/issues>.
 
 Get the latest source with ::
 
-  hg clone https://code.gocept.com/hg/public/gocept.selenium
+  hg clone https://bitbucket.org/gocept/gocept.selenium
 
