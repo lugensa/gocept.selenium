@@ -40,7 +40,7 @@ setup(
     version='0.17.dev0',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
-    url='http://packages.python.org/gocept.selenium',
+    url='http://pypi.python.org/pypi/gocept.selenium',
     description=('Test-friendly Python API for Selenium and integration with '
                  'web application frameworks.'),
     classifiers=[
