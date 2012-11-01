@@ -37,7 +37,7 @@ if sys.version_info < (2, 7):
 
 setup(
     name='gocept.selenium',
-    version='0.17.dev0',
+    version='0.17',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
     url='http://pypi.python.org/pypi/gocept.selenium',

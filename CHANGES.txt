@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.17 (unreleased)
+0.17 (2012-11-01)
 -----------------
 
 - Added ``gocept.selenium.skipUnlessBrowser`` decorator to skip tests unless
