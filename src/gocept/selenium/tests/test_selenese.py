@@ -242,6 +242,7 @@ class AssertionTest(HTMLTestCase):
         self.selenium.assertXpathCount("//div", '4')
 
 
+@unittest.skip('not yet implemented')
 class PopUpTest(HTMLTestCase):
 
     def setUp(self):
@@ -301,6 +302,7 @@ class PopUpTest(HTMLTestCase):
         self.selenium.verifyElementPresent('css=div#parent')
 
 
+@unittest.skip('not yet implemented')
 class WindowManagementTest(HTMLTestCase):
 
     def tearDown(self):
