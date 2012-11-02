@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.abspath('_themes'))
 extensions = []
 templates_path = ['_templates']
 html_theme_path = ['_themes']
+html_static_path = ['_static']
 
 source_suffix = '.rst'
 master_doc = 'index'
