@@ -10,4 +10,5 @@ Contents:
    api
    integration
    tips
+   development
    changes
