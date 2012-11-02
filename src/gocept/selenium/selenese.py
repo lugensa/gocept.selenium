@@ -16,6 +16,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
 import json
 import re
@@ -215,14 +216,15 @@ class Selenese(object):
             self._find(locator), int(x), int(y)).click_and_hold().perform()
 
     def mouseDownRight(self, locator):
-        # XXX not yet implemented
-        # ActionChains only has click_and_hold; I *guess* one could pass in
-        # button=2 manually somehow, just like context_click does
-        raise NotImplementedError()
+        ActionChains(self.selenium).move_to_element(
+            self._find(locator)).perform()
+        self.selenium.execute(Command.MOUSE_DOWN, {'button': 2})
 
     def mouseDownRightAt(self, locator, coord):
-        # XXX not yet implemented, see mouseDownRight
-        raise NotImplementedError()
+        x, y = coord.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).perform()
+        self.selenium.execute(Command.MOUSE_DOWN, {'button': 2})
 
     def mouseMove(self, locator):
         ActionChains(self.selenium).move_to_element(
@@ -254,12 +256,15 @@ class Selenese(object):
             self._find(locator), int(x), int(y)).release().perform()
 
     def mouseUpRight(self, locator):
-        # XXX not yet implemented, see mouseDownRight
-        pass
+        ActionChains(self.selenium).move_to_element(
+            self._find(locator)).perform()
+        self.selenium.execute(Command.MOUSE_UP, {'button': 2})
 
     def mouseUpRightAt(self, locator, coord):
-        # XXX not yet implemented, see mouseDownRight
-        pass
+        x, y = coord.split(',')
+        ActionChains(self.selenium).move_to_element_with_offset(
+            self._find(locator), int(x), int(y)).perform()
+        self.selenium.execute(Command.MOUSE_UP, {'button': 2})
 
     def openWindow(self, url, window_id):
         self.selenium.execute_script(
