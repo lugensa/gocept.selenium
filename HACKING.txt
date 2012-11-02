@@ -1,6 +1,27 @@
-======================
+Developing gocept.selenium
+==========================
+
+:Author:
+    `gocept <http://gocept.com/>`_ <mail@gocept.com>
+
+:Online documentation:
+    http://packages.python.org/gocept.selenium/
+
+:PyPI page:
+    http://pypi.python.org/pypi/gocept.selenium/
+
+:Issue tracker:
+    https://projects.gocept.com/projects/gocept-selenium/
+
+:Source code:
+    https://bitbucket.org/gocept/gocept.selenium/
+
+:Current change log:
+    https://bitbucket.org/gocept/gocept.selenium/raw/tip/CHANGES.txt
+
+
 buildout configuration
-======================
+----------------------
 
 gocept.selenium integrates with quite a lot of different testing approaches and
 needs to work across a wide spectrum of software versions, e. g. Zope2 before

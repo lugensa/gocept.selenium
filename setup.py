@@ -80,6 +80,8 @@ setup(
     long_description=(
         open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
         '\n\n' +
+        open('HACKING.txt').read() +
+        '\n\n' +
         open('CHANGES.txt').read()),
     packages=find_packages('src'),
     package_dir={'': 'src'},
