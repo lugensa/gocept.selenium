@@ -1,5 +1,4 @@
-gocept.selenium
-===============
+.. include:: ../README.txt
 
 Contents:
 
