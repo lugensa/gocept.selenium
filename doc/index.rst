@@ -6,8 +6,7 @@ Contents:
    :maxdepth: 2
 
    install
-   api
    integration
-   tips
+   api
    development
    changes

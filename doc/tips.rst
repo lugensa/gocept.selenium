@@ -1,7 +1,0 @@
-Tips & Tricks
-=============
-
-Xephyr
-
-Firebug
-
