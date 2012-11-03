@@ -1,26 +1,3 @@
-Selenium RC integration with zope.testing
-=========================================
-
-gocept.selenium integrates the `Selenium remote control`_ with your test suite
-for any WSGI, Plone, Zope 2, ZTK, or Grok application.
-
-.. _`Selenium remote control`: http://seleniumhq.org/projects/remote-control/
-
-.. contents::
-
-Prerequisites
--------------
-
-Install Selenium RC by some means, e.g. by downloading a version from
-`seleniumhq.org`_ . We do not recommend using the
-``collective.recipe.seleniumrc`` buildout recipe for this since we have had
-some bad experiences with it related to new versions of Selenium RC and
-Firefox.
-
-.. _`seleniumhq.org`: http://seleniumhq.org/download/
-
-
-
 Quick start for WSGI applications
 ---------------------------------
 
@@ -234,43 +211,6 @@ An output file can be specified. In case no output file name is specified,
 the module produced is named ``tests_all_selenium.py``.
 
 
-Controlling gocept.selenium through environment variables
----------------------------------------------------------
-
-You can configure the selenium server that gocept.selenium connects to from the
-command line. Selenium RC defaults to localhost:4444, but you can also connect
-to a selenium grid in your organization by using the following environment
-variables::
-
-    GOCEPT_SELENIUM_SERVER_HOST=selenium.mycompany.com
-    GOCEPT_SELENIUM_SERVER_PORT=8888
-
-If multiple browsers are connected to your selenium grid, you can choose the
-browser to run the tests with as such::
-
-    GOCEPT_SELENIUM_BROWSER=*iexplore
-
-When you are running your selenium tests on a selenium grid, you need to
-instruct the browser which host and port to connect to::
-
-    GOCEPT_SELENIUM_APP_HOST=10.0.0.15
-    GOCEPT_SELENIUM_APP_PORT=8001
-
-The default for the port to bind is 0 which let the kernel choose a random,
-free port.  
-
-When you are testing an application on one machine, you can access the running
-application from another machine if you set ``GOCEPT_SELENIUM_APP_HOST =
-0.0.0.0`` instead of the default ``localhost``. 
-
-You can set the speed with which the tests are run through an environment
-variable::
-
-    GOCEPT_SELENIUM_SPEED=500
-
-This example will introduce a 500 millisecond pause between tests.
-
-
 Test helpers
 ------------
 
@@ -297,20 +237,3 @@ skipping tests in these cases, there is a test decorator
     The version test is only supported for Python >= 2.5. For Python < 2.5
     *only* a name check can be performed. Giving a version number will skip the
     test unconditionally.
-
-
-Similar packages
-----------------
-
-zc.selenium -- integrates Selenium Core with zope.testing.
-
-
-Development
------------
-
-Report bugs at <https://projects.gocept.com/projects/gocept-selenium/issues>.
-
-Get the latest source with ::
-
-  hg clone https://bitbucket.org/gocept/gocept.selenium
-
