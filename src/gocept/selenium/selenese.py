@@ -173,8 +173,10 @@ class Selenese(object):
 
     def doubleClickAt(self, locator, coordString):
         x, y = coordString.split(',')
+        # XXX API inconsistency: the parameter for click() is optional, but
+        # required for double_click()
         ActionChains(self.selenium).move_to_element_with_offset(
-            self._find(locator), int(x), int(y)).double_click().perform()
+            self._find(locator), int(x), int(y)).double_click(None).perform()
 
     def fireEvent(self, locator, eventName):
         raise NotImplementedError()
