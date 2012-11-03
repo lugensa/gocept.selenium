@@ -78,7 +78,7 @@ setup(
         'Topic :: Software Development :: Testing',
         ],
     long_description=(
-        open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
+        open('README.txt').read() +
         '\n\n' +
         open('HACKING.txt').read() +
         '\n\n' +
