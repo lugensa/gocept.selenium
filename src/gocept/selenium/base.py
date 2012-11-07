@@ -87,14 +87,14 @@ class Layer(object):
                 ' is it running? (%s)'
                 % (self._server, self._port, e))
         atexit.register(self._stop_selenium)
+        speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
+        if speed is not None:
+            self.seleniumrc.setSpeed(speed)
 
     def tearDown(self):
         self._stop_selenium()
         # XXX upstream bug, quit should reset session_id
         self.seleniumrc.session_id = None
-        speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
-        if speed is not None:
-            self.seleniumrc.setSpeed(speed)
 
     def testSetUp(self):
         # instantiate a fresh one per test run, so any configuration
