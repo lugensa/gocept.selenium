@@ -5,7 +5,8 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Improve stability for Zope 2 port binding. (raised AttributeError
+  occasionally)
 
 
 1.0 (2012-11-03)
