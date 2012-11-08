@@ -44,8 +44,15 @@ class Layer(gocept.selenium.base.Layer):
             time.sleep(0.025)
             for dispatcher in asyncore.socket_map.values():
                 if isinstance(dispatcher, ZServer.HTTPServer.zhttp_server):
-                    self.port = dispatcher.server_port
-                    break
+                    try:
+                        self.port = dispatcher.server_port
+                    except AttributeError:
+                        # Seems to happen when the dispatcher instance has been
+                        # created, but the port wasn't bound, yet. Just ignore
+                        # and wait for the next cycle.
+                        pass
+                    else:
+                        break
 
         # notify ZopeTestCase infrastructure that a ZServer has been started
         Testing.ZopeTestCase.utils._Z2HOST = self.host
