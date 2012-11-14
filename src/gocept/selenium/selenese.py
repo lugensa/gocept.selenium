@@ -142,6 +142,10 @@ class Selenese(object):
     def click(self, locator):
         self._find(locator).click()
 
+    def clickAndWait(self, locator):
+        self.click(locator)
+        self.waitForPageToLoad()
+
     def clickAt(self, locator, coordString):
         x, y = coordString.split(',')
         ActionChains(self.selenium).move_to_element_with_offset(
