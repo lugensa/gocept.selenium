@@ -559,6 +559,14 @@ class Selenese(object):
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, len(result), count))
 
+    def assertCssCount(self, css, count):
+        by, value = split_locator(css)
+        result = self.selenium.find_elements(by, value)
+        if len(result) != int(count):
+            raise self.failureException(
+                'Actual count of CSS %r is %s, expected %s'
+                % (css, len(result), count))
+
     # XXX works only for relative xpath locators with Webdriver
     def assertOrdered(self, locator1, locator2):
         if self._find(locator2).id not in set(
@@ -690,8 +698,8 @@ class Selenese(object):
                         break
             raise self.failureException(
                 detail + ('Expected: %s,\ngot: %s\nfrom %s' % (
-                abbrev_repr(expected), abbrev_repr(result),
-                self._call_repr(name))))
+                        abbrev_repr(expected), abbrev_repr(result),
+                        self._call_repr(name))))
 
     def _negate(self, assertion, name, *args, **kw):
         try:

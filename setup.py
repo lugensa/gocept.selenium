@@ -12,8 +12,9 @@
 #
 ##############################################################################
 
-import os.path
 from setuptools import setup, find_packages
+import os.path
+import sys
 
 
 script_requirements = []
@@ -24,15 +25,62 @@ except ImportError:
     script_requirements.append('elementtree')
 
 
+install_requires = [
+    'httpagentparser',
+    'selenium >= 2.0',
+    'setuptools']
+
+tests_require = ['mock']
+if sys.version_info < (2, 7):
+    tests_require.append('unittest2')
+
+
 setup(
     name='gocept.selenium',
-    version='0.13.3dev',
+    version='1.1.dev0',
     author='Zope Foundation and Contributors',
     author_email='ws@gocept.com',
-    url='http://packages.python.org/gocept.selenium',
-    description='Test-friendly Python API for Selenium and integration with web application frameworks.',
+    url='http://pypi.python.org/pypi/gocept.selenium',
+    description=('Test-friendly Python API for Selenium and integration with '
+                 'web application frameworks.'),
+    classifiers=[
+        'Development Status :: 6 - Mature',
+        'Environment :: Console',
+        'Environment :: Web Environment',
+        'Framework :: BFG',
+        'Framework :: Plone',
+        'Framework :: Plone :: 3.2',
+        'Framework :: Plone :: 3.3',
+        'Framework :: Plone :: 4.0',
+        'Framework :: Plone :: 4.1',
+        'Framework :: Plone :: 4.2',
+        'Framework :: Plone :: 4.3',
+        'Framework :: Pylons',
+        'Framework :: Pyramid',
+        'Framework :: Zope2',
+        'Framework :: Zope3',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved',
+        'License :: OSI Approved :: Zope Public License',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.4',
+        'Programming Language :: Python :: 2.5',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2 :: Only',
+        'Programming Language :: Python :: Implementation',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Zope',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Testing',
+        ],
     long_description=(
-        open(os.path.join('src', 'gocept', 'selenium', 'README.txt')).read() +
+        open('README.txt').read() +
+        '\n\n' +
+        open('HACKING.txt').read() +
         '\n\n' +
         open('CHANGES.txt').read()),
     packages=find_packages('src'),
@@ -41,11 +89,7 @@ setup(
     zip_safe=False,
     license='ZPL 2.1',
     namespace_packages=['gocept'],
-    install_requires=[
-        'selenium >= 2.0',
-        'setuptools',
-        'unittest2',
-        ],
+    install_requires=install_requires,
     extras_require=dict(
         grok=[
             'zope.app.appsetup',
@@ -89,9 +133,7 @@ setup(
             'plone.app.testing',
             ],
         script=script_requirements,
-        test_script=[
-            'mock',
-            ],
+        test=tests_require,
     ),
     entry_points={
           'console_scripts': [

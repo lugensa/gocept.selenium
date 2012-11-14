@@ -1,10 +1,55 @@
-Changes
-=======
+Changelog
+=========
 
-0.13.3 (unreleased)
--------------------
+
+1.1 (unreleased)
+----------------
 
 - Nothing changed yet.
+
+
+1.0 (2012-11-03)
+----------------
+
+- Marking the API as stable.
+
+
+0.17 (2012-11-01)
+-----------------
+
+- Added ``gocept.selenium.skipUnlessBrowser`` decorator to skip tests unless
+  ceratins browser requirements are met.
+
+- Fix: The static test server did not shutdown in some situations.
+
+
+0.16 (2012-10-10)
+-----------------
+
+- Fixed selenese popup tests.
+
+- Open a random port for the server process by default: When the environment
+  variable `GOCEPT_SELENIUM_APP_PORT` is not set, a random free port is bound.
+  This allows parallel testing, for instance (#11323).
+
+0.15 (2012-09-14)
+-----------------
+
+- WSGI-Layer is comptabile with Python 2.5.
+- Encoding support in converthtmltests
+  (Patch by Tom Gross <tom@toms-projekte.de>).
+- XHTML support for selenium tables
+  (Patch by Tom Gross <tom@toms-projekte.de>).
+
+
+0.14 (2012-06-06)
+-----------------
+
+- API expansion: Added ``assertCssCount``. Thus requiring selenium_ >= 2.0.
+- Added Trove classifiers to package metadata.
+- Moved code to Mercurial.
+
+.. _selenium : http://pypi.python.org/pypi/selenium
 
 
 0.13.2 (2012-03-15)
