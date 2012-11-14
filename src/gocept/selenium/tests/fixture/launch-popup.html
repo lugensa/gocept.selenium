@@ -5,12 +5,15 @@
 <head>
 <script type="text/javascript">
 function launch_popup() {
-    window.open('popup.html', 'gocept.selenium-popup');
+    var popup_id = window.location.search.substring(1);
+    document.getElementById('log').innerHTML = popup_id; 
+    window.open('popup.html?' + popup_id, popup_id);
 }
 </script>
 </head>
 
 <body onload="window.setTimeout(launch_popup, 1000)">
 <div id="parent">This is the parent window.</div>
+<div id="log"></div>
 </body>
 </html>

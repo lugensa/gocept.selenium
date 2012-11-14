@@ -1,15 +1,12 @@
-gocept.selenium
-===============
-
-Hello, world!
+.. include:: ../README.txt
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-
-`foo`_
-
-
-.. _foo: http://pypi.python.org/pypi/
+   install
+   integration
+   api
+   development
+   changes

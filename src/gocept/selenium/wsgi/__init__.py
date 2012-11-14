@@ -12,13 +12,14 @@
 #
 ##############################################################################
 
-import os
-import unittest
-import threading
 from wsgiref.simple_server import WSGIServer, WSGIRequestHandler
-
 import gocept.selenium.base
 import gocept.selenium.selenese
+import os
+import socket
+import threading
+import unittest
+import urllib
 
 
 class LogWSGIRequestHandler(WSGIRequestHandler):
@@ -43,23 +44,40 @@ class Layer(gocept.selenium.base.Layer):
         return app
 
     def setUp(self):
-        super(Layer, self).setUp()
-
         self.http = WSGIServer((self.host, self.port), LogWSGIRequestHandler)
+        self.port = self.http.server_port
         self.http.set_app(self.setup_wsgi_stack(self.application))
-
-        self.thread = threading.Thread(target=self.http.serve_forever)
+        self.thread = threading.Thread(target=self.serve)
         self.thread.daemon = True
         self.thread.start()
+        super(Layer, self).setUp()
 
     def tearDown(self):
-        self.http.shutdown()
+        self.shutdown()
         self.thread.join(5)
         if self.thread.isAlive():
             raise RuntimeError('WSGI server could not be shut down')
         # Make the server really go away and give up the socket:
         self.http = None
         super(Layer, self).tearDown()
+
+    def serve(self):
+        if hasattr(self.http, 'shutdown'):
+            self.http.serve_forever()
+        else:
+            self._running = True
+            while self._running:
+                self.http.handle_request()
+
+    def shutdown(self):
+        if hasattr(self.http, 'shutdown'):
+            self.http.shutdown()
+        else:
+            self._running = False
+            try:
+                urllib.urlopen('http://%s:%s/die' % (self.host, self.port))
+            except socket.error:
+                pass
 
 
 class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):

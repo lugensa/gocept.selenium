@@ -16,13 +16,18 @@ from gocept.selenium.selenese import selenese_pattern_equals as match
 from gocept.selenium.selenese import split_locator, split_option_locator
 from selenium.webdriver.common.by import By
 import glob
+import gocept.selenium
 import gocept.selenium.selenese
 import gocept.selenium.static
 import os
 import pkg_resources
 import shutil
 import time
-import unittest2 as unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class PatternTest(unittest.TestCase):
@@ -157,7 +162,7 @@ class NonexistentNameTest(unittest.TestCase):
                          "selenese method 'assert_with_wrong_assert_type'.")
 
 
-class HTMLTestCase(gocept.selenium.static.TestCase):
+class HTMLTestCase(gocept.selenium.static.TestCase, unittest.TestCase):
 
     def setUp(self):
         super(HTMLTestCase, self).setUp()
@@ -222,12 +227,14 @@ class AssertionTest(HTMLTestCase):
         self.selenium.open('/')
         self.selenium.verifyAlertNotPresent()
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_alert_present(self):
         self.selenium.open('/alert.html')
         time.sleep(3.1)
         self.selenium.verifyAlertPresent()
         self.selenium.getAlert()
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_wait_for_alert(self):
         self.selenium.open('/alert.html')
         self.selenium.verifyAlertNotPresent()
@@ -241,59 +248,86 @@ class AssertionTest(HTMLTestCase):
         self.selenium.assertXpathCount("//div", 4)
         self.selenium.assertXpathCount("//div", '4')
 
+    def test_csscount_should_convert_to_ints(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertCssCount("css=div", 4)
+        self.selenium.assertCssCount("css=div", '4')
+
+    def test_raises_nice_exception_on_mismatch(self):
+        self.selenium.open('/divs.html')
+        try:
+            self.selenium.assertCssCount("css=div", 3)
+        except AssertionError, e:
+            self.assertEqual("Actual count of CSS 'css=div' is 4, expected 3",
+                             str(e))
+        except Exception, e:
+            self.fail('Wrong assertion raised %r' % e)
+        else:
+            self.fail('Did not raise an exception')
+
+
+popup_test_count = 0
+
 
 @unittest.skip('not yet implemented')
 class PopUpTest(HTMLTestCase):
 
     def setUp(self):
+        global popup_test_count
+        popup_test_count += 1
         super(PopUpTest, self).setUp()
-        self.selenium.open('/launch-popup.html')
 
     def tearDown(self):
         try:
-            self.selenium.selectPopUp(wait=False)
+            self.selenium.selectPopUp(self.popup_id, wait=False)
         except Exception:
             pass
-        if self.selenium.getLocation().endswith('/popup.html'):
+        else:
             self.selenium.close()
             self.selenium.deselectPopUp()
         self.selenium.setTimeout(30)
         super(PopUpTest, self).tearDown()
 
-    def test_wait_for_and_select_popup(self):
-        # smoke tests for calls not otherwise used in this test class
-        self.selenium.waitForPopUp('gocept.selenium-popup')
-        self.selenium.waitForPopUp()
-        self.selenium.selectPopUp()
+    def open_popup(self):
+        self.popup_id = 'gocept.selenium-popup%s' % popup_test_count
+        self.selenium.open('/launch-popup.html?%s' % self.popup_id)
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_wait_for_popup_times_out(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.open_popup()
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.close()
         self.selenium.deselectPopUp()
         self.selenium.setTimeout(0)
         self.assertRaises(Exception, self.selenium.waitForPopUp,
-                          'gocept.selenium-popup')
+                          self.popup_id)
         self.assertRaises(Exception, self.selenium.waitForPopUp)
         self.selenium.setTimeout(1)
         self.assertRaises(Exception, self.selenium.waitForPopUp,
-                          'gocept.selenium-popup')
+                          self.popup_id)
         self.assertRaises(Exception, self.selenium.waitForPopUp)
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_select_popup(self):
+        self.open_popup()
         self.assertRaises(Exception,
                           self.selenium.selectPopUp,
-                          'gocept.selenium-popup', wait=False)
-        self.selenium.selectPopUp('gocept.selenium-popup')
+                          self.popup_id, wait=False)
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_deselect_popup(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.open_popup()
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.deselectPopUp()
         self.selenium.verifyElementNotPresent('css=div#popup')
         self.selenium.verifyElementPresent('css=div#parent')
 
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_close(self):
-        self.selenium.selectPopUp('gocept.selenium-popup')
+        self.open_popup()
+        self.selenium.selectPopUp(self.popup_id)
         self.selenium.verifyElementPresent('css=div#popup')
         self.selenium.close()
         self.assertRaises(Exception,
