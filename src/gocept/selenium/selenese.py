@@ -757,8 +757,7 @@ def split_locator(locator):
     if locator.startswith('//'):
         return By.XPATH, locator
     if locator.startswith('document'):
-        # XXX not yet implemented
-        pass
+        raise NotImplementedError()
 
     by, sep, value = locator.partition('=')
     if not value:
@@ -783,9 +782,10 @@ def split_locator(locator):
 
 
 def split_option_locator(option_locator, deselect=False):
-    # XXX not yet implemented: locating by ID
     prefix = 'deselect' if deselect else 'select'
     method, sep, option = option_locator.partition('=')
+    if method == 'id':
+        raise NotImplementedError()
     if not option:
         return prefix + '_by_visible_text', option_locator
     method = {
