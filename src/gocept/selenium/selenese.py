@@ -48,9 +48,6 @@ class Selenese(object):
 
     # Actions
 
-    def answerOnNextPrompt(self, answer):
-        raise NotImplementedError()
-
     def pause(self, milliseconds):
         time.sleep(milliseconds / 1000.0)
 
@@ -96,9 +93,6 @@ class Selenese(object):
     def attachFile(self, locator, fileURL):
         # see http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_WebDriver_support_file_uploads?
         self._find(locator).send_keys(fileURL)
-
-    def captureNetworkTraffic(self, type_):
-        raise NotImplementedError()
 
     def captureScreenshot(self, filename):
         self.selenium.get_screenshot_as_file(filename)
@@ -160,12 +154,6 @@ class Selenese(object):
         ActionChains(self.selenium).move_to_element_with_offset(
             self._find(locator), int(x), int(y)).context_click().perform()
 
-    def chooseOKOnNextConfirmation(self):
-        raise NotImplementedError()
-
-    def chooseCancelOnNextConfirmation(self):
-        raise NotImplementedError()
-
     def controlKeyDown(self):
         ActionChains(self.selenium).key_down(Keys.CONTROL).perform()
 
@@ -181,12 +169,6 @@ class Selenese(object):
         # required for double_click()
         ActionChains(self.selenium).move_to_element_with_offset(
             self._find(locator), int(x), int(y)).double_click(None).perform()
-
-    def fireEvent(self, locator, eventName):
-        raise NotImplementedError()
-
-    def focus(self, locator):
-        raise NotImplementedError()
 
     def goBack(self):
         self.selenium.back()
@@ -312,15 +294,6 @@ class Selenese(object):
 
     def setSpeed(self, speed):
         # XXX Python bindings do not expose Command.SET_SPEED
-        raise NotImplementedError()
-
-    def getMouseSpeed(self):
-        raise NotImplementedError()
-
-    def setMouseSpeed(self, speed):
-        raise NotImplementedError()
-
-    def setCursorPosition(self, locator, position):
         raise NotImplementedError()
 
     def shiftKeyDown(self):
@@ -481,13 +454,6 @@ class Selenese(object):
     @assert_type('locator_pattern')
     def getText(self, locator):
         return self._find(locator).text
-
-    @assert_type('locator_pattern')
-    def getTable(self, locator):
-        # XXX Webdriver has no API for this, we'd have to re-create this
-        # manually -- and I guess nobody uses this and goes for direct xpath
-        # instead, anyway.
-        raise NotImplementedError()
 
     @assert_type('locator_pattern')
     def getValue(self, locator):
