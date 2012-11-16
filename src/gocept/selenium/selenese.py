@@ -756,7 +756,7 @@ def abbrev_repr(x, size=70):
 def split_locator(locator):
     if locator.startswith('//'):
         return By.XPATH, locator
-    if locator.startswith('document'):
+    if locator.startswith('document') or locator.startswith('dom='):
         raise NotImplementedError()
 
     by, sep, value = locator.partition('=')
