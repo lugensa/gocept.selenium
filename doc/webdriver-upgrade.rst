@@ -5,9 +5,9 @@ Starting with version 2, gocept.selenium uses Selenium's webdriver API, the
 plan being to keep our own API as backwards-compatible as possible during the
 2.x release series and switching to the webdriver API only with version 3.
 
-This means that we've set out to implement the selenese API on top of
+This means that we've set out to implement the Selenese API on top of
 webdriver and while this has proven to be possible to a large extent, some
-details of the selenese API don't make any sense or are too different to be
+details of the Selenese API don't make any sense or are too different to be
 worth implementing in a webdriver environment.
 
 Here's a list of backwards-incompatibilities between gocept.selenium version
@@ -18,7 +18,7 @@ Here's a list of backwards-incompatibilities between gocept.selenium version
 - the path to an existing Firefox profile can be selected through an
   environment variable, ``GOCEPT_SELENIUM_FF_PROFILE``
 
-- selenese methods with changed behaviour:
+- Selenese methods with changed behaviour:
 
   * open: dropped the ``ignoreResponseCode`` parameter
   * ``getEval`` adds a ``return`` statement in front of the code, i.e. to run
@@ -30,7 +30,7 @@ Here's a list of backwards-incompatibilities between gocept.selenium version
     ``[object Object]``
   * ``assertOrdered`` only works with relative xpath locators
 
-- methods removed from the selenese API:
+- methods removed from the Selenese API:
 
   * ``addCustomRequestHeader``
   * ``addLocationStrategy``
@@ -55,7 +55,7 @@ Here's a list of backwards-incompatibilities between gocept.selenium version
   * ``useXpathLibrary``
   * ``waitForFrameToLoad``
 
-- methods of the selenese API that have been kept but are non-functional
+- methods of the Selenese API that have been kept but are non-functional
   temporarily:
 
   * ``highlight``
