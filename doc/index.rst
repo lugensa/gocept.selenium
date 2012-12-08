@@ -6,8 +6,8 @@ Contents:
    :maxdepth: 2
 
    install
-   webdriver-upgrade
    integration
    api
    development
+   webdriver-upgrade
    changes
