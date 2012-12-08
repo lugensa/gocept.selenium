@@ -13,24 +13,45 @@ worth implementing in a webdriver environment.
 Here's a list of backwards-incompatibilities between gocept.selenium version
 1.x and 2.x:
 
-- new browser name syntax: specify Firefox as "firefox", not "firefox*"
+- ``getEval`` behaves differently.
 
-- the path to an existing Firefox profile can be selected through an
-  environment variable, ``GOCEPT_SELENIUM_FF_PROFILE``
-
-- Selenese methods with changed behaviour:
-
-  * open: dropped the ``ignoreResponseCode`` parameter
   * ``getEval`` adds a ``return`` statement in front of the code, i.e. to run
     Javascript code which is not an expression, use ``runScript``
   * ``getEval`` has access to different globals now: ``browserbot`` is no
-    longer defined while ``window`` and ``document`` refer directly to the
-    window under test
+    longer defined, while ``window`` and ``document`` refer directly to the
+    window under test.
   * ``getEval`` returns the dictionary representation of objects instead of
-    ``[object Object]``
-  * ``assertOrdered`` only works with relative xpath locators
+    the rather uninformative ``[object Object]``.
 
-- methods removed from the Selenese API:
+- The browser name syntax has changed: specify Firefox as "firefox", not "firefox*"
+  (concerns the environment variable ``GOCEPT_SELENIUM_BROWSER``).
+  See the `WebDriver wiki`_ for possible browser names.
+
+.. _`WebDriver wiki`: http://code.google.com/p/selenium/wiki/DesiredCapabilities
+
+- With Selenium Remote-Control one had to change the base Firefox profile to be
+  used on the server side (by passing ``-firefoxProfileTemplate`` to
+  ``selenium-server.jar``). With WebDriver this has moved to the client side,
+  so you can select a profile by setting the path to an existing Firefox
+  profile as the environment variable ``GOCEPT_SELENIUM_FF_PROFILE``.
+
+- Selenese methods that don't work yet:
+
+  * ``highlight``
+  * ``getSpeed``
+  * ``setSpeed``
+  * ``getAllWindowNames``
+  * ``getAllWindowTitles``
+  * ``selectPopUp``
+  * ``deselectPopUp``
+
+- Selenese methods with changed behaviour:
+
+  * ``open``: dropped the ``ignoreResponseCode`` parameter
+  * ``assertOrdered`` only works with relative xpath locators, not with
+    any element locators anymore.
+
+- Selenese methods that have been removed and are not coming back:
 
   * ``addCustomRequestHeader``
   * ``addLocationStrategy``
@@ -55,18 +76,7 @@ Here's a list of backwards-incompatibilities between gocept.selenium version
   * ``useXpathLibrary``
   * ``waitForFrameToLoad``
 
-- methods of the Selenese API that have been kept but are non-functional
-  temporarily:
-
-  * ``highlight``
-  * ``getSpeed``
-  * ``setSpeed``
-  * ``getAllWindowNames``
-  * ``getAllWindowTitles``
-  * ``selectPopUp``
-  * ``deselectPopUp``
-
-- locator patterns that can no longer be used:
+- Locator patterns that can no longer be used:
 
   * element: dom, document
   * option: id
