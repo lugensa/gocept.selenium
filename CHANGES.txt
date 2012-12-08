@@ -2,10 +2,13 @@ Changelog
 =========
 
 
-1.1 (unreleased)
+2.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Changed Selenium backend to use Webdriver (Selenium-2.x) instead of the
+  Selenium Remote-Control (Selenium-1.x). See the `upgrade notes`_ for details.
+
+.. _`upgrade notes`: http://packages.python.org/gocept.selenium/webdriver-upgrade.html
 
 
 1.0 (2012-11-03)
