@@ -360,7 +360,9 @@ class Selenese(object):
     @assert_type('pattern')
     def getConfirmation(self):
         confirmation = self.selenium.switch_to_alert()
-        return confirmation.text
+        text = confirmation.text
+        confirmation.accept()
+        return text
 
     @assert_type('pattern')
     def getCookie(self):
