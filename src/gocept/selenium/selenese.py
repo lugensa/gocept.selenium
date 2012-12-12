@@ -509,7 +509,7 @@ class Selenese(object):
 
     def isTextPresent(self, pattern):
         body = self.selenium.find_element(By.TAG_NAME, 'body')
-        return pattern in body.text
+        return normalize(pattern) in normalize(body.text)
 
     @assert_type('pattern')
     def getLocation(self):
@@ -809,3 +809,9 @@ def split_frame_locator(frame_locator):
         raise ValueError('Invalid frame selector %r, valid are %r'
                          % (by, valid_selectors))
     return value
+
+
+WHITESPACE = re.compile(r'\s+')
+
+def normalize(text):
+    return WHITESPACE.sub(' ', text)
