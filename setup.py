@@ -32,7 +32,7 @@ install_requires = [
 
 tests_require = ['mock']
 if sys.version_info < (2, 7):
-    tests_require.append('unittest2')
+    install_requires.append('unittest2')
 
 
 setup(

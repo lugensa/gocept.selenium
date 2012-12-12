@@ -22,8 +22,12 @@ import shutil
 import tempfile
 import threading
 import time
-import unittest2 as unittest
 import urllib
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 _suffix = 'gocept.selenium.static'
 

@@ -5,6 +5,8 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Fixed declaration of the dependency on unittest2.
+
 - Accept confirmations after asserting their text.
 
 
