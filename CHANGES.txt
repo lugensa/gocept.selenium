@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-2.0 (unreleased)
-----------------
+2.0.0a1 (2012-12-12)
+--------------------
 
 - Changed Selenium backend to use Webdriver (Selenium-2.x) instead of the
   Selenium Remote-Control (Selenium-1.x). See the `upgrade notes`_ for details.
