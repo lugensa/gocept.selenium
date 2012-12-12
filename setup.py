@@ -27,7 +27,7 @@ except ImportError:
 
 install_requires = [
     'httpagentparser',
-    'selenium >= 2.0',
+    'selenium >= 2.28',
     'setuptools']
 
 tests_require = ['mock']
