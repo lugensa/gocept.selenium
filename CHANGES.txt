@@ -7,6 +7,9 @@ Changelog
 
 - Fixed declaration of the dependency on unittest2.
 
+- Use a recent version of selenium that has fixed a typo in a public name that
+  we use.
+
 - Accept confirmations after asserting their text.
 
 
