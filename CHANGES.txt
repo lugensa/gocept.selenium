@@ -12,6 +12,8 @@ Changelog
 
 - Accept confirmations after asserting their text.
 
+- Normalize whitespace when asserting that some text is present.
+
 
 2.0.0a1 (2012-12-12)
 --------------------
