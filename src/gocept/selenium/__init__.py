@@ -1,2 +1,2 @@
 # python package
-from base import skipUnlessBrowser
+from base import skipUnlessBrowser, LAYER
