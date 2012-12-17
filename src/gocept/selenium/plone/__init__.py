@@ -12,15 +12,13 @@
 #
 ##############################################################################
 
-import Products.PloneTestCase.PloneTestCase
 import gocept.selenium.base
-import gocept.selenium.zope2
+import gocept.httpserverlayer.plone
 
 
 class TestCase(gocept.selenium.base.TestCase,
-               gocept.selenium.zope2.SandboxPatch,
-               Products.PloneTestCase.PloneTestCase.FunctionalTestCase):
-
-    def getRootFolder(self):
-        """forward API-compatibility with zope.app.testing"""
-        return self.app
+               gocept.httpserverlayer.plone.TestCase):
+    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+    otherwise its setUp/tearDown is never called, since unittest.TestCase
+    does not call super().
+    """
