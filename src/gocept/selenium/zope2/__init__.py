@@ -97,11 +97,6 @@ class SandboxPatch(object):
         return app
 
 
-def get_current_db():
-    """helper for gocept.selenium.tests.isolation"""
-    return Zope2.bobo_application._stuff[0]
-
-
 class TestCase(gocept.selenium.base.TestCase,
                SandboxPatch,
                Testing.ZopeTestCase.FunctionalTestCase):
