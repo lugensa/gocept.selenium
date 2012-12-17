@@ -46,7 +46,10 @@ class Layer(gocept.selenium.base.IntegrationBase,
 
 
 class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
-    pass
+    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+    otherwise its setUp/tearDown is never called, since unittest.TestCase
+    does not call super().
+    """
 
 
 class CleanerMiddleware(object):
