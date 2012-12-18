@@ -12,18 +12,24 @@
 #
 ##############################################################################
 
-from __future__ import absolute_import
 import atexit
 import gocept.selenium.selenese
 import httpagentparser
 import os
-import plone.testing
 import re
 import selenium
 import socket
 import sys
 import warnings
 
+# Python 2.4 does not have access to absolute_import,
+# and we can't rename gocept.selenium.plone to something that
+# does not clash with plone.testing (since that would break our API).
+# So we use this workaround which passes empty globals to __import__,
+# so it can't determine where we are to do something relatively.
+# Also, we have to pass a fromlist with an empty string to have __import__
+# return the module we asked for instead of its parent. *sigh*
+plonetesting = __import__('plone.testing', {}, {}, [''])
 
 try:
     import distutils.versionpredicate
@@ -33,7 +39,7 @@ else:
     have_predicate = True
 
 
-class Layer(plone.testing.Layer):
+class Layer(plonetesting.Layer):
 
     # hostname and port of the Selenium RC server
     _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
