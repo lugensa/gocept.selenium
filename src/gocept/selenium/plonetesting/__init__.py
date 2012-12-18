@@ -12,50 +12,24 @@
 #
 ##############################################################################
 
+import gocept.httpserverlayer.plonetesting
 import gocept.selenium.base
-import plone.testing
-import plone.testing.z2
 import unittest
 
 
-# XXX it would be nicer to reuse plone.testing.z2.ZSERVER_FIXTURE,
-# but we can't since we want to be able to override host/port via the
-# mechanisms exposed by gocept.selenium.base.Layer
-ZSERVER = plone.testing.z2.ZServer()
-
-
-class Layer(gocept.selenium.base.Layer, plone.testing.Layer):
-
-    defaultBases = (ZSERVER, plone.testing.z2.FUNCTIONAL_TESTING)
-
-    def __init__(self, *args, **kw):
-        # we can't use super, since our base classes are not built for multiple
-        # inheritance (they don't consistently call super themselves, so parts
-        # of the hierarchy might be missed).
-        #
-        # plone.testing.Layer has noops for everything except __init__, so this
-        # only matters here.
-
-        gocept.selenium.base.Layer.__init__(self)
-        plone.testing.Layer.__init__(self, *args, **kw)
-        ZSERVER.host = self.host
-        ZSERVER.port = self.port
-
-    def setUp(self):
-        _, self.port = ZSERVER.zserver.socket.getsockname()
-        super(Layer, self).setUp()
-
-    def testSetUp(self):
-        super(Layer, self).testSetUp()
-        # conform to the plone.testing contract that layers expose interesting
-        # stuff via getitem
-        self['selenium'] = self.selenium
+class Layer(gocept.selenium.base.IntegrationBase,
+            gocept.httpserverlayer.plonetesting.Layer):
+    pass
 
 
 SELENIUM = Layer()
 
 
 class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+    otherwise its setUp/tearDown is never called, since unittest.TestCase
+    does not call super().
+    """
 
     @property
     def selenium(self):
