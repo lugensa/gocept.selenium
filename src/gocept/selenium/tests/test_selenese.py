@@ -194,7 +194,7 @@ class AssertionTests(object):
     @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
     def test_alert_present(self):
         self.selenium.open('/alert.html')
-        time.sleep(0.6)
+        time.sleep(3.1)
         self.selenium.verifyAlertPresent()
         self.selenium.getAlert()
 
