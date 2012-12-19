@@ -133,7 +133,7 @@ class HTMLTestCase(gocept.selenium.static.TestCase, unittest.TestCase):
             shutil.copy(os.path.join(directory, name), self.documentroot)
 
 
-class AssertionTest(HTMLTestCase):
+class AssertionTests(object):
 
     def test_wait_for(self):
         self.selenium.open('/display-delay.html')
@@ -228,6 +228,10 @@ class AssertionTest(HTMLTestCase):
             self.fail('Wrong assertion raised %r' % e)
         else:
             self.fail('Did not raise an exception')
+
+
+class AssertionTest(AssertionTests, HTMLTestCase):
+    pass
 
 
 popup_test_count = 0
