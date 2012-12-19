@@ -1,1 +1,1 @@
-from base import skipUnlessBrowser
+from util import skipUnlessBrowser
