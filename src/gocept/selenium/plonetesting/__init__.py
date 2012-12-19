@@ -13,11 +13,11 @@
 ##############################################################################
 
 import gocept.httpserverlayer.plonetesting
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 import unittest
 
 
-class Layer(gocept.selenium.base.IntegrationBase,
+class Layer(gocept.selenium.seleniumrc.IntegrationBase,
             gocept.httpserverlayer.plonetesting.Layer):
     pass
 
@@ -25,8 +25,8 @@ class Layer(gocept.selenium.base.IntegrationBase,
 SELENIUM = Layer()
 
 
-class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
-    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
+    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
     otherwise its setUp/tearDown is never called, since unittest.TestCase
     does not call super().
     """

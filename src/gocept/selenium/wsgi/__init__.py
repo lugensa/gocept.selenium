@@ -17,7 +17,7 @@ from gocept.httpserverlayer.wsgi import FixupMiddleware as CleanerMiddleware
 
 from wsgiref.simple_server import WSGIRequestHandler
 import gocept.httpserverlayer.wsgi
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 import os
 import unittest
 
@@ -30,7 +30,7 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
             WSGIRequestHandler.log_request(self, *args)
 
 
-class Layer(gocept.selenium.base.IntegrationBase,
+class Layer(gocept.selenium.seleniumrc.IntegrationBase,
             gocept.httpserverlayer.wsgi.Layer):
 
     request_handler_class = LogWSGIRequestHandler
@@ -48,8 +48,8 @@ class Layer(gocept.selenium.base.IntegrationBase,
         return app
 
 
-class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
-    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
+    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
     otherwise its setUp/tearDown is never called, since unittest.TestCase
     does not call super().
     """

@@ -15,7 +15,7 @@
 from zope.app.appsetup.testlayer import ZODBLayer
 import gocept.httpserverlayer.wsgi
 import gocept.httpserverlayer.zopeappwsgi
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 import os
 import plone.testing
 import sys
@@ -48,7 +48,7 @@ class Layer(ZODBLayer, plone.testing.Layer):
             name='IntegratedHTTPLayer', bases=[self.WSGI_LAYER])
         self.HTTP_LAYER.host = self.host
         self.HTTP_LAYER.port = self.port
-        self.SELENIUM_LAYER = gocept.selenium.base.Layer(
+        self.SELENIUM_LAYER = gocept.selenium.seleniumrc.Layer(
             name='IntegratedSeleniumLayer', bases=[self.HTTP_LAYER])
 
     def setUp(self):
@@ -73,7 +73,7 @@ class Layer(ZODBLayer, plone.testing.Layer):
         self['selenium'] = self.SELENIUM_LAYER['selenium']
 
 
-class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
 
     def setUp(self):
         super(TestCase, self).setUp()

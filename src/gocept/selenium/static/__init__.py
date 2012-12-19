@@ -24,7 +24,7 @@ import time
 import unittest
 import urllib
 
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 
 _suffix = 'gocept.selenium.static'
 
@@ -84,7 +84,7 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
         self.server_close()
 
 
-class StaticFilesLayer(gocept.selenium.base.Layer):
+class StaticFilesLayer(gocept.selenium.seleniumrc.Layer):
 
     # hostname and port of the local application.
     host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
@@ -142,7 +142,7 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
 static_files_layer = StaticFilesLayer()
 
 
-class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
+class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
 
     layer = static_files_layer
 
