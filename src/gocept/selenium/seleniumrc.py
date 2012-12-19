@@ -93,9 +93,11 @@ class IntegrationBase(object):
     def setUp(self):
         super(IntegrationBase, self).setUp()
         self.SELENIUM_LAYER.setUp()
+        self['seleniumrc'] = self.SELENIUM_LAYER['seleniumrc']
 
     def tearDown(self):
         self.SELENIUM_LAYER.tearDown()
+        del self['seleniumrc']
         super(IntegrationBase, self).tearDown()
 
     def testSetUp(self):
