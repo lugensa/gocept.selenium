@@ -14,13 +14,10 @@
 
 import atexit
 import gocept.selenium.selenese
-import httpagentparser
 import os
-import re
 import selenium
 import socket
 import sys
-import warnings
 
 # Python 2.4 does not have access to absolute_import,
 # and we can't rename gocept.selenium.plone to something that
@@ -30,13 +27,6 @@ import warnings
 # Also, we have to pass a fromlist with an empty string to have __import__
 # return the module we asked for instead of its parent. *sigh*
 plonetesting = __import__('plone.testing', {}, {}, [''])
-
-try:
-    import distutils.versionpredicate
-except ImportError:
-    have_predicate = False
-else:
-    have_predicate = True
 
 
 class Layer(plonetesting.Layer):
@@ -144,40 +134,3 @@ class TestCase(object):
         assert method_name
         self.selenium.setContext('%s.%s' % (self.__class__.__name__,
                                             method_name))
-
-
-class skipUnlessBrowser(object):
-
-    def __init__(self, name, version=None):
-        self.required_name = name
-        self.required_version = version
-
-    def __call__(self, f):
-        if isinstance(f, type):
-            raise ValueError('%s cannot be used as class decorator' %
-                             self.__class__.__name__)
-        def test(test_case, *args, **kw):
-            self.skip_unless_requirements_met(test_case)
-            return f(test_case, *args, **kw)
-        return test
-
-    def skip_unless_requirements_met(self, test_case):
-        agent = httpagentparser.detect(
-            test_case.selenium.getEval('window.navigator.userAgent'))
-        if re.match(self.required_name, agent['browser']['name']) is None:
-            test_case.skipTest('Require browser %s, but have %s.' % (
-                self.required_name, agent['browser']['name']))
-        if self.required_version:
-            if have_predicate:
-                requirement = distutils.versionpredicate.VersionPredicate(
-                    'Browser (%s)' % self.required_version)
-                skip = not requirement.satisfied_by(
-                    str(agent['browser']['version']))
-            else:
-                warnings.warn(
-                    'distutils.versionpredicate not available, skipping.')
-                skip = True
-            if skip:
-                test_case.skipTest('Require %s%s, got %s %s' % (
-                    self.required_name, self.required_version,
-                    agent['browser']['name'], agent['browser']['version']))
