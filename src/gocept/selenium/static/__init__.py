@@ -12,19 +12,23 @@
 #
 ##############################################################################
 
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 import BaseHTTPServer
+import gocept.selenium.seleniumrc
 import os
 import os.path
 import posixpath
 import shutil
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 import tempfile
 import threading
 import time
 import unittest
 import urllib
 
-import gocept.selenium.seleniumrc
+# work around Python 2.4 lack of absolute_import,
+# see gocept.selenium.seleniumrc for details
+plonetesting = __import__('plone.testing', {}, {}, [''])
+
 
 _suffix = 'gocept.selenium.static'
 
@@ -84,20 +88,18 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
         self.server_close()
 
 
-class StaticFilesLayer(gocept.selenium.seleniumrc.Layer):
+class StaticFiles(plonetesting.Layer):
 
-    # hostname and port of the local application.
-    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
-    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
+    host = 'localhost'
+    port = 0  # choose automatically
 
     def setUp(self):
         self.server = None
-        self.documentroot = tempfile.mkdtemp(suffix=_suffix)
+        self['documentroot'] = tempfile.mkdtemp(suffix=_suffix)
         self.start_server()
-        super(StaticFilesLayer, self).setUp()
 
     def start_server(self):
-        StaticFileRequestHandler.documentroot = self.documentroot
+        StaticFileRequestHandler.documentroot = self['documentroot']
         self.server = HTTPServer(
             (self.host, self.port), StaticFileRequestHandler)
         self.server_thread = threading.Thread(
@@ -123,21 +125,28 @@ class StaticFilesLayer(gocept.selenium.seleniumrc.Layer):
     def tearDown(self):
         # Clean up after our behinds.
         self.stop_server()
-        shutil.rmtree(self.documentroot)
-        super(StaticFilesLayer, self).tearDown()
+        shutil.rmtree(self['documentroot'])
 
     def testSetUp(self):
-        super(StaticFilesLayer, self).testSetUp()
-        paths = os.listdir(self.documentroot)
+        paths = os.listdir(self['documentroot'])
         for path in paths:
-            fullpath = os.path.join(self.documentroot, path)
+            fullpath = os.path.join(self['documentroot'], path)
             if os.path.isdir(fullpath):
                 shutil.rmtree(fullpath)
                 continue
             os.remove(fullpath)
         # silence annoying 404s
-        open(os.path.join(self.documentroot, 'favicon.ico'), 'w').close()
+        open(os.path.join(self['documentroot'], 'favicon.ico'), 'w').close()
 
+STATIC_FILES = StaticFiles()
+
+
+class StaticFilesLayer(gocept.selenium.seleniumrc.IntegrationBase,
+                       StaticFiles):
+
+    def __init__(self):
+        super(StaticFilesLayer, self).__init__(
+            name='StaticFilesLayer', bases=())
 
 static_files_layer = StaticFilesLayer()
 
@@ -146,6 +155,6 @@ class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
 
     layer = static_files_layer
 
-    def setUp(self):
-        super(TestCase, self).setUp()
-        self.documentroot = self.layer.documentroot
+    @property
+    def documentroot(self):
+        return self.layer['documentroot']
