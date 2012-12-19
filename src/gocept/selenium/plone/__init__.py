@@ -12,13 +12,13 @@
 #
 ##############################################################################
 
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 import gocept.httpserverlayer.plone
 
 
-class TestCase(gocept.selenium.base.TestCase,
+class TestCase(gocept.selenium.seleniumrc.TestCase,
                gocept.httpserverlayer.plone.TestCase):
-    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
     otherwise its setUp/tearDown is never called, since unittest.TestCase
     does not call super().
     """

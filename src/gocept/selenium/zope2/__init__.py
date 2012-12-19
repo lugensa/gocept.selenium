@@ -13,10 +13,10 @@
 ##############################################################################
 
 import gocept.httpserverlayer.zope2
-import gocept.selenium.base
+import gocept.selenium.seleniumrc
 
 
-class Layer(gocept.selenium.base.IntegrationBase,
+class Layer(gocept.selenium.seleniumrc.IntegrationBase,
             gocept.httpserverlayer.zope2.Layer):
 
     def __init__(self, *bases):
@@ -24,9 +24,9 @@ class Layer(gocept.selenium.base.IntegrationBase,
         super(Layer, self).__init__(name=name, bases=bases)
 
 
-class TestCase(gocept.selenium.base.TestCase,
+class TestCase(gocept.selenium.seleniumrc.TestCase,
                gocept.httpserverlayer.zope2.TestCase):
-    """NOTE: MRO requires gocept.selenium.base.TestCase to come first,
+    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
     otherwise its setUp/tearDown is never called, since unittest.TestCase
     does not call super().
     """

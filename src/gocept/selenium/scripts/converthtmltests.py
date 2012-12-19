@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Convert HTML selenium tests to gocept.selenium based test cases.
+Convert HTML selenium tests to gocept.selenium.seleniumrcd test cases.
 """
 
 import re

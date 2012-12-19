@@ -117,7 +117,7 @@ class TestCase(object):
     # convenience functionality.
     #
     # Example:
-    # some.flavour.TestCase(gocept.selenium.base.TestCase,
+    # some.flavour.TestCase(gocept.selenium.seleniumrc.TestCase,
     #                       the.actual.base.TestCase):
     #     pass
 
