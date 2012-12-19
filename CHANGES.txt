@@ -2,10 +2,11 @@ Changelog
 =========
 
 
-1.1.2 (unreleased)
-------------------
+2.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Add layer that uses Webdriver as the Selenium backend instead of the old
+  Remote Control.
 
 
 1.1.1 (2012-12-19)
