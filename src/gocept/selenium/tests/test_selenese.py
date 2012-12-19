@@ -184,7 +184,7 @@ class AssertionTest(HTMLTestCase):
     def test_location(self):
         self.selenium.open('/')
         self.assertEquals(
-            'http://%s:%s/' % (self.layer.host, self.layer.port),
+            'http://%s/' % self.layer['http_address'],
             self.selenium.getLocation())
 
     def test_alert_not_present(self):
