@@ -27,7 +27,7 @@ class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
     layer = gocept.selenium.zope2.Layer(gocept.selenium.zope2.testing.Layer)
 
     def getDatabase(self):
-        return gocept.selenium.zope2.get_current_db()
+        return gocept.selenium.zope2.testing.get_current_db()
 
 
 def test_suite():

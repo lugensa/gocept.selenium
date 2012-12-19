@@ -5,8 +5,7 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Improve stability for Zope 2 port binding. (raised AttributeError
-  occasionally)
+- Extract HTTP server integration into separate package, gocept.httpserverlayer
 
 
 1.0 (2012-11-03)

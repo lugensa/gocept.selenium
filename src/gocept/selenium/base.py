@@ -22,11 +22,14 @@ import socket
 import sys
 import warnings
 
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
-
+# Python 2.4 does not have access to absolute_import,
+# and we can't rename gocept.selenium.plone to something that
+# does not clash with plone.testing (since that would break our API).
+# So we use this workaround which passes empty globals to __import__,
+# so it can't determine where we are to do something relatively.
+# Also, we have to pass a fromlist with an empty string to have __import__
+# return the module we asked for instead of its parent. *sigh*
+plonetesting = __import__('plone.testing', {}, {}, [''])
 
 try:
     import distutils.versionpredicate
@@ -36,7 +39,7 @@ else:
     have_predicate = True
 
 
-class Layer(object):
+class Layer(plonetesting.Layer):
 
     # hostname and port of the Selenium RC server
     _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
@@ -44,31 +47,14 @@ class Layer(object):
 
     _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', '*firefox')
 
-    # hostname and port of the local application.
-    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
-    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
-
-    def __init__(self, *bases):
-        self.__bases__ = bases
-        if self.__bases__:
-            base = bases[0]
-            self.__name__ = '(%s.%s)' % (base.__module__, base.__name__)
-        else:
-            self.__name__ = self.__class__.__name__
-
-    def _stop_selenium(self):
-        # Only stop selenium if it is still active.
-        if self.seleniumrc.sessionId is not None:
-            self.seleniumrc.stop()
-
     def setUp(self):
-        assert self.port > 0
-        assert self.host
-        self.seleniumrc = selenium.selenium(
+        if 'http_address' not in self:
+            raise KeyError("No base layer has set self['http_address']")
+        self['seleniumrc'] = selenium.selenium(
             self._server, self._port, self._browser,
-            'http://%s:%s/' % (self.host, self.port))
+            'http://%s/' % self['http_address'])
         try:
-            self.seleniumrc.start()
+            self['seleniumrc'].start()
         except socket.error, e:
             raise socket.error(
                 'Failed to connect to Selenium RC server at %s:%s,'
@@ -77,20 +63,62 @@ class Layer(object):
         atexit.register(self._stop_selenium)
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
         if speed is not None:
-            self.seleniumrc.set_speed(speed)
+            self['seleniumrc'].set_speed(speed)
+
+    def _stop_selenium(self):
+        # Only stop selenium if it is still active.
+        if self['seleniumrc'].sessionId is not None:
+            self['seleniumrc'].stop()
 
     def tearDown(self):
-        self.seleniumrc.stop()
+        self['seleniumrc'].stop()
 
     def testSetUp(self):
         # instantiate a fresh one per test run, so any configuration
         # (e.g. timeout) is reset
-        self.selenium = gocept.selenium.selenese.Selenese(
-            self.seleniumrc, self.host, self.port)
+        self['selenium'] = gocept.selenium.selenese.Selenese(
+            self['seleniumrc'], self['http_address'])
+
+
+class IntegrationBase(object):
+
+    # hostname and port of the local application.
+    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
+
+    def __init__(self, *args, **kw):
+        kw['module'] = sys._getframe(1).f_globals['__name__']
+        super(IntegrationBase, self).__init__(*args, **kw)
+        self.SELENIUM_LAYER = Layer(
+            name='IntegratedSeleniumLayer', bases=[self])
+
+    def make_layer_name(self, bases):
+        if bases:
+            base = bases[0]
+            name = '(%s.%s)' % (base.__module__, base.__name__)
+        else:
+            name = self.__class__.__name__
+        return name
+
+    def setUp(self):
+        super(IntegrationBase, self).setUp()
+        self.SELENIUM_LAYER.setUp()
+
+    def tearDown(self):
+        self.SELENIUM_LAYER.tearDown()
+        super(IntegrationBase, self).tearDown()
+
+    def testSetUp(self):
+        super(IntegrationBase, self).testSetUp()
+        self.SELENIUM_LAYER.testSetUp()
+        self['selenium'] = self.SELENIUM_LAYER['selenium']
+
+    def testTearDown(self):
+        self.SELENIUM_LAYER.testTearDown()
+        super(IntegrationBase, self).testTearDown()
 
 
 TEST_METHOD_NAMES = ('_TestCase__testMethodName', '_testMethodName')
-
 
 
 class TestCase(object):
@@ -105,7 +133,7 @@ class TestCase(object):
 
     @property
     def selenium(self):
-        return self.layer.selenium
+        return self.layer['selenium']
 
     def setUp(self):
         super(TestCase, self).setUp()

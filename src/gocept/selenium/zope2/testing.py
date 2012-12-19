@@ -13,8 +13,8 @@
 ##############################################################################
 
 import Products.Five.zcml
+import Zope2
 import gocept.selenium.tests.isolation
-import gocept.selenium.zope2
 
 
 class Layer(object):
@@ -32,3 +32,8 @@ class FiveLayer(object):
     def setUp(cls):
         Products.Five.zcml.load_config(
             'configure.zcml', package=Products.Five)
+
+
+def get_current_db():
+    """helper for gocept.selenium.tests.isolation"""
+    return Zope2.bobo_application._stuff[0]
