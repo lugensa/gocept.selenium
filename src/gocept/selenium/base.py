@@ -79,8 +79,6 @@ class Layer(plonetesting.Layer):
         self['selenium'] = gocept.selenium.selenese.Selenese(
             self['seleniumrc'], self['http_address'])
 
-LAYER = Layer()
-
 
 class IntegrationBase(object):
 
