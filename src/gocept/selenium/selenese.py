@@ -46,15 +46,10 @@ class Selenese(object):
 
     failureException = AssertionError
 
-    def __init__(self, selenium, app_host, app_port):
+    def __init__(self, selenium, app_address):
         self.selenium = selenium
-        self.host = app_host
-        self.port = app_port
+        self.server = app_address
         self.timeout = 30
-
-    @property
-    def server(self):
-        return '%s:%s' % (self.host, self.port)
 
     # Actions
 

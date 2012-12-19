@@ -31,4 +31,4 @@ class Zope212Tests(gocept.selenium.tests.isolation.IsolationTests,
         gocept.selenium.zope2.testing.Layer)
 
     def getDatabase(self):
-        return gocept.selenium.zope2.get_current_db()
+        return gocept.selenium.zope2.testing.get_current_db()
