@@ -23,7 +23,7 @@ class LayerTest(unittest.TestCase):
     def test_connection_refused_should_raise_readable_error(self):
         import gocept.selenium.base
         layer = gocept.selenium.base.Layer()
-        layer.port = 1234  # doesn't matter, but > 0
+        layer['http_address'] = 'localhost:12345'
         layer._port = 4445  # default port is 4444
         try:
             layer.setUp()
