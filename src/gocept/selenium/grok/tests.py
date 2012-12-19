@@ -31,17 +31,13 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
         root['app'] = gocept.selenium.grok.fixtures.App()
         transaction.commit()
 
-    def test_grok_layer(self):
-        layer = self.layer
-        self.assertTrue(layer.thread.isAlive())
-
     def test_grok_app(self):
         self.selenium.open('/app')
         self.selenium.assertTextPresent('Hello from grok')
 
 
 class GrokIsolation(gocept.selenium.tests.isolation.IsolationTests,
-    gocept.selenium.grok.TestCase):
+                    gocept.selenium.grok.TestCase):
 
     layer = test_layer
 
