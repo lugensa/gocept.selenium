@@ -28,7 +28,7 @@ install_requires = [
     'gocept.httpserverlayer',
     'httpagentparser',
     'plone.testing',
-    'selenium >= 2.0',
+    'selenium >= 2.28',
     'setuptools']
 
 tests_require = ['mock']
