@@ -94,18 +94,15 @@ setup(
     install_requires=install_requires,
     extras_require=dict(
         grok=[
+            'gocept.httpserverlayer[zopeappwsgi]',
             'zope.app.appsetup',
-            'zope.app.wsgi',
             ],
         test_grok=[
             'grok',
             'ZODB3',
             ],
         ztk=[
-            'zope.app.server',
-            'zope.app.testing',
-            'zope.app.wsgi',
-            'zope.server',
+            'gocept.httpserverlayer[zopeapptesting]',
             ],
         test_ztk=[
             'zope.app.appsetup',
@@ -116,23 +113,28 @@ setup(
             'zope.schema',
             'ZODB3',
             ],
-        zope2=[ # Zope2>=2.12 is eggified
-            'Zope2',
+        zope2=[
+            'gocept.httpserverlayer[zope2testcase]',
+            ],
+        test_zope2=[
+            'Zope2',  # Zope2>=2.12 is eggified
             ],
         plone=[
-            'Products.PloneTestCase',
+            'gocept.httpserverlayer[plonetestcase]',
             ],
         test_plone=[
             'Plone',
+            'Products.PloneTestCase',
             'PILwoTK',
             ],
         plonetesting=[
-            'plone.testing[z2]',
+            'gocept.httpserverlayer[plonetestingz2]',
             ],
         test_plonetesting=[
             'Plone',
             'PILwoTK',
             'plone.app.testing',
+            'plone.testing[z2]',
             ],
         script=script_requirements,
         test=tests_require,
