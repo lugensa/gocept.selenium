@@ -40,9 +40,19 @@ class skipUnlessBrowser(object):
             return f(test_case, *args, **kw)
         return test
 
+    def eval(self, test_case, code):
+        selenium = test_case.layer['seleniumrc']
+        eval_js = getattr(selenium, 'get_eval', None)
+        if eval_js is None:
+            eval_js = selenium.execute_script
+            code = 'return ' + code
+        return eval_js(code)
+
     def skip_unless_requirements_met(self, test_case):
-        agent = httpagentparser.detect(
-            test_case.selenium.getEval('window.navigator.userAgent'))
+        user_agent_string = self.eval(test_case, 'window.navigator.userAgent')
+        if user_agent_string[0] == user_agent_string[-1] == '"':
+            user_agent_string = user_agent_string[1:-1]
+        agent = httpagentparser.detect(user_agent_string)
         if re.match(self.required_name, agent['browser']['name']) is None:
             test_case.skipTest('Require browser %s, but have %s.' % (
                 self.required_name, agent['browser']['name']))

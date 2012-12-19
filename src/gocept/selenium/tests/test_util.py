@@ -34,13 +34,18 @@ class TestBrowserSkip(unittest.TestCase):
         @skipUnlessBrowser(browser, version)
         def x(inner_self):
             self._inner_ran = True
-        test = mock.Mock()
-        test.selenium.getEval.return_value = self.user_agent
+        test = self._create_test()
         test.skipTest.side_effect = unittest.SkipTest()
         try:
             x(test)
         except unittest.SkipTest:
             pass
+        return test
+
+    def _create_test(self):
+        test = mock.Mock()
+        test.layer = dict(seleniumrc=mock.Mock(spec=('get_eval',)))
+        test.layer['seleniumrc'].get_eval.return_value = self.user_agent
         return test
 
     def test_browser_name_missmatch_should_skip(self):
@@ -107,3 +112,14 @@ class TestBrowserSkip(unittest.TestCase):
             pass
         else:
             self.fail('ValueError not raised')
+
+
+class WebdriverSyntax(TestBrowserSkip):
+
+    user_agent = '"%s"' % TestBrowserSkip.user_agent
+
+    def _create_test(self):
+        test = mock.Mock()
+        test.layer = dict(seleniumrc=mock.Mock(spec=('execute_script',)))
+        test.layer['seleniumrc'].execute_script.return_value = self.user_agent
+        return test
