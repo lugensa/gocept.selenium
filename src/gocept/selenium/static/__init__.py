@@ -86,9 +86,9 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
 
 class StaticFilesLayer(gocept.selenium.base.Layer):
 
-    def __init__(self):
-        # we don't need any __bases__
-        super(StaticFilesLayer, self).__init__()
+    # hostname and port of the local application.
+    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
 
     def setUp(self):
         self.server = None
@@ -108,6 +108,9 @@ class StaticFilesLayer(gocept.selenium.base.Layer):
         # started.
         time.sleep(0.25)
         self.port = self.server.server_port
+        self['http_host'] = self.host
+        self['http_port'] = self.port
+        self['http_address'] = '%s:%s' % (self.host, self.port)
 
     def stop_server(self):
         if self.server is None:
