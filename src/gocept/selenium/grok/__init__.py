@@ -11,45 +11,66 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import unittest
 
 from zope.app.appsetup.testlayer import ZODBLayer
-import zope.app.wsgi
+import gocept.httpserverlayer.wsgi
+import gocept.httpserverlayer.zopeappwsgi
+import gocept.selenium.base
+import os
+import plone.testing
+import sys
+import unittest
 
-import gocept.selenium.selenese
-import gocept.selenium.wsgi
 
+class Layer(ZODBLayer, plone.testing.Layer):
 
-class Layer(ZODBLayer, gocept.selenium.wsgi.Layer):
+    # This is rather kludgy. To keep the public API of calling
+    # grok.Layer(package), we need to bundle four different things here.
+    # Also, we can't use super, since our base classes don't consistently call
+    # super themselves.
+    #
+    # See an example of the recommended way of setting this up in
+    # gocept.httpserverlayer.zopeappwsgi.testing
 
-    # we can't use super, since our base classes are not built for multiple
-    # inheritance (they don't consistently call super themselves, so parts of
-    # the hierarchy might be missed)
+    # we can't inherit from IntegrationBase, since we need more control here.
+    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
 
-    def __init__(self, *args, **kw):
-        # since the request factory class is only a parameter default of
-        # WSGIPublisherApplication and not easily accessible otherwise, we fake
-        # it into creating a requestFactory instance, so we can read the class
-        # off of that in testSetUp()
-        fake_db = object()
-        gocept.selenium.wsgi.Layer.__init__(
-            self, zope.app.wsgi.WSGIPublisherApplication(fake_db))
-        ZODBLayer.__init__(self, *args, **kw)
+    def __init__(self, package, *args, **kw):
+        ZODBLayer.__init__(self, package, *args, **kw)
+        plone.testing.Layer.__init__(
+            self, name='Layer(%s)' % package.__name__,
+            module=sys._getframe(1).f_globals['__name__'])
+
+        self.WSGI_LAYER = gocept.httpserverlayer.zopeappwsgi.Layer(
+            name='IntegratedWSGILayer', bases=[self])
+        self.HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+            name='IntegratedHTTPLayer', bases=[self.WSGI_LAYER])
+        self.HTTP_LAYER.host = self.host
+        self.HTTP_LAYER.port = self.port
+        self.SELENIUM_LAYER = gocept.selenium.base.Layer(
+            name='IntegratedSeleniumLayer', bases=[self.HTTP_LAYER])
 
     def setUp(self):
         ZODBLayer.setUp(self)
-        gocept.selenium.wsgi.Layer.setUp(self)
+        self['zodbDB'] = self.db
+        self.WSGI_LAYER.setUp()
+        self.HTTP_LAYER.setUp()
+        self.SELENIUM_LAYER.setUp()
 
     def tearDown(self):
-        gocept.selenium.wsgi.Layer.tearDown(self)
+        self.SELENIUM_LAYER.tearDown()
+        self.HTTP_LAYER.tearDown()
+        self.WSGI_LAYER.tearDown()
         ZODBLayer.tearDown(self)
 
     def testSetUp(self):
-        gocept.selenium.wsgi.Layer.testSetUp(self)
         ZODBLayer.testSetUp(self)
-        # tell the publisher to use ZODBLayer's current database
-        factory = type(self.application.requestFactory)
-        self.application.requestFactory = factory(self.db)
+        self['zodbDB'] = self.db
+        self.WSGI_LAYER.testSetUp()
+        self.HTTP_LAYER.testSetUp()
+        self.SELENIUM_LAYER.testSetUp()
+        self['selenium'] = self.SELENIUM_LAYER['selenium']
 
 
 class TestCase(gocept.selenium.base.TestCase, unittest.TestCase):
