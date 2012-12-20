@@ -12,13 +12,13 @@
 #
 ##############################################################################
 
-import gocept.httpserverlayer.plonetesting
+import gocept.httpserverlayer.plonetestingz2
 import gocept.selenium.seleniumrc
 import unittest
 
 
 class Layer(gocept.selenium.seleniumrc.IntegrationBase,
-            gocept.httpserverlayer.plonetesting.Layer):
+            gocept.httpserverlayer.plonetestingz2.Layer):
     pass
 
 
