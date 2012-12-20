@@ -727,7 +727,10 @@ def split_locator(locator):
 
 
 def split_option_locator(option_locator, deselect=False):
-    prefix = 'deselect' if deselect else 'select'
+    if deselect:
+        prefix = 'deselect'
+    else:
+        prefix = 'select'
     method, sep, option = option_locator.partition('=')
     if method == 'id':
         raise NotImplementedError()
