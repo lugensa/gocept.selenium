@@ -31,6 +31,9 @@ install_requires = [
     'selenium >= 2.28',
     'setuptools']
 
+if sys.version_info < (2, 6):
+    install_requires.append('simplejson')
+
 tests_require = ['mock']
 if sys.version_info < (2, 7):
     tests_require.append('unittest2')
