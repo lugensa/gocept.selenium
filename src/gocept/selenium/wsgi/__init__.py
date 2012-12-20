@@ -36,13 +36,13 @@ class Layer(gocept.selenium.base.IntegrationBase,
     request_handler_class = LogWSGIRequestHandler
 
     def __init__(self, application, *bases):
-        self.wsgi_app = self.setup_wsgi_stack(application)
         name = self.make_layer_name(bases)
         # The name of the application class is used in order to help
         # the testrunner distinguish between layers with different
         # applications.
         name += '.' + application.__class__.__name__
         super(Layer, self).__init__(name=name, bases=bases)
+        self.wsgi_app = self.setup_wsgi_stack(application)
 
     def setup_wsgi_stack(self, app):
         return app
