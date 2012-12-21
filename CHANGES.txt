@@ -8,6 +8,8 @@ Changelog
 - Fix: Initialise the WSGI layer in the correct order to actually allow the
   configured WSGI app to be remembered.
 
+- Fix: updated some imports after the extraction of gocept.httpserverlayer.
+
 
 1.1.1 (2012-12-19)
 ------------------
