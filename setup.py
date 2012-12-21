@@ -32,6 +32,7 @@ install_requires = [
     'setuptools']
 
 if sys.version_info < (2, 6):
+    # needed but not declared by selenium
     install_requires.append('simplejson')
 
 tests_require = ['mock']
