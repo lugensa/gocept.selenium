@@ -33,7 +33,7 @@ class Layer(plonetesting.Layer):
     _server = os.environ.get('GOCEPT_SELENIUM_SERVER_HOST', 'localhost')
     _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
-    _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', 'firefox')
+    _browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', 'firefox')
 
     def setUp(self):
         if 'http_address' not in self:
@@ -42,10 +42,15 @@ class Layer(plonetesting.Layer):
             FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
         self.profile.native_events_enabled = True
         self.profile.update_preferences()
+        desired_capabilities=dict(browserName=self._browser)
+        if self._browser == 'firefox':
+            ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+            if ff_binary:
+                desired_capabilities['firefox_binary'] = ff_binary
         try:
             self['seleniumrc'] = selenium.webdriver.Remote(
                 'http://%s:%s/wd/hub' % (self._server, self._port),
-                desired_capabilities=dict(browserName=self._browser),
+                desired_capabilities=desired_capabilities,
                 browser_profile=self.profile)
         except urllib2.URLError, e:
             raise urllib2.URLError(
