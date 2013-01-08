@@ -162,9 +162,11 @@ class AssertionTests(object):
 
     def test_pause(self):
         start = time.time()
-        self.selenium.pause(5000)
-        if time.time() - start < 4:
+        self.selenium.pause(3000)
+        if time.time() - start < 1:
             self.fail('Pause did not pause long enough')
+        if time.time() - start > 10:
+            self.fail('Pause did pause too long')
 
     def test_deleteCookie_smoke(self):
         # Smoke test: just check that we don't break
