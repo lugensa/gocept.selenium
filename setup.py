@@ -29,6 +29,7 @@ install_requires = [
     'httpagentparser',
     'plone.testing',
     'selenium >= 2.28',
+    'Pillow',
     'setuptools']
 
 if sys.version_info < (2, 6):

@@ -97,3 +97,22 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
 
     def test_fireEvent_smoke(self):
         pass  # does not exist in Webdriver
+
+
+class ScreenshotTest(HTMLTestCase):
+
+    layer = STATIC_WD_LAYER
+
+    def setUp(self):
+        super(ScreenshotTest, self).setUp()
+        self.selenium.screenshot_directory = 'gocept.selenium.tests.fixture'
+
+    def test_screenshot_can_be_compared_successfully(self):
+        self.selenium.open('screenshot.html')
+        self.selenium.assertScreenshot('screenshot', 'css=#block-1')
+
+    def test_assertScreenshot_raises_exception_if_images_differ(self):
+        from gocept.selenium.wd_selenese import ScreenshotMismatchError
+        self.selenium.open('screenshot.html')
+        with self.assertRaises(ScreenshotMismatchError):
+            self.selenium.assertScreenshot('screenshot', 'css=#block-2')
