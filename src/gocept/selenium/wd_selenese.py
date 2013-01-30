@@ -13,15 +13,22 @@
 ##############################################################################
 
 from gocept.selenium.selenese import selenese_pattern_equals
+from itertools import izip, chain
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
+import PIL.Image
 import json
+import math
+import os.path
+import pkg_resources
 import re
 import selenium.common.exceptions
+import sys
+import tempfile
 import time
 import urlparse
 
@@ -31,6 +38,57 @@ def assert_type(type):
         func.assert_type = type
         return func
     return decorate
+
+
+class ImageDiff(object):
+
+    def __init__(self, image_a, image_b):
+        self.image_a = image_a
+        self.image_b = image_b
+
+    def get_nrmsd(self):
+        """
+        Returns the normalised root mean squared deviation of the two images.
+        """
+        a_values = chain(*self.image_a.getdata())
+        b_values = chain(*self.image_b.getdata())
+        rmsd = 0
+        for a, b in izip(a_values, b_values):
+            rmsd += (a - b) ** 2
+        rmsd = math.sqrt(float(rmsd) / (
+            self.image_a.size[0] * self.image_a.size[1] * len(self.image_a.getbands())
+        ))
+        return rmsd / 255
+
+    def get_distance(self):
+        """
+        Returns the distance between the two images in pixels.
+        """
+        a_values = chain(*self.image_a.getdata())
+        b_values = chain(*self.image_b.getdata())
+        band_len = len(self.image_a.getbands())
+        distance = 0
+        for a, b in izip(a_values, b_values):
+            distance += abs(float(a) / band_len - float(b) / band_len) / 255
+        return distance
+
+
+class ScreenshotMismatchError(ValueError):
+
+    message = ("The saved screenshot for '%s' did not match the screenshot "
+               "captured (by a distance of %.2f).\n\n"
+               "Original: %s\n"
+               "Current: %s")
+
+    def __init__(self, name, distance, original, captured):
+        self.name = name
+        self.distance = distance
+        self.original = original
+        self.captured = captured
+
+    def __str__(self):
+        return self.message % (self.name, self.distance, self.original,
+                               self.captured)
 
 
 class Selenese(object):
@@ -94,7 +152,7 @@ class Selenese(object):
         self.selenium.get_screenshot_as_file(filename)
 
     def captureScreenshotToString(self):
-        self.selenium.get_screenshot_as_base64()
+        return self.selenium.get_screenshot_as_base64()
 
     def close(self):
         self.selenium.close()
@@ -253,6 +311,9 @@ class Selenese(object):
     def openWindow(self, url, window_id):
         self.selenium.execute_script(
             'window.open("%s", "%s")' % (url, window_id))
+
+    def executeScript(self, script, *args):
+        return self.selenium.execute_script(script, *args)
 
     def refresh(self):
         self.selenium.refresh()
@@ -555,6 +616,71 @@ class Selenese(object):
         if height != got:
             raise self.failureException(
                 'Height of %r is %r, expected %r.' % (locator, got, height))
+
+    capture_screenshot = False
+    screenshot_directory = '.'
+
+    def _get_screenshot(self, locator):
+        ignored, path = tempfile.mkstemp()
+        self.captureScreenshot(path)
+
+        dimensions = self.executeScript("""
+            var e = arguments[0];
+            var dimensions = {
+                'width': e.offsetWidth,
+                'height': e.offsetHeight,
+                'left': 0,
+                'top': 0
+            };
+            do {
+                dimensions['left'] += e.offsetLeft;
+                dimensions['top'] += e.offsetTop;
+            } while (e = e.offsetParent)
+            return dimensions;
+        """, self._find(locator))
+
+        with open(path, 'rw') as screenshot:
+            box = (dimensions['left'], dimensions['top'],
+                   dimensions['left'] + dimensions['width'],
+                   dimensions['top'] + dimensions['height'])
+            return PIL.Image.open(screenshot).convert('RGB').crop(box)
+
+    def assertScreenshot(self, name, locator, threshold=0.1):
+        """Assert that a screenshot of an element is the same as a screenshot
+           on disk, within a given threshold.
+
+        :param name: A name for the screenshot, which will be appended with
+        `.png`.
+        :param locator: A locator to the element that to capture.
+        :param threshold: The threshold for triggering a test failure."""
+
+        if isinstance(name, basestring):
+            import inspect
+            if self.screenshot_directory == '.':
+                path = os.path.dirname(inspect.getmodule(
+                    inspect.currentframe().f_back).__file__)
+            else:
+                path = pkg_resources.resource_filename(
+                    self.screenshot_directory, '')
+            filename = os.path.join(path, '%s.png' % name)
+        screenshot = self._get_screenshot(locator)
+        if self.capture_screenshot:
+            if os.path.exists(filename):
+                raise ValueError(
+                    'Not capturing %s, image already exists. If you '
+                    'want to capture this element again, delete %s' % (
+                        name, filename))
+            screenshot.save(filename)
+        else:
+            image = PIL.Image.open(filename)
+            diff = ImageDiff(screenshot, image)
+            distance = abs(diff.get_distance())
+            if distance > threshold:
+                ignored, current_path = tempfile.mkstemp('.png')
+                with open(current_path, 'rw') as current:
+                    screenshot.save(current.name)
+                raise ScreenshotMismatchError(
+                    name, distance, filename, current.name)
 
     # Internal
 
