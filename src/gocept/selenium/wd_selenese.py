@@ -20,8 +20,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
-import PIL.Image
+from PIL import Image, ImageChops
 import json
+import inspect
 import math
 import os.path
 import pkg_resources
@@ -31,6 +32,10 @@ import sys
 import tempfile
 import time
 import urlparse
+import os
+
+
+SHOW_DIFF_IMG = os.environ.get('SHOW_DIFF_IMG', False)
 
 
 def assert_type(type):
@@ -38,6 +43,50 @@ def assert_type(type):
         func.assert_type = type
         return func
     return decorate
+
+
+def get_path(resource):
+    return pkg_resources.resource_filename('gocept.selenium', resource)
+
+
+def image_diff_composition(exp, got):
+    exp = exp.convert('RGB')
+    got = got.convert('RGB')
+    exp_txt = Image.open(get_path('exp_txt.png'))
+    got_txt = Image.open(get_path('got_txt.png'))
+    diff_txt = Image.open(get_path('diff_txt.png'))
+    mask = Image.new('L', exp.size, 127)
+    compo = Image.new('RGBA', (exp.size[0], exp.size[1]*3+60), (255,255,255,0))
+    compo.paste(exp_txt, (5,0))
+    compo.paste(exp, (0,20))
+    got_pos = (0, exp.size[1]+40)
+    got_txt_pos = (5, exp.size[1]+20)
+    diff_pos = (0, exp.size[1]*2+60)
+    diff_txt_pos = (5, exp.size[1]*2+40)
+    compo.paste(got_txt, got_txt_pos)
+    compo.paste(got, got_pos)
+    compo.paste(diff_txt, diff_txt_pos)
+    missing_red = ImageChops.invert(
+        ImageChops.subtract(got, exp)).point(
+            lambda i: 0 if i!=255 else 255).convert('1').convert(
+                'RGB').split()[0]
+    missing_red_mask = missing_red.point(lambda i: 80 if i!=255 else 255)
+    missing_empty = Image.new('L', missing_red.size, 255)
+    missing_r = Image.merge(
+        'RGB', (missing_empty, missing_red, missing_red)).convert('RGBA')
+    missing_green = ImageChops.invert(
+        ImageChops.subtract(exp, got)).point(
+            lambda i: 0 if i!=255 else 255).convert('1').convert(
+                'RGB').split()[0]
+    missing_green_mask = missing_green.point(lambda i: 80 if i!=255 else 255)
+    missing_g = Image.merge(
+        'RGB', (missing_green, missing_empty, missing_green)).convert('RGBA')
+
+    exp.paste(got, exp.getbbox(), mask)
+    exp.paste(missing_r, exp.getbbox(), ImageChops.invert(missing_red_mask))
+    exp.paste(missing_g, exp.getbbox(), ImageChops.invert(missing_green_mask))
+    compo.paste(exp, diff_pos)
+    return compo
 
 
 class ImageDiff(object):
@@ -77,18 +126,39 @@ class ScreenshotMismatchError(ValueError):
 
     message = ("The saved screenshot for '%s' did not match the screenshot "
                "captured (by a distance of %.2f).\n\n"
-               "Original: %s\n"
-               "Current: %s")
+               "Expected: %s\n"
+               "Got: %s\n"
+               "Diff: %s\n")
 
-    def __init__(self, name, distance, original, captured):
+    def __init__(self, name, distance, expected, got, compo):
         self.name = name
         self.distance = distance
-        self.original = original
-        self.captured = captured
+        self.expected = expected
+        self.got = got
+        self.compo = compo
 
     def __str__(self):
-        return self.message % (self.name, self.distance, self.original,
-                               self.captured)
+        return self.message % (self.name, self.distance, self.expected,
+                               self.got, self.compo)
+
+
+class ScreenshotSizeMismatchError(ValueError):
+
+    message = ("Size of saved image for '%s', %s did not match the size "
+               "of the captured screenshot: %s.\n\n"
+               "Expected: %s\n"
+               "Got: %s\n")
+
+    def __init__(self, name, expected_size, got_size, expected, got):
+        self.name = name
+        self.expected_size = expected_size
+        self.got_size = got_size
+        self.expected = expected
+        self.got = got
+
+    def __str__(self):
+        return self.message % (self.name, self.expected_size, self.got_size,
+                               self.expected, self.got)
 
 
 class Selenese(object):
@@ -643,44 +713,64 @@ class Selenese(object):
             box = (dimensions['left'], dimensions['top'],
                    dimensions['left'] + dimensions['width'],
                    dimensions['top'] + dimensions['height'])
-            return PIL.Image.open(screenshot).convert('RGB').crop(box)
+            return Image.open(screenshot).convert('RGBA').crop(box)
+
+    def _screenshot_path(self):
+        if self.screenshot_directory == '.':
+            return os.path.dirname(inspect.getmodule(
+                inspect.currentframe().f_back).__file__)
+        return pkg_resources.resource_filename(
+                self.screenshot_directory, '')
 
     def assertScreenshot(self, name, locator, threshold=0.1):
         """Assert that a screenshot of an element is the same as a screenshot
            on disk, within a given threshold.
+
+        If self.capture_screenshot is True, the screenshot is saved as new
+        expected image for the given name, and the Test fails and remembers
+        to remove capture mode and check in the image.
+
+        Does also respect self.screenshot_directory setting, to decide where
+        to save the screenshot when in capture mode and where to search for
+        screenshots for diffing.
 
         :param name: A name for the screenshot, which will be appended with
         `.png`.
         :param locator: A locator to the element that to capture.
         :param threshold: The threshold for triggering a test failure."""
 
-        if isinstance(name, basestring):
-            import inspect
-            if self.screenshot_directory == '.':
-                path = os.path.dirname(inspect.getmodule(
-                    inspect.currentframe().f_back).__file__)
-            else:
-                path = pkg_resources.resource_filename(
-                    self.screenshot_directory, '')
-            filename = os.path.join(path, '%s.png' % name)
+        filename = os.path.join(self._screenshot_path(), '%s.png' % name)
         screenshot = self._get_screenshot(locator)
         if self.capture_screenshot:
             if os.path.exists(filename):
                 raise ValueError(
-                    'Not capturing %s, image already exists. If you '
-                    'want to capture this element again, delete %s' % (
+                    'Not capturing {}, image already exists. If you '
+                    'want to capture this element again, delete {}'.format(
                         name, filename))
             screenshot.save(filename)
-        else:
-            image = PIL.Image.open(filename)
-            diff = ImageDiff(screenshot, image)
-            distance = abs(diff.get_distance())
-            if distance > threshold:
-                ignored, current_path = tempfile.mkstemp('.png')
-                with open(current_path, 'rw') as current:
-                    screenshot.save(current.name)
-                raise ScreenshotMismatchError(
-                    name, distance, filename, current.name)
+            raise ValueError(
+                'Captured {}. You might now want to remove capture mode and '
+                'check in the created screenshot {}.'.format(name, filename))
+            return
+        image = Image.open(filename)
+        diff = ImageDiff(screenshot, image)
+        distance = abs(diff.get_distance())
+        if distance > threshold:
+            ignored, got_path = tempfile.mkstemp('.png')
+            with open(got_path, 'rw') as got:
+                screenshot.save(got.name)
+            if image.size != screenshot.size:
+                raise ScreenshotSizeMismatchError(
+                    name, image.size, screenshot.size, filename, got.name)
+                return
+            ignored, compo_path = tempfile.mkstemp('.png')
+            with open(compo_path, 'rw') as compo:
+                compo_img = image_diff_composition(image, screenshot)
+                compo_img.save(compo.name)
+                if SHOW_DIFF_IMG:
+                    compo_img.show()
+            raise ScreenshotMismatchError(
+                name, distance, filename, got.name, compo.name)
 
     # Internal
 

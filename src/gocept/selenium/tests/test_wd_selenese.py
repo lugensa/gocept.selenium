@@ -12,7 +12,8 @@
 #
 ##############################################################################
 
-from gocept.selenium.wd_selenese import split_locator, split_option_locator
+from gocept.selenium.wd_selenese import split_locator, split_option_locator,\
+        ScreenshotMismatchError, ScreenshotSizeMismatchError
 from selenium.webdriver.common.by import By
 import glob
 import gocept.selenium.tests.test_selenese
@@ -99,20 +100,38 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
         pass  # does not exist in Webdriver
 
 
-class ScreenshotTest(HTMLTestCase):
+class ScreenshotAssertionTest(HTMLTestCase):
 
     layer = STATIC_WD_LAYER
 
     def setUp(self):
-        super(ScreenshotTest, self).setUp()
+        super(ScreenshotAssertionTest, self).setUp()
         self.selenium.screenshot_directory = 'gocept.selenium.tests.fixture'
 
-    def test_screenshot_can_be_compared_successfully(self):
+    def test_successful_comparison(self):
         self.selenium.open('screenshot.html')
         self.selenium.assertScreenshot('screenshot', 'css=#block-1')
 
-    def test_assertScreenshot_raises_exception_if_images_differ(self):
-        from gocept.selenium.wd_selenese import ScreenshotMismatchError
+    def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
-        with self.assertRaises(ScreenshotMismatchError):
+        with self.assertRaises(ScreenshotSizeMismatchError):
             self.selenium.assertScreenshot('screenshot', 'css=#block-2')
+
+    def test_does_not_fail_if_threshold_greater_than_distance(self):
+        self.selenium.open('screenshot_threshold.html')
+        self.selenium.assertScreenshot(
+            'screenshot_threshold', 'css=#block-2', threshold=68.33)
+
+    def test_does_fail_if_threshold_less_than_distance(self):
+        self.selenium.open('screenshot_threshold.html')
+        with self.assertRaises(ScreenshotMismatchError):
+            self.selenium.assertScreenshot(
+                'screenshot_threshold', 'css=#block-2', threshold=68.31)
+
+    def test_diffing_blocks(self):
+        """Test to check if the image differ works good. You have to set 
+        SHOW_DIFF_IMG=1 to see something."""
+        self.selenium.open('screenshot_blocks.html')
+        with self.assertRaises(ScreenshotMismatchError):
+            self.selenium.assertScreenshot(
+                    'screenshot_blocks', 'css=#block-2')

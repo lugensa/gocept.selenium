@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+</head>
+
+<body style="margin:0;padding:0">
+  <!-- Expected (used for creating screenshot_blocks.png): -->
+  <div id="block-1"
+      style="width:400px; height:200px; border: 1px solid yellow">
+      <div style="width:200px; height: 50px; background-color:#123"></div>
+      <div style="width:200px; height: 50px; background-color:#abc; position:absolute; left:201px; top:1px;"></div>
+      <div style="width:400px; height: 150px; background-color:#678; position:absolute; left: 1px; top:51px;">removed</div>
+  </div>
+  <!-- Got: (used in test_blocks for diffing against screenshot_blocks.png) -->
+  <div id="block-2"
+      style="width:400px; height:200px; border: 1px solid yellow">
+      <div style="width:200px; height: 50px; background-color:#123;">added</div>
+      <div style="width:200px; height: 60px; background-color:#abc; position:absolute; left: 201px; top:203px;">more stuff added</div>
+      <div style="width:400px; height: 140px; background-color:#678; position:absolute; left:1px; top: 263px;"></div>
+  </div>
+</body>
+</html>
+
