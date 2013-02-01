@@ -120,13 +120,13 @@ class ScreenshotAssertionTest(HTMLTestCase):
     def test_does_not_fail_if_threshold_greater_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         self.selenium.assertScreenshot(
-            'screenshot_threshold', 'css=#block-2', threshold=68.33)
+            'screenshot_threshold', 'css=#block-2', threshold=180)
 
     def test_does_fail_if_threshold_less_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         with self.assertRaises(ScreenshotMismatchError):
             self.selenium.assertScreenshot(
-                'screenshot_threshold', 'css=#block-2', threshold=68.31)
+                'screenshot_threshold', 'css=#block-2', threshold=40)
 
     def test_diffing_blocks(self):
         """Test to check if the image differ works good. You have to set 
