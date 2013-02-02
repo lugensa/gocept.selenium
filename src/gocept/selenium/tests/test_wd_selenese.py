@@ -16,6 +16,7 @@ from gocept.selenium.wd_selenese import split_locator, split_option_locator,\
         ScreenshotMismatchError, ScreenshotSizeMismatchError
 from selenium.webdriver.common.by import By
 import glob
+import gocept.httpserverlayer.static
 import gocept.selenium.tests.test_selenese
 import os.path
 import pkg_resources
@@ -74,7 +75,8 @@ class SplitOptionLocatorTest(unittest.TestCase):
 
 
 STATIC_WD_LAYER = gocept.selenium.WebdriverLayer(
-    name='StaticFilesLayer', bases=(gocept.selenium.static.STATIC_FILES,))
+    name='StaticFilesLayer',
+    bases=(gocept.httpserverlayer.static.STATIC_FILES,))
 STATIC_WD_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
     name='StaticFilesLayer', bases=(STATIC_WD_LAYER,))
 

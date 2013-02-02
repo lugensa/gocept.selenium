@@ -20,7 +20,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
-from PIL import Image, ImageChops
+#from PIL import Image, ImageChops
 import json
 import inspect
 import math
