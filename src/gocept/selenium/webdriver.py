@@ -85,7 +85,7 @@ class Layer(plonetesting.Layer):
             native_ff_events_log = os.path.join(
                 tempfile.gettempdir(), 'native_ff_events_log')
             try:
-                os.unlink(native_ff_events_log)
+                os.remove(native_ff_events_log)
             except OSError:
                 pass
 
