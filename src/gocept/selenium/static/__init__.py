@@ -24,10 +24,6 @@ class StaticFilesLayer(gocept.selenium.seleniumrc.IntegrationBase,
         super(StaticFilesLayer, self).__init__(
             name='StaticFilesLayer', bases=())
 
-    @property
-    def documentroot(self):
-        return self['documentroot']
-
 static_files_layer = StaticFilesLayer()
 
 
