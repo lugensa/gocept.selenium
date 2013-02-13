@@ -129,17 +129,20 @@ setup(
         test_plone=[
             'Plone',
             'Products.PloneTestCase',
-            'PILwoTK',
+            'Pillow',
             ],
         plonetesting=[
             'gocept.httpserverlayer[plonetestingz2]',
             ],
         test_plonetesting=[
             'Plone',
-            'PILwoTK',
+            'Pillow',
             'plone.app.testing',
             'plone.testing[z2]',
             ],
+        screenshot=[
+            'Pillow'
+        ],
         script=script_requirements,
         test=tests_require,
     ),
