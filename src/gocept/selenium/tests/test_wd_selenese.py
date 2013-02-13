@@ -12,7 +12,8 @@
 #
 ##############################################################################
 
-from gocept.selenium.wd_selenese import split_locator, split_option_locator,\
+from gocept.selenium.wd_selenese import split_locator, split_option_locator
+from gocept.selenium.screenshot import \
         ScreenshotMismatchError, ScreenshotSizeMismatchError
 from selenium.webdriver.common.by import By
 import glob
@@ -21,6 +22,7 @@ import gocept.selenium.tests.test_selenese
 import os.path
 import pkg_resources
 import shutil
+
 
 try:
     import unittest2 as unittest
@@ -122,13 +124,13 @@ class ScreenshotAssertionTest(HTMLTestCase):
     def test_does_not_fail_if_threshold_greater_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         self.selenium.assertScreenshot(
-            'screenshot_threshold', 'css=#block-2', threshold=180)
+            'screenshot_threshold', 'css=#block-2', threshold=5)
 
     def test_does_fail_if_threshold_less_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         with self.assertRaises(ScreenshotMismatchError):
             self.selenium.assertScreenshot(
-                'screenshot_threshold', 'css=#block-2', threshold=40)
+                'screenshot_threshold', 'css=#block-2' , threshold=4)
 
     def test_diffing_blocks(self):
         """Test to check if the image differ works good. You have to set 
