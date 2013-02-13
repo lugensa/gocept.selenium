@@ -118,7 +118,7 @@ def _get_screenshot(selenese, locator):
     ignored, path = tempfile.mkstemp()
     selenese.captureScreenshot(path)
 
-    dimensions = selenese.executeScript("""
+    dimensions = selenese.selenium.execute_script("""
         var e = arguments[0];
         var dimensions = {
             'width': e.offsetWidth,

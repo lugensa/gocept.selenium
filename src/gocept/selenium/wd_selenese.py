@@ -261,9 +261,6 @@ class Selenese(object):
         self.selenium.execute_script(
             'window.open("%s", "%s")' % (url, window_id))
 
-    def executeScript(self, script, *args):
-        return self.selenium.execute_script(script, *args)
-
     def refresh(self):
         self.selenium.refresh()
         self.waitForPageToLoad()
