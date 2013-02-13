@@ -20,7 +20,7 @@ Developing gocept.selenium
     https://bitbucket.org/gocept/gocept.selenium/raw/tip/CHANGES.txt
 
 
-buildout configuration
+Buildout configuration
 ----------------------
 
 gocept.selenium integrates with quite a lot of different testing approaches and
@@ -46,3 +46,11 @@ need to specify the configuration you want to test, like this::
 
 Note that the zope210 and plone3 configurations require Python-2.4, while the
 others should work at least up to Python-2.6.
+
+Documentation
+-------------
+
+In order to build the Sphinx documentation, run the following command with a
+python, where sphinx is installed::
+
+    $ python setup.py build_sphinx
