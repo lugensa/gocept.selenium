@@ -7,6 +7,9 @@ Changelog
 
 - Extract StaticFilesLayer to gocept.httpserverlayer.
 
+- Added `assertScreenshot` to visually compare rendered elements with a
+  master screenshot.
+
 
 2.0.0a2 (2013-01-09)
 --------------------
