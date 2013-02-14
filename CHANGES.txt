@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.0.0a3 (unreleased)
+2.0.0b1 (2013-02-14)
 --------------------
 
 - Extract StaticFilesLayer to gocept.httpserverlayer.
