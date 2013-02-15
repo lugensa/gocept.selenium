@@ -11,8 +11,7 @@ webdriver and while this has proven to be possible to a large extent, some
 details of the Selenese API don't make any sense or are too different to be
 worth implementing in a webdriver environment.
 
-Here's how to set this up. Choose an appropriate test layer (see
-:doc:`integration`) and create a test case::
+Here's how to set this up (see :doc:`integration` for details)::
 
     import gocept.httpserverlayer.wsgi
     import gocept.selenium.webdriver

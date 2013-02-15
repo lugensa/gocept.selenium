@@ -1,5 +1,6 @@
 from util import skipUnlessBrowser
 from seleniumrc import Layer as RCLayer
+from wsgi import TestCase as RCTestCase
 
 import sys
 if sys.version_info >= (2, 6):

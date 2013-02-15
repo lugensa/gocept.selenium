@@ -1,14 +1,40 @@
 Integration
 ===========
 
-gocept.selenium provides integration with several web frameworks. Different
-frameworks require different dependencies; this is handled via setuptools
-extras of gocept.selenium (e.g. for Grok integration you need to require
-``gocept.selenium[grok]``).
+gocept.selenium provides integration with several web frameworks. Since version
+1.1, however, the actual integration functionality has been extracted to
+`gocept.httpserverlayer`_, so the recommended setup is to use one layer from
+there that integrates with your application (see `gocept.httpserverlayer`_
+documentation for details) and provides an HTTP server, and then stack the
+layer from gocept.selenium on top of that, to provide the Selenium
+integration::
 
-Generally, you need a test layer that handles the setup, and then have your
-tests inherit from the appropriate ``TestCase``.
+    import gocept.httpserverlayer.wsgi
+    import gocept.selenium
+    from mypackage import App
 
+    http_layer = gocept.httpserverlayer.wsgi.Layer(App())
+    selenium_layer = gocept.selenium.RCLayer(
+        name='SeleniumLayer', bases=(http_layer))
+
+
+    class TestWSGITestCase(gocept.selenium.RCTestCase):
+
+        layer = selenium_layer
+
+        def test_something(self):
+            self.selenium.open('http://%s/foo.html' % self.selenium.server)
+            self.selenium.assertBodyText('foo')
+
+.. _`gocept.httpserverlayer`: http://pypi.python.org/pypi/gocept.httpserverlayer
+
+
+The previous set of layers that provide both the HTTP server and Selenium in
+one layer is still available. Different frameworks require different
+dependencies; this is handled via setuptools extras of gocept.selenium (e.g.
+for Grok integration you need to require ``gocept.selenium[grok]``). Generally,
+you need a test layer that handles the setup, and then have your tests inherit
+from the appropriate ``TestCase``.
 
 WSGI
 ----
