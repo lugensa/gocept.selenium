@@ -71,6 +71,10 @@ you in the error message:
 If you would like to open the image showing the differences in an image viewer,
 set the environment variable ``SHOW_DIFF_IMG`` before running the test.
 
+
+.. include:: webdriver.rst
+
+
 Test helpers
 ------------
 
