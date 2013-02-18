@@ -18,6 +18,7 @@ import os
 import selenium
 import socket
 import sys
+import unittest
 
 # Python 2.4 does not have access to absolute_import,
 # and we can't rename gocept.selenium.plone to something that
@@ -113,7 +114,7 @@ class IntegrationBase(object):
 TEST_METHOD_NAMES = ('_TestCase__testMethodName', '_testMethodName')
 
 
-class TestCase(object):
+class BaseTestCase(object):
     # the various flavours (ztk, zope2, grok, etc.) are supposed to provide
     # their own TestCase as needed, and mix this class in to get the
     # convenience functionality.
@@ -128,7 +129,7 @@ class TestCase(object):
         return self.layer['selenium']
 
     def setUp(self):
-        super(TestCase, self).setUp()
+        super(BaseTestCase, self).setUp()
         for attr in TEST_METHOD_NAMES:
             method_name = getattr(self, attr, None)
             if method_name:
@@ -136,3 +137,11 @@ class TestCase(object):
         assert method_name
         self.selenium.setContext('%s.%s' % (self.__class__.__name__,
                                             method_name))
+
+
+class TestCase(BaseTestCase, unittest.TestCase):
+    """NOTE: MRO requires BaseTestCase to come first,
+    otherwise its setUp/tearDown is never called, since unittest.TestCase
+    does not call super().
+    """
+    pass
