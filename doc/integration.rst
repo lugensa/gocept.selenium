@@ -48,7 +48,7 @@ This test layer takes a WSGI callable and runs it in a temporary HTTP server::
 
     test_layer = gocept.selenium.wsgi.Layer(App())
 
-    class WSGIExample(gocept.selenium.wsgi.TestCase):
+    class WSGIExample(gocept.selenium.RCTestCase):
 
         layer = test_layer
 

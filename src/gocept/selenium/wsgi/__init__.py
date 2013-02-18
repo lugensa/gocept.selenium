@@ -14,12 +14,12 @@
 
 # BBB
 from gocept.httpserverlayer.wsgi import FixupMiddleware as CleanerMiddleware
+from gocept.selenium.seleniumrc import TestCase
 
 from wsgiref.simple_server import WSGIRequestHandler
 import gocept.httpserverlayer.wsgi
 import gocept.selenium.seleniumrc
 import os
-import unittest
 
 
 class LogWSGIRequestHandler(WSGIRequestHandler):
@@ -46,10 +46,3 @@ class Layer(gocept.selenium.seleniumrc.IntegrationBase,
 
     def setup_wsgi_stack(self, app):
         return app
-
-
-class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
-    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
-    otherwise its setUp/tearDown is never called, since unittest.TestCase
-    does not call super().
-    """
