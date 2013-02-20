@@ -27,6 +27,13 @@ class DiffComposition(object):
         self.width = self.exp.size[0]
         self.height = self.exp.size[1]
         self.prepare_composition()
+        self.paste_screenshots()
+        ignored, compo_path = tempfile.mkstemp('.png')
+        with open(compo_path, 'rw') as compo:
+            self.path = compo.name
+            self.compo.save(self.path)
+            if SHOW_DIFF_IMG:
+                self.compo.show()
 
     def prepare_composition(self):
         """prepares and returns the composition image, given width
@@ -43,16 +50,10 @@ class DiffComposition(object):
             pos = (5, index*(self.height+self.label_margin))
             self.compo.paste(img, pos)
 
-
     def paste_screenshots(self):
         for index, screenshot in enumerate((self.exp, self.got, self.diff)):
             pos = (0, (index*self.height)+((index+1)*self.label_margin))
             self.compo.paste(screenshot, pos)
-
-    @property
-    def composition(self):
-        self.paste_screenshots()
-        return self.compo
 
     @property
     def diff(self):
@@ -87,6 +88,10 @@ class ImageDiff(object):
     def __init__(self, image_a, image_b):
         self.image_a = image_a
         self.image_b = image_b
+        self.distance = self.get_nrmsd() * 100
+
+    def within_threshold(self, threshold):
+        return self.distance < threshold
 
     def get_nrmsd(self):
         """
@@ -98,7 +103,8 @@ class ImageDiff(object):
         for a, b in itertools.izip(a_values, b_values):
             rmsd += (a - b) ** 2
         rmsd = math.sqrt(float(rmsd) / (
-            self.image_a.size[0] * self.image_a.size[1] * len(self.image_a.getbands())
+            self.image_a.size[0] * self.image_a.size[1] * len(
+                self.image_a.getbands())
         ))
         return rmsd / 255
 
@@ -142,7 +148,7 @@ class ScreenshotSizeMismatchError(ValueError):
                                self.expected, self.got)
 
 
-def _get_screenshot(selenese, locator):
+def make_screenshot(selenese, locator):
     ignored, path = tempfile.mkstemp()
     selenese.captureScreenshot(path)
 
@@ -176,38 +182,49 @@ def _screenshot_path(screenshot_directory):
             screenshot_directory, '')
 
 
-def assertScreenshot(selenese, name, locator, threshold=1):
-    filename = os.path.join(
-        _screenshot_path(selenese.screenshot_directory), '%s.png' % name)
-    screenshot = _get_screenshot(selenese, locator)
-    if selenese.capture_screenshot:
-        if os.path.exists(filename):
-            raise ValueError(
-                'Not capturing {}, image already exists. If you '
-                'want to capture this element again, delete {}'.format(
-                    name, filename))
-        screenshot.save(filename)
+def save_screenshot_temporary(screenshot):
+    """Saves given screenshot to a temporary file and return
+    the filename."""
+    ignored, got_path = tempfile.mkstemp('.png')
+    with open(got_path, 'rw') as got:
+        screenshot.save(got.name)
+    return got.name
+
+
+def save_as_expected(screenshot, img_basename, exp_path):
+    if os.path.exists(exp_path):
         raise ValueError(
-            'Captured {}. You might now want to remove capture mode and '
-            'check in the created screenshot {}.'.format(name, filename))
+            'Not capturing {}, image already exists. If you '
+            'want to capture this element again, delete {}'.format(
+                img_basename, exp_path))
+    screenshot.save(exp_path)
+    raise ValueError(
+        'Captured {}. You might now want to remove capture mode and '
+        'check in the created screenshot {}.'.format(
+            img_basename, exp_path))
+
+
+def assertScreenshot(selenese, img_basename, locator, threshold=1):
+    exp_path = os.path.join(
+        _screenshot_path(selenese.screenshot_directory), '%s.png' % img_basename)
+    screenshot = make_screenshot(selenese, locator)
+    if selenese.capture_screenshot:
+        #In capture mode, we only want to save the screenshot
+        #as the new expected image.
+        save_as_expected(screenshot, img_basename, exp_path)
         return
-    image = Image.open(filename)
-    diff = ImageDiff(screenshot, image)
-    distance = abs(diff.get_nrmsd()) * 100
-    if distance > threshold:
-        ignored, got_path = tempfile.mkstemp('.png')
-        with open(got_path, 'rw') as got:
-            screenshot.save(got.name)
-        if image.size != screenshot.size:
+    exp = Image.open(exp_path)
+    diff = ImageDiff(screenshot, exp)
+    if not diff.within_threshold(threshold):
+        #In failure case, we save the screenshot.
+        got_path = save_screenshot_temporary(screenshot)
+        if exp.size != screenshot.size:
+            #Seperate exception if sizes differ.
             raise ScreenshotSizeMismatchError(
-                name, image.size, screenshot.size, filename, got.name)
-            return
-        ignored, compo_path = tempfile.mkstemp('.png')
-        with open(compo_path, 'rw') as compo:
-            compo_img = DiffComposition(image, screenshot).composition
-            compo_img.save(compo.name)
-            if SHOW_DIFF_IMG:
-                compo_img.show()
+                img_basename, exp.size, screenshot.size, exp_path, got_path)
+        #Sizes are the same, so we can render a nice diff image.
+        compo = DiffComposition(exp, screenshot)
         raise ScreenshotMismatchError(
-            name, distance, filename, got.name, compo.name)
+            img_basename, diff.distance, exp_path, got_path, compo.path)
+
 
