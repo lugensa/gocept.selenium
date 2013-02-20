@@ -14,44 +14,72 @@ def get_path(resource):
     return pkg_resources.resource_filename('gocept.selenium', resource)
 
 
-def image_diff_composition(exp, got):
-    exp = exp.convert('RGB')
-    got = got.convert('RGB')
-    exp_txt = Image.open(get_path('exp_txt.png'))
-    got_txt = Image.open(get_path('got_txt.png'))
-    diff_txt = Image.open(get_path('diff_txt.png'))
-    mask = Image.new('L', exp.size, 127)
-    compo = Image.new('RGBA', (exp.size[0], exp.size[1]*3+60), (255,255,255,0))
-    compo.paste(exp_txt, (5,0))
-    compo.paste(exp, (0,20))
-    got_pos = (0, exp.size[1]+40)
-    got_txt_pos = (5, exp.size[1]+20)
-    diff_pos = (0, exp.size[1]*2+60)
-    diff_txt_pos = (5, exp.size[1]*2+40)
-    compo.paste(got_txt, got_txt_pos)
-    compo.paste(got, got_pos)
-    compo.paste(diff_txt, diff_txt_pos)
-    missing_red = ImageChops.invert(
-        ImageChops.subtract(got, exp)).point(
-            lambda i: 0 if i!=255 else 255).convert('1').convert(
-                'RGB').split()[0]
-    missing_red_mask = missing_red.point(lambda i: 80 if i!=255 else 255)
-    missing_empty = Image.new('L', missing_red.size, 255)
-    missing_r = Image.merge(
-        'RGB', (missing_empty, missing_red, missing_red)).convert('RGBA')
-    missing_green = ImageChops.invert(
-        ImageChops.subtract(exp, got)).point(
-            lambda i: 0 if i!=255 else 255).convert('1').convert(
-                'RGB').split()[0]
-    missing_green_mask = missing_green.point(lambda i: 80 if i!=255 else 255)
-    missing_g = Image.merge(
-        'RGB', (missing_green, missing_empty, missing_green)).convert('RGBA')
+WHITE = (255, 255, 255, 0)
 
-    exp.paste(got, exp.getbbox(), mask)
-    exp.paste(missing_r, exp.getbbox(), ImageChops.invert(missing_red_mask))
-    exp.paste(missing_g, exp.getbbox(), ImageChops.invert(missing_green_mask))
-    compo.paste(exp, diff_pos)
-    return compo
+
+class DiffComposition(object):
+
+    label_margin = 20
+
+    def __init__(self, exp, got):
+        self.exp = exp.convert('RGB')
+        self.got = got.convert('RGB')
+        self.width = self.exp.size[0]
+        self.height = self.exp.size[1]
+        self.prepare_composition()
+
+    def prepare_composition(self):
+        """prepares and returns the composition image, given width
+        and height is the size of one of the three images"""
+        #load the images with the labels
+        exp_txt = Image.open(get_path('exp_txt.png'))
+        got_txt = Image.open(get_path('got_txt.png'))
+        diff_txt = Image.open(get_path('diff_txt.png'))
+        #create emtpy image
+        compo_size = (self.width, 3*(self.height+self.label_margin))
+        self.compo = Image.new('RGBA', compo_size, WHITE)
+        #paste the labels onto it
+        for index, img in enumerate((exp_txt, got_txt, diff_txt)):
+            pos = (5, index*(self.height+self.label_margin))
+            self.compo.paste(img, pos)
+
+
+    def paste_screenshots(self):
+        for index, screenshot in enumerate((self.exp, self.got, self.diff)):
+            pos = (0, (index*self.height)+((index+1)*self.label_margin))
+            self.compo.paste(screenshot, pos)
+
+    @property
+    def composition(self):
+        self.paste_screenshots()
+        return self.compo
+
+    @property
+    def diff(self):
+        def subtract(source, sub):
+            return ImageChops.invert(
+                ImageChops.subtract(source, sub)).point(
+                    lambda i: 0 if i!=255 else 255).convert('1').convert(
+                        'RGB').split()[0]
+        def paste(dest, bbox, channels, merged):
+            mask = channels.point(lambda i: 80 if i!=255 else 255)
+            dest.paste(merged, bbox, ImageChops.invert(mask))
+        missing_red = subtract(self.got, self.exp)
+        missing_green = subtract(self.exp, self.got)
+        missing_empty = Image.new('L', missing_red.size, 255)
+        missing_red_merged = Image.merge(
+            'RGB',
+            (missing_empty, missing_red, missing_red)).convert('RGBA')
+        missing_green_merged = Image.merge(
+            'RGB',
+            (missing_green, missing_empty, missing_green)).convert('RGBA')
+        diff = self.exp.copy()
+        exp_bbox = diff.getbbox()
+        mask = Image.new('L', (self.width, self.height), 127)
+        diff.paste(self.got, exp_bbox, mask)
+        paste(diff, exp_bbox, missing_red, missing_red_merged)
+        paste(diff, exp_bbox, missing_green, missing_green_merged)
+        return diff
 
 
 class ImageDiff(object):
@@ -176,7 +204,7 @@ def assertScreenshot(selenese, name, locator, threshold=1):
             return
         ignored, compo_path = tempfile.mkstemp('.png')
         with open(compo_path, 'rw') as compo:
-            compo_img = image_diff_composition(image, screenshot)
+            compo_img = DiffComposition(image, screenshot).composition
             compo_img.save(compo.name)
             if SHOW_DIFF_IMG:
                 compo_img.show()
