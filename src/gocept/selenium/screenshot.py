@@ -1,10 +1,10 @@
 from PIL import Image, ImageChops
-import pkg_resources
-import os
-import tempfile
-import math
 import inspect
 import itertools
+import math
+import os
+import pkg_resources
+import tempfile
 
 
 SHOW_DIFF_IMG = os.environ.get('SHOW_DIFF_IMG', False)
