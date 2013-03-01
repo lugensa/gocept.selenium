@@ -58,6 +58,7 @@ class Selenese(object):
         self.timeout = timeout / 1000.0
 
     def waitForPageToLoad(self):
+        time.sleep(0.1)  # Give the browser a bit time to remove the old page
         self.waitForElementPresent('css=body')
 
     def _popup_exists(self, window_id=''):
@@ -511,8 +512,18 @@ class Selenese(object):
         return self.getEval(expression)
 
     def isTextPresent(self, pattern):
-        body = self.selenium.find_element(By.TAG_NAME, 'body')
-        return normalize(pattern) in normalize(body.text)
+        try:
+            body = self.selenium.find_element(By.TAG_NAME, 'body')
+        except selenium.common.exceptions.NoSuchElementException:
+            # The body element is not there. This happens for instance during
+            # page load. In this case, text matching is not possible.
+            return False
+        try:
+            body_text = body.text
+        except selenium.common.exceptions.StaleElementReferenceException:
+            # The body element vanished in between. Text is not present then.
+            return False
+        return normalize(pattern) in normalize(body_text)
 
     @assert_type('pattern')
     def getLocation(self):

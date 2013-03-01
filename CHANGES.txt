@@ -5,7 +5,8 @@ Changelog
 2.0.0b2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Stabilize webdriver/selenese API functions `waitForPageToLoad()` and
+  `isTextPresent` to not raise errors when the elements vanish in between. 
 
 
 2.0.0b1 (2013-02-14)
