@@ -176,8 +176,8 @@ def make_screenshot(selenese, locator):
 
 def _screenshot_path(screenshot_directory):
     if screenshot_directory == '.':
-        return os.path.dirname(inspect.getmodule(
-            inspect.currentframe().f_back).__file__)
+        screenshot_directory = \
+            inspect.currentframe().f_back.f_back.f_back.f_globals['__name__']
     return pkg_resources.resource_filename(
             screenshot_directory, '')
 
