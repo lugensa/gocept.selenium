@@ -139,3 +139,29 @@ class ScreenshotAssertionTest(HTMLTestCase):
         with self.assertRaises(ScreenshotMismatchError):
             self.selenium.assertScreenshot(
                     'screenshot_blocks', 'css=#block-2')
+
+
+class ScreenshotDirectorySettingTest(HTMLTestCase):
+
+    layer = STATIC_WD_LAYER
+
+    def test_default_setting_when_not_set(self):
+        #the default is the directory where the current test is
+        img = pkg_resources.resource_filename(self.__module__, 'foo.png')
+        self.selenium.capture_screenshot = True
+        self.selenium.open('screenshot.html')
+        with self.assertRaisesRegexp(ValueError, img):
+            self.selenium.assertScreenshot('foo', 'css=#block-1')
+        self.assertTrue(os.path.isfile(img))
+        os.unlink(img)
+
+    def test_screenshot_directory_setting_resolves_dotted_name(self):
+        directory = 'gocept.selenium.tests.screenshot_directory'
+        self.selenium.screenshot_directory = directory
+        img = pkg_resources.resource_filename(directory, 'foo.png')
+        self.selenium.capture_screenshot = True
+        self.selenium.open('screenshot.html')
+        with self.assertRaisesRegexp(ValueError, img):
+            self.selenium.assertScreenshot('foo', 'css=#block-1')
+        self.assertTrue(os.path.isfile(img))
+        os.unlink(img)
