@@ -29,9 +29,9 @@ class DiffComposition(object):
         self.prepare_composition()
         self.paste_screenshots()
         ignored, compo_path = tempfile.mkstemp('.png')
-        with open(compo_path, 'rw') as compo:
-            self.path = compo.name
-            self.compo.save(self.path)
+        with open(compo_path, 'rw') as compo_file:
+            self.path = compo_file.name
+            self.compo.convert('RGB').save(self.path)
             if SHOW_DIFF_IMG:
                 self.compo.show()
 
