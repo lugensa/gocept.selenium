@@ -194,13 +194,13 @@ def save_screenshot_temporary(screenshot):
 def save_as_expected(screenshot, img_basename, exp_path):
     if os.path.exists(exp_path):
         raise ValueError(
-            'Not capturing {}, image already exists. If you '
-            'want to capture this element again, delete {}'.format(
+            'Not capturing {0}, image already exists. If you '
+            'want to capture this element again, delete {1}'.format(
                 img_basename, exp_path))
     screenshot.save(exp_path)
     raise ValueError(
-        'Captured {}. You might now want to remove capture mode and '
-        'check in the created screenshot {}.'.format(
+        'Captured {0}. You might now want to remove capture mode and '
+        'check in the created screenshot {1}.'.format(
             img_basename, exp_path))
 
 
