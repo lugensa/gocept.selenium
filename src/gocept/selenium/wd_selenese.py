@@ -28,9 +28,10 @@ import urlparse
 
 try:
     from .screenshot import assertScreenshot
-    HAS_SCREENSHOT = True
 except ImportError:
     HAS_SCREENSHOT = False
+else:
+    HAS_SCREENSHOT = True
 
 
 def assert_type(type):
