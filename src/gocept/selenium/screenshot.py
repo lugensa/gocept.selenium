@@ -44,10 +44,10 @@ class DiffComposition(object):
         exp_txt = Image.open(get_path('exp_txt.png'))
         got_txt = Image.open(get_path('got_txt.png'))
         diff_txt = Image.open(get_path('diff_txt.png'))
-        #create emtpy image
+        # create emtpy image
         compo_size = (self.width, 3*(self.height+self.label_margin))
         self.compo = Image.new('RGBA', compo_size, WHITE)
-        #paste the labels onto it
+        # paste the labels onto it
         for index, img in enumerate((exp_txt, got_txt, diff_txt)):
             pos = (5, index*(self.height+self.label_margin))
             self.compo.paste(img, pos)
@@ -211,22 +211,20 @@ def assertScreenshot(selenese, img_basename, locator, threshold=1):
         _screenshot_path(selenese.screenshot_directory), '%s.png' % img_basename)
     screenshot = make_screenshot(selenese, locator)
     if selenese.capture_screenshot:
-        #In capture mode, we only want to save the screenshot
-        #as the new expected image.
+        # In capture mode, we only want to save the screenshot
+        # as the new expected image.
         save_as_expected(screenshot, img_basename, exp_path)
         return
     exp = Image.open(exp_path)
     diff = ImageDiff(screenshot, exp)
     if not diff.within_threshold(threshold):
-        #In failure case, we save the screenshot.
+        # In failure case, we save the screenshot.
         got_path = save_screenshot_temporary(screenshot)
         if exp.size != screenshot.size:
-            #Seperate exception if sizes differ.
+            # Seperate exception if sizes differ.
             raise ScreenshotSizeMismatchError(
                 img_basename, exp.size, screenshot.size, exp_path, got_path)
-        #Sizes are the same, so we can render a nice diff image.
+        # Sizes are the same, so we can render a nice diff image.
         compo = DiffComposition(exp, screenshot)
         raise ScreenshotMismatchError(
             img_basename, diff.distance, exp_path, got_path, compo.path)
-
-
