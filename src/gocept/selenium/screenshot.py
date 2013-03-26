@@ -36,9 +36,11 @@ class DiffComposition(object):
                 self.compo.show()
 
     def prepare_composition(self):
-        """prepares and returns the composition image, given width
-        and height is the size of one of the three images"""
-        #load the images with the labels
+        """prepares and returns the composition image"""
+        # NOTE: The method assumes that self.width/self.height is the
+        # width/height of *all* of the images.
+
+        # load the images with the labels
         exp_txt = Image.open(get_path('exp_txt.png'))
         got_txt = Image.open(get_path('got_txt.png'))
         diff_txt = Image.open(get_path('diff_txt.png'))
