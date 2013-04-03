@@ -31,10 +31,10 @@ case::
 Environment variables
 ---------------------
 
-You can configure the selenium server that gocept.selenium connects to from the
-command line. Selenium Server defaults to localhost:4444, but you can also connect
-to a selenium grid in your organization by using the following environment
-variables::
+You can set some variables in the environment of your test runner to configure
+which selenium server gocept.selenium connects to. Selenium Server defaults to
+localhost:4444, but you can also connect to a selenium grid in your
+organization by using the following environment variables::
 
     GOCEPT_SELENIUM_SERVER_HOST=selenium.mycompany.com
     GOCEPT_SELENIUM_SERVER_PORT=8888
@@ -46,7 +46,7 @@ browser to run the tests with like this::
 
 For use with Selenium Server's webdriver interface, the browser needs to be
 specified differently (although only Firefox is properly supported so far and
-it is the default browser anyway)::
+gocept.selenium uses it by default anyway)::
 
     GOCEPT_WEBDRIVER_BROWSER=firefox
 
@@ -54,14 +54,14 @@ If you need to use a Firefox binary at a custom path, specify it like this::
 
     GOCEPT_WEBDRIVER_FF_BINARY=<PATH>/firefox
 
-When you are running your selenium tests on a selenium grid, you need to
-instruct the browser which host and port to connect to::
+By default, the selenium layer will make the HTTP server under test bind to
+localhost and listen to a random port chosen by the kernel (i.e. instruct it
+to bind to port 0). This randomly chosen port is then used to point the
+browser at the application. You may want to influence this behaviour, e.g.
+when running your selenium tests on a selenium grid::
 
     GOCEPT_SELENIUM_APP_HOST=10.0.0.15
     GOCEPT_SELENIUM_APP_PORT=8001
-
-The default for the port to bind is 0 which let the kernel choose a random,
-free port.
 
 When you are testing an application on one machine, you can access the running
 application from another machine if you set ``GOCEPT_SELENIUM_APP_HOST =
