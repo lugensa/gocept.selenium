@@ -44,6 +44,16 @@ browser to run the tests with like this::
 
     GOCEPT_SELENIUM_BROWSER=*iexplore
 
+For use with Selenium Server's webdriver interface, the browser needs to be
+specified differently (although only Firefox is properly supported so far and
+it is the default browser anyway)::
+
+    GOCEPT_WEBDRIVER_BROWSER=firefox
+
+If you need to use a Firefox binary at a custom path, specify it like this::
+
+    GOCEPT_WEBDRIVER_FF_BINARY=<PATH>/firefox
+
 When you are running your selenium tests on a selenium grid, you need to
 instruct the browser which host and port to connect to::
 
@@ -77,6 +87,11 @@ and install Firebug into it. Then you can tell Selenium to use this profile as
 a profile template when running Firefox::
 
     $ java -jar /path/to/selenium-server-standalone-2.xx.xx.jar -firefoxProfileTemplate ~/.mozilla/firefox/<PROFILE_FOLDER>
+
+When using webdriver, instead set this environment variable for running the
+tests (not Selenium Server)::
+
+    GOCEPT_WEBDRIVER_FF_PROFILE=~/.mozilla/firefox/<PROFILE_FOLDER>
 
 .. _`Firebug`: http://getfirebug.com/
 

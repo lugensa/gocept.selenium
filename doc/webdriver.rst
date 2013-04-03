@@ -46,7 +46,8 @@ WebdriverSeleneseLayer and the (old) SeleniumRC-backed gocept.selenium.RCLayer:
     the rather uninformative ``[object Object]``.
 
 - The browser name syntax has changed: specify Firefox as "firefox", not "firefox*"
-  (concerns the environment variable ``GOCEPT_SELENIUM_BROWSER``).
+  (concerns the environment variable for setting the browser, which used to be
+  ``GOCEPT_SELENIUM_BROWSER`` and is ``GOCEPT_WEBDRIVER_BROWSER`` for webdriver).
   See the `WebDriver wiki`_ for possible browser names.
 
 .. _`WebDriver wiki`: http://code.google.com/p/selenium/wiki/DesiredCapabilities
