@@ -1,5 +1,5 @@
-Installation
-============
+Setting up the environment
+==========================
 
 Download the Selenium Server JAR from `seleniumhq.org`_  and run::
 
