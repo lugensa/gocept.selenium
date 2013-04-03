@@ -1,9 +1,9 @@
 Installation
 ============
 
-Download the Selenium Remote Control JAR from `seleniumhq.org`_  and run::
+Download the Selenium Server JAR from `seleniumhq.org`_  and run::
 
-    $ java -jar /path/to/selenium-server.jar
+    $ java -jar /path/to/selenium-server-standalone-2.xx.xx.jar
 
 This starts the server process that your tests will connect to to spawn and
 control the browser.
@@ -32,7 +32,7 @@ Environment variables
 ---------------------
 
 You can configure the selenium server that gocept.selenium connects to from the
-command line. Selenium RC defaults to localhost:4444, but you can also connect
+command line. Selenium Server defaults to localhost:4444, but you can also connect
 to a selenium grid in your organization by using the following environment
 variables::
 
@@ -76,7 +76,7 @@ in the Selenium-controlled browser. To do that, create a new Firefox profile
 and install Firebug into it. Then you can tell Selenium to use this profile as
 a profile template when running Firefox::
 
-    $ java -jar /path/to/selenium-server.jar -firefoxProfileTemplate ~/.mozilla/firefox/<PROFILE_FOLDER>
+    $ java -jar /path/to/selenium-server-standalone-2.xx.xx.jar -firefoxProfileTemplate ~/.mozilla/firefox/<PROFILE_FOLDER>
 
 .. _`Firebug`: http://getfirebug.com/
 
@@ -97,4 +97,4 @@ in a window, for example:
     export DISPLAY=$display
     sleep 2
     metacity &  # or any other window manager
-    x-terminal-emulator -e java -jar /path/to/selenium-server.jar
+    x-terminal-emulator -e java -jar /path/to/selenium-server-standalone-2.xx.xx.jar
