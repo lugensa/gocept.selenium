@@ -18,7 +18,7 @@ Here's how to set this up (see :doc:`integration` for details)::
     from mypackage import App
 
     http_layer = gocept.httpserverlayer.wsgi.Layer(App())
-    webbdriver_layer = gocept.selenium.webdriver.Layer(
+    webdriver_layer = gocept.selenium.webdriver.Layer(
         name='WSGILayer', bases=(http_layer,))
     test_layer = gocept.selenium.webdriver.WebdriverSeleneseLayer(
         name='WebdriverTestLayer', bases=(webdriver_layer))
