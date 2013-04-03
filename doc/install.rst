@@ -40,7 +40,7 @@ variables::
     GOCEPT_SELENIUM_SERVER_PORT=8888
 
 If multiple browsers are connected to your selenium grid, you can choose the
-browser to run the tests with as such::
+browser to run the tests with like this::
 
     GOCEPT_SELENIUM_BROWSER=*iexplore
 
@@ -73,8 +73,8 @@ Using a custom Firefox profile
 
 For debugging purposes it's helpful to have the `Firebug`_ debugger available
 in the Selenium-controlled browser. To do that, create a new Firefox profile
-and install Firebug into it. Then you can tell Selenium to use this profile for
-running Firefox::
+and install Firebug into it. Then you can tell Selenium to use this profile as
+a profile template when running Firefox::
 
     $ java -jar /path/to/selenium-server.jar -firefoxProfileTemplate ~/.mozilla/firefox/<PROFILE_FOLDER>
 
@@ -84,7 +84,7 @@ running Firefox::
 Using a nested X Server
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Under Linux, the Selenium-controlled browser tends to steal the mouse focus,
+On Linux systems, the Selenium-controlled browser tends to steal the window focus,
 which makes it impossible to do anything else while a Selenium test is running.
 To prevent this, use Xephyr (successor of Xnest) to start an X server contained
 in a window, for example:
