@@ -5,7 +5,8 @@ Changelog
 2.0.0b3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Improved documentation, in particular with respect to the changes by
+  integrating webdriver.
 
 
 2.0.0b2 (2013-03-01)
