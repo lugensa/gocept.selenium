@@ -150,6 +150,15 @@ class ScreenshotSizeMismatchError(ValueError):
                                self.expected, self.got)
 
 
+class ZeroDimensionError(ValueError):
+
+    def __init__(self, locator):
+        self.locator = locator
+
+    def __str__(self):
+        return 'Either width or height of %r is zero.' % self.locator
+
+
 def make_screenshot(selenese, locator):
     ignored, path = tempfile.mkstemp()
     selenese.captureScreenshot(path)
@@ -168,6 +177,9 @@ def make_screenshot(selenese, locator):
         } while (e = e.offsetParent)
         return dimensions;
         """, selenese._find(locator))
+
+    if 0 in (dimensions['width'], dimensions['height']):
+        raise ZeroDimensionError(locator)
 
     with open(path, 'rw') as screenshot:
         box = (dimensions['left'], dimensions['top'],

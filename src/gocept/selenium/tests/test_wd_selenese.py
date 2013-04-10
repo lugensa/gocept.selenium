@@ -140,6 +140,12 @@ class ScreenshotAssertionTest(HTMLTestCase):
             self.selenium.assertScreenshot(
                     'screenshot_blocks', 'css=#block-2')
 
+    def test_raises_Exception_on_empty_element(self):
+        from ..screenshot import ZeroDimensionError
+        self.selenium.open('empty-tag.html')
+        with self.assertRaises(ZeroDimensionError) as err:
+            self.selenium.assertScreenshot('emtpy-tag', 'css=#block0')
+
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):
 
