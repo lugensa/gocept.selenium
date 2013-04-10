@@ -11,6 +11,9 @@ Changelog
 - If an ``AssertionError`` occures in a test using webdriver, a screenshot
   is taken automatically and the path is presented to the user. (#12247)
 
+- Made a test for ``assertScreenshot`` pass on systems with a different
+  browser default font.
+
 
 2.0.0b2 (2013-03-01)
 --------------------
