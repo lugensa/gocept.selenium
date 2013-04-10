@@ -134,7 +134,8 @@ class HTMLTestCase(gocept.selenium.static.TestCase, unittest.TestCase):
             shutil.copy(os.path.join(directory, name), self.documentroot)
 
 
-class AssertionTests(gocept.testing.assertion.String):
+class AssertionTests(gocept.testing.assertion.String,
+                     gocept.testing.assertion.Exceptions):
 
     def test_wait_for(self):
         self.selenium.open('/display-delay.html')
@@ -170,8 +171,9 @@ class AssertionTests(gocept.testing.assertion.String):
             self.fail('Pause did pause too long')
 
     def test_deleteCookie_smoke(self):
-        # Smoke test: just check that we don't break
-        self.selenium.deleteCookie('foo', '/')
+        with self.assertNothingRaised():
+            # Smoke test: just check that we don't break
+            self.selenium.deleteCookie('foo', '/')
 
     def test_selectFrame_frame_doesnt_exist(self):
         self.assertRaises(Exception, self.selenium.selectFrame, 'foo')
@@ -222,15 +224,10 @@ class AssertionTests(gocept.testing.assertion.String):
 
     def test_raises_nice_exception_on_mismatch(self):
         self.selenium.open('/divs.html')
-        try:
+        with self.assertRaisesRegexp(
+                AssertionError,
+                "Actual count of CSS 'css=div' is 4, expected 3.*") as err:
             self.selenium.assertCssCount("css=div", 3)
-        except AssertionError, e:
-            self.assertStartsWith("Actual count of CSS 'css=div' is 4, expected 3",
-                             str(e))
-        except Exception, e:
-            self.fail('Wrong assertion raised %r' % e)
-        else:
-            self.fail('Did not raise an exception')
 
 
 class AssertionTest(AssertionTests, HTMLTestCase):
