@@ -36,7 +36,8 @@ if sys.version_info < (2, 6):
     # needed but not declared by selenium
     install_requires.append('simplejson')
 
-tests_require = ['mock']
+tests_require = ['mock',
+                 'gocept.testing']
 if sys.version_info < (2, 7):
     tests_require.append('unittest2')
 
