@@ -8,12 +8,15 @@ Changelog
 - Improved documentation, in particular with respect to the changes by
   integrating webdriver.
 
+- If an ``AssertionError`` occures in a test using webdriver, a screenshot
+  is taken automatically and the path is presented to the user. (#12247)
+
 
 2.0.0b2 (2013-03-01)
 --------------------
 
 - Stabilize webdriver/selenese API functions `waitForPageToLoad()` and
-  `isTextPresent` to not raise errors when the elements vanish in between. 
+  `isTextPresent` to not raise errors when the elements vanish in between.
 
 
 2.0.0b1 (2013-02-14)

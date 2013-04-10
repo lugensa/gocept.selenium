@@ -240,3 +240,12 @@ def assertScreenshot(selenese, img_basename, locator, threshold=1):
         compo = DiffComposition(exp, screenshot)
         raise ScreenshotMismatchError(
             img_basename, diff.distance, exp_path, got_path, compo.path)
+
+
+def screenshot_window(selense):
+    """Screenshot the whole browser window.
+
+    Stores the result in a temporary file and returns the path to it.
+
+    """
+    return save_screenshot_temporary(make_screenshot(selense, 'css=body'))

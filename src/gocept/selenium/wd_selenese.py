@@ -27,7 +27,8 @@ import urlparse
 
 
 try:
-    from .screenshot import assertScreenshot
+    from .screenshot import (
+        assertScreenshot, screenshot_window, ZeroDimensionError)
 except ImportError:
     HAS_SCREENSHOT = False
 else:
@@ -43,12 +44,18 @@ def assert_type(type):
 
 class Selenese(object):
 
-    failureException = AssertionError
+    failureExceptionClass = AssertionError
 
     def __init__(self, selenium, app_address):
         self.selenium = selenium
         self.server = app_address
         self.timeout = 30
+
+    def failureException(self, msg):
+        screenshot_msg = self.screenshot()
+        if screenshot_msg:
+            msg += '\n' + screenshot_msg
+        return self.failureExceptionClass(msg)
 
     # Actions
 
@@ -326,6 +333,16 @@ class Selenese(object):
 
     def windowMaximize(self):
         self.selenium.maximize_window()
+
+    def screenshot(self):
+        """Take a screenshot of the whole window."""
+        if HAS_SCREENSHOT:
+            try:
+                return 'A screenshot has been saved, see: %s ' % (
+                    screenshot_window(self))
+            except ZeroDimensionError:
+                return ('A screenshot could not be saved because document '
+                        'body is empty.')
 
     # Getter
 
@@ -714,7 +731,7 @@ class Selenese(object):
     def _negate(self, assertion, name, *args, **kw):
         try:
             assertion(*args, **kw)
-        except self.failureException:
+        except self.failureExceptionClass:
             return
         else:
             raise self.failureException(
@@ -725,7 +742,7 @@ class Selenese(object):
         while True:
             try:
                 assertion(*args, **kw)
-            except self.failureException, e:
+            except self.failureExceptionClass, e:
                 if time.time() - start > self.timeout:
                     raise self.failureException(
                         'Timed out. %s' % e.args[0])

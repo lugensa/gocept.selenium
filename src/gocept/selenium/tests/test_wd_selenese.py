@@ -19,6 +19,7 @@ from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
 import gocept.selenium.tests.test_selenese
+import gocept.testing.assertion
 import os.path
 import pkg_resources
 import shutil
@@ -104,7 +105,8 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
         pass  # does not exist in Webdriver
 
 
-class ScreenshotAssertionTest(HTMLTestCase):
+class ScreenshotAssertionTest(HTMLTestCase,
+                              gocept.testing.assertion.String):
 
     layer = STATIC_WD_LAYER
 
@@ -145,6 +147,22 @@ class ScreenshotAssertionTest(HTMLTestCase):
         self.selenium.open('empty-tag.html')
         with self.assertRaises(ZeroDimensionError) as err:
             self.selenium.assertScreenshot('emtpy-tag', 'css=#block0')
+
+    def test_takes_screenshot_on_assertion_error(self):
+        self.selenium.open('screenshot.html')
+        with self.assertRaises(AssertionError) as err:
+            self.selenium.assertTextPresent('FooBar')
+        self.assertStartsWith(
+            "Text 'FooBar' not present\nA screenshot has been saved, see: ",
+            str(err.exception))
+
+    def test_screenshot_on_assertion_error_does_not_break_on_empty_body(self):
+        self.selenium.open('display-delay.html')
+        with self.assertRaises(AssertionError) as err:
+            self.selenium.assertTextPresent('FooBar')
+        self.assertEqual(
+            "Text 'FooBar' not present\nA screenshot could not be saved "
+            "because document body is empty.", str(err.exception))
 
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):
