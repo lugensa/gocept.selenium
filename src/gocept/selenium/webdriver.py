@@ -42,7 +42,7 @@ class Layer(plonetesting.Layer):
             FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
         self.profile.native_events_enabled = True
         self.profile.update_preferences()
-        desired_capabilities=dict(browserName=self._browser)
+        desired_capabilities = dict(browserName=self._browser)
         if self._browser == 'firefox':
             ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
             if ff_binary:

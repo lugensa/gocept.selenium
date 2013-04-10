@@ -16,19 +16,21 @@ except ImportError:
     from elementtree import HTMLTreeBuilder
 
     class QName(object):
-	def __init__(self, text_or_uri, tag=None):
-	    if tag:
-		text_or_uri = "{%s}%s" % (text_or_uri, tag)
-	    self.text = text_or_uri
-	def __str__(self):
-	    return self.text
-	def __hash__(self):
-	    return hash(self.text)
-	def __cmp__(self, other):
-	    if isinstance(other, QName):
-		return cmp(self.text, other.text)
-	    return cmp(self.text, other)
+        def __init__(self, text_or_uri, tag=None):
+            if tag:
+                text_or_uri = "{%s}%s" % (text_or_uri, tag)
+            self.text = text_or_uri
 
+        def __str__(self):
+            return self.text
+
+        def __hash__(self):
+            return hash(self.text)
+
+        def __cmp__(self, other):
+            if isinstance(other, QName):
+                return cmp(self.text, other.text)
+            return cmp(self.text, other)
 
 
 module_template = Template('''\
@@ -148,15 +150,15 @@ def parse_file(filename):
     except AttributeError:
         return None, None, None
     content_type = tree.find(".//%s" % QName(XHTML_NAMESPACE,
-			"meta[@http-equiv='Content-Type']")).get('content')
+                        "meta[@http-equiv='Content-Type']")).get('content')
     matched = encoding_regexp.search(content_type)
     if matched is not None:
-       encoding = matched.group(1).lower()
+        encoding = matched.group(1).lower()
     else:
-       encoding = 'utf-8'
+        encoding = 'utf-8'
     commands = []
     for row in tree.findall('.//%s/%s' % (QName(XHTML_NAMESPACE, 'tbody'),
-	                                  QName(XHTML_NAMESPACE, 'tr'))):
+                                          QName(XHTML_NAMESPACE, 'tr'))):
         command = formatcommand(*[td.text for td in row.findall(str(QName(XHTML_NAMESPACE, 'td')))])
         commands.append(command)
     return testname, commands, encoding

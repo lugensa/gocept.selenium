@@ -132,7 +132,7 @@ class ScreenshotAssertionTest(HTMLTestCase,
         self.selenium.open('screenshot_threshold.html')
         with self.assertRaises(ScreenshotMismatchError):
             self.selenium.assertScreenshot(
-                'screenshot_threshold', 'css=#block-2' , threshold=4)
+                'screenshot_threshold', 'css=#block-2', threshold=4)
 
     def test_diffing_blocks(self):
         """Test to check if the image differ works good. You have to set
