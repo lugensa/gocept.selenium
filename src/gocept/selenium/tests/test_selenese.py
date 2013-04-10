@@ -18,6 +18,7 @@ import glob
 import gocept.selenium
 import gocept.selenium.selenese
 import gocept.selenium.static
+import gocept.testing.assertion
 import os
 import pkg_resources
 import random
@@ -133,7 +134,7 @@ class HTMLTestCase(gocept.selenium.static.TestCase, unittest.TestCase):
             shutil.copy(os.path.join(directory, name), self.documentroot)
 
 
-class AssertionTests(object):
+class AssertionTests(gocept.testing.assertion.String):
 
     def test_wait_for(self):
         self.selenium.open('/display-delay.html')
@@ -224,7 +225,7 @@ class AssertionTests(object):
         try:
             self.selenium.assertCssCount("css=div", 3)
         except AssertionError, e:
-            self.assertEqual("Actual count of CSS 'css=div' is 4, expected 3",
+            self.assertStartsWith("Actual count of CSS 'css=div' is 4, expected 3",
                              str(e))
         except Exception, e:
             self.fail('Wrong assertion raised %r' % e)
