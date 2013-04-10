@@ -821,5 +821,5 @@ def selenese_pattern_equals(text, pattern):
 def abbrev_repr(x, size=70):
     r = repr(x)
     if len(r) > size:
-        r = r[:size-3] + '...'
+        r = r[:size - 3] + '...'
     return r

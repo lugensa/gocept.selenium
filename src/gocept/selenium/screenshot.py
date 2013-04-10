@@ -45,16 +45,17 @@ class DiffComposition(object):
         got_txt = Image.open(get_path('got_txt.png'))
         diff_txt = Image.open(get_path('diff_txt.png'))
         # create emtpy image
-        compo_size = (self.width, 3*(self.height+self.label_margin))
+        compo_size = (self.width, 3 * (self.height + self.label_margin))
         self.compo = Image.new('RGBA', compo_size, WHITE)
         # paste the labels onto it
         for index, img in enumerate((exp_txt, got_txt, diff_txt)):
-            pos = (5, index*(self.height+self.label_margin))
+            pos = (5, index * (self.height + self.label_margin))
             self.compo.paste(img, pos)
 
     def paste_screenshots(self):
         for index, screenshot in enumerate((self.exp, self.got, self.diff)):
-            pos = (0, (index*self.height)+((index+1)*self.label_margin))
+            pos = (0, (index * self.height) +
+                      ((index + 1) * self.label_margin))
             self.compo.paste(screenshot, pos)
 
     @property
@@ -62,10 +63,11 @@ class DiffComposition(object):
         def subtract(source, sub):
             return ImageChops.invert(
                 ImageChops.subtract(source, sub)).point(
-                    lambda i: 0 if i!=255 else 255).convert('1').convert(
+                    lambda i: 0 if i != 255 else 255).convert('1').convert(
                         'RGB').split()[0]
+
         def paste(dest, bbox, channels, merged):
-            mask = channels.point(lambda i: 80 if i!=255 else 255)
+            mask = channels.point(lambda i: 80 if i != 255 else 255)
             dest.paste(merged, bbox, ImageChops.invert(mask))
         missing_red = subtract(self.got, self.exp)
         missing_green = subtract(self.exp, self.got)
@@ -220,7 +222,8 @@ def save_as_expected(screenshot, img_basename, exp_path):
 
 def assertScreenshot(selenese, img_basename, locator, threshold=1):
     exp_path = os.path.join(
-        _screenshot_path(selenese.screenshot_directory), '%s.png' % img_basename)
+        _screenshot_path(selenese.screenshot_directory),
+        '%s.png' % img_basename)
     screenshot = make_screenshot(selenese, locator)
     if selenese.capture_screenshot:
         # In capture mode, we only want to save the screenshot

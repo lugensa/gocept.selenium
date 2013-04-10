@@ -575,7 +575,7 @@ class Selenese(object):
     def assertOrdered(self, locator1, locator2):
         if self._find(locator2).id not in set(
             x.id for x in self.selenium.find_elements_by_xpath(
-                locator1+'/following-sibling::*')):
+                locator1 + '/following-sibling::*')):
             raise self.failureException(
                 'Element order did not match expected %r,%r'
                 % (locator1, locator2))
