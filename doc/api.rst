@@ -24,8 +24,14 @@ Assertions come in several flavours:
 * Wait ``self.selenium.waitForElementPresent('id=foo')``
 * Negated Wait ``self.selenium.waitForNotElementPresent('id=foo')``
 
-Usage of assertScreenshot
-~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: webdriver.rst
+
+
+Test helpers
+------------
+
+assertScreenshot
+~~~~~~~~~~~~~~~~
 
 .. NOTE:: ``assertScreenshot`` *needs* PIL. You might consider to require the
           `screenshot` extra in your setup.py like so:
@@ -71,12 +77,6 @@ you in the error message:
 If you would like to open the image showing the differences in an image viewer,
 set the environment variable ``SHOW_DIFF_IMG`` before running the test.
 
-
-.. include:: webdriver.rst
-
-
-Test helpers
-------------
 
 Skipping tests for certain browsers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
