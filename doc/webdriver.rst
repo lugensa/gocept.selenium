@@ -14,17 +14,17 @@ worth implementing in a webdriver environment.
 Here's how to set this up (see :doc:`integration` for details)::
 
     import gocept.httpserverlayer.wsgi
-    import gocept.selenium.webdriver
+    import gocept.selenium
     from mypackage import App
 
     http_layer = gocept.httpserverlayer.wsgi.Layer(App())
-    webdriver_layer = gocept.selenium.webdriver.Layer(
+    webdriver_layer = gocept.selenium.WebdriverLayer(
         name='WSGILayer', bases=(http_layer,))
-    test_layer = gocept.selenium.webdriver.WebdriverSeleneseLayer(
+    test_layer = gocept.selenium.WebdriverSeleneseLayer(
         name='WebdriverTestLayer', bases=(webdriver_layer))
 
 
-    class TestWSGITestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase):
+    class TestWSGITestCase(gocept.selenium.WebdriverSeleneseTestCase):
 
         layer = test_layer
 
