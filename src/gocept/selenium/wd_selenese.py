@@ -13,7 +13,8 @@
 ##############################################################################
 
 from gocept.selenium.selenese import selenese_pattern_equals
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import (
+    NoSuchElementException, WebDriverException)
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -340,7 +341,7 @@ class Selenese(object):
             try:
                 return 'A screenshot has been saved, see: %s ' % (
                     screenshot_window(self))
-            except ZeroDimensionError:
+            except (ZeroDimensionError, WebDriverException):
                 return ('A screenshot could not be saved because document '
                         'body is empty.')
 

@@ -5,7 +5,8 @@ Changelog
 2.0.0b4 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- If a test fails because of an empty body, taking automatically a screenshot
+  failed and concealing the original error message. This is now fixed. (#12341)
 
 
 2.0.0b3 (2013-04-10)
