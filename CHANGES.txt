@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.0.0b4 (unreleased)
+2.0.0b4 (2013-04-26)
 --------------------
 
 - If a test fails because of an empty body, taking automatically a screenshot
