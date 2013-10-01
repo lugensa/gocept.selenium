@@ -14,7 +14,7 @@
 
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
 from gocept.selenium.screenshot import \
-        ScreenshotMismatchError, ScreenshotSizeMismatchError
+    ScreenshotMismatchError, ScreenshotSizeMismatchError
 from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
@@ -139,13 +139,12 @@ class ScreenshotAssertionTest(HTMLTestCase,
         SHOW_DIFF_IMG=1 to see something."""
         self.selenium.open('screenshot_blocks.html')
         with self.assertRaises(ScreenshotMismatchError):
-            self.selenium.assertScreenshot(
-                    'screenshot_blocks', 'css=#block-2')
+            self.selenium.assertScreenshot('screenshot_blocks', 'css=#block-2')
 
     def test_raises_Exception_on_empty_element(self):
         from ..screenshot import ZeroDimensionError
         self.selenium.open('empty-tag.html')
-        with self.assertRaises(ZeroDimensionError) as err:
+        with self.assertRaises(ZeroDimensionError):
             self.selenium.assertScreenshot('emtpy-tag', 'css=#block0')
 
     def test_takes_screenshot_on_assertion_error(self):
