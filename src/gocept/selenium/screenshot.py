@@ -63,8 +63,8 @@ class DiffComposition(object):
         def subtract(source, sub):
             return ImageChops.invert(
                 ImageChops.subtract(source, sub)).point(
-                    lambda i: 0 if i != 255 else 255).convert('1').convert(
-                        'RGB').split()[0]
+                lambda i: 0 if i != 255 else 255).convert('1').convert(
+                'RGB').split()[0]
 
         def paste(dest, bbox, channels, merged):
             mask = channels.point(lambda i: 80 if i != 255 else 255)
@@ -194,8 +194,7 @@ def _screenshot_path(screenshot_directory):
     if screenshot_directory == '.':
         screenshot_directory = \
             inspect.currentframe().f_back.f_back.f_back.f_globals['__name__']
-    return pkg_resources.resource_filename(
-            screenshot_directory, '')
+    return pkg_resources.resource_filename(screenshot_directory, '')
 
 
 def save_screenshot_temporary(screenshot):
