@@ -344,7 +344,7 @@ class Selenese(object):
         """Take a screenshot of the whole window."""
         if HAS_SCREENSHOT:
             try:
-                return 'A screenshot has been saved, see: %s ' % (
+                return 'A screenshot has been saved, see: %s' % (
                     screenshot_window(self))
             except (ZeroDimensionError, WebDriverException):
                 return ('A screenshot could not be saved because document '
