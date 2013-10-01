@@ -413,7 +413,8 @@ class Selenese(object):
     @assert_type('list')
     @passthrough
     def getAllWindowIds(self):
-        pass
+        return [name for name in self.selenium.get_all_window_ids()
+                if name != 'null']
 
     @assert_type('list')
     def getAllWindowNames(self):
