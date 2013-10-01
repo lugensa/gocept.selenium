@@ -335,6 +335,11 @@ class Selenese(object):
     def windowMaximize(self):
         self.selenium.maximize_window()
 
+    def setWindowSize(self, width, height):
+        self.selenium.set_window_size(width, height)
+        self.waitForEval('window.outerWidth', str(width))
+        self.waitForEval('window.outerHeight', str(height))
+
     def screenshot(self):
         """Take a screenshot of the whole window."""
         if HAS_SCREENSHOT:
@@ -403,7 +408,9 @@ class Selenese(object):
         #
         # BBB We should be glad to get typed values out of webdriver's eval
         # but currently we try to keep gocept.selenium's API stable.
-        return json.dumps(self.selenium.execute_script('return ' + script))
+        if 'return' not in script:
+            script = 'return ' + script
+        return json.dumps(self.selenium.execute_script(script))
 
     @assert_type('pattern')
     def getHtmlSource(self):

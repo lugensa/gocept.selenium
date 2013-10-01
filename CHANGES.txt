@@ -5,6 +5,8 @@ Changelog
 2.0.0b5 (unreleased)
 --------------------
 
+- Implement ``setWindowSize`` for both RC and Webdriver.
+
 - Implement ``getAllWindowIds`` in RC-Selenese.
 
 

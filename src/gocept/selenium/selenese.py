@@ -640,6 +640,11 @@ class Selenese(object):
             raise self.failureException(
                 'Height of %r is %r, expected %r.' % (locator, got, height))
 
+    def setWindowSize(self, width, height):
+        self.getEval('window.resizeTo(%s, %s)' % (width, height))
+        self.waitForEval('window.outerWidth', str(width))
+        self.waitForEval('window.outerHeight', str(height))
+
     # Internal
 
     def __getattr__(self, name):
