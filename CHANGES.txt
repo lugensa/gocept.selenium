@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.0.0b5 (unreleased)
+2.0.0b5 (2013-10-01)
 --------------------
 
 - Implement ``setWindowSize`` for both RC and Webdriver.
