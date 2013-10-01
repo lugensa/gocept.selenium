@@ -23,6 +23,7 @@ import gocept.testing.assertion
 import os.path
 import pkg_resources
 import shutil
+import stat
 
 
 try:
@@ -162,6 +163,15 @@ class ScreenshotAssertionTest(HTMLTestCase,
         self.assertEqual(
             "Text 'FooBar' not present\nA screenshot could not be saved "
             "because document body is empty.", str(err.exception))
+
+    def test_screenshot_files_have_normal_file_mode(self):
+        self.selenium.open('screenshot.html')
+        message = self.selenium.screenshot()
+        # XXX not the best API in the world, but on the other hand, not really
+        # meant for programmatic usage, so...
+        filename = message.rsplit(': ', 1)[1]
+        mode = stat.S_IMODE(os.stat(filename).st_mode)
+        self.assertEqual(0o644, mode)
 
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):

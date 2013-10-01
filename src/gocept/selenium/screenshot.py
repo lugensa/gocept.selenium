@@ -203,6 +203,7 @@ def save_screenshot_temporary(screenshot):
     ignored, got_path = tempfile.mkstemp('.png')
     with open(got_path, 'rw') as got:
         screenshot.save(got.name)
+    os.chmod(got_path, 0o644)
     return got.name
 
 
