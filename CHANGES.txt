@@ -5,7 +5,7 @@ Changelog
 2.0.0b5 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Implement ``getAllWindowIds`` in RC-Selenese.
 
 
 2.0.0b4 (2013-04-26)
