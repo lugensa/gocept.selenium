@@ -20,7 +20,7 @@ copyright = u"""\
     <a href="http://sphinx.pocoo.org/">Sphinx</a>-Theme adapted from
     <a href="http://jinja.pocoo.org/docs/">Jinja</a>
 """
-version = '1.0'  # XXX determine automatically
+version = '2.0'  # XXX determine automatically
 release = version
 
 pygments_style = 'sphinx'
