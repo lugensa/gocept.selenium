@@ -9,6 +9,9 @@ dist
 doc/_api
 doc/_build
 eggs
+include
+lib
+local
 local.cfg
 parts
 *.pyc
