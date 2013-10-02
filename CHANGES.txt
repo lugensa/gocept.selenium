@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.0.0b6 (unreleased)
+2.0.0b6 (2013-10-02)
 --------------------
 
 - Save screenshots of assertion failures with mode 644 (world-readable),
