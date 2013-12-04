@@ -5,7 +5,7 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix URL to GROK toolkit versions.
 
 
 1.1.2 (2012-12-21)
