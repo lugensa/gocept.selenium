@@ -8,6 +8,8 @@ Changelog
 - Make timeout configurable via environment variable
   ``GOCEPT_SELENIUM_TIMEOUT`` (#10497).
 
+- Apply ``setTimeout`` to the ``open()`` timeout, too (#10750).
+
 
 internal:
 

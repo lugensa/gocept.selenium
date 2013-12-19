@@ -50,7 +50,7 @@ class Selenese(object):
         # timeout=30 default argument is due to backwards-compatibility
         self.selenium = selenium
         self.server = app_address
-        self.timeout = timeout
+        self.setTimeout(timeout * 1000)
 
     # Actions
 
@@ -83,6 +83,7 @@ class Selenese(object):
 
     def setTimeout(self, timeout):
         self.timeout = timeout / 1000.0
+        self.selenium.set_timeout(timeout)
 
     def waitForPageToLoad(self):
         self.selenium.wait_for_page_to_load(self.timeout * 1000)

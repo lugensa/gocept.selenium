@@ -69,7 +69,7 @@ class Layer(plonetesting.Layer):
 
     def testSetUp(self):
         # BBB reset timeout
-        self['selenium'].timeout = self._timeout
+        self['selenium'].setTimeout(self._timeout * 1000)
 
 
 class IntegrationBase(object):
