@@ -67,7 +67,13 @@ When you are testing an application on one machine, you can access the running
 application from another machine if you set ``GOCEPT_SELENIUM_APP_HOST =
 0.0.0.0`` instead of the default ``localhost``.
 
-You can set the speed with which the tests are run through an environment
+You can control the timeout of ``waitFor`` assertions and other selenium
+actions by setting a timeout in seconds::
+
+    GOCEPT_SELENIUM_TIMEOUT=10  (default: 30 seconds)
+
+
+You can also set the speed with which the tests are run through an environment
 variable::
 
     GOCEPT_SELENIUM_SPEED=500

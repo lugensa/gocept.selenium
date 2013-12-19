@@ -92,14 +92,17 @@ class Layer(plonetesting.Layer):
 
 class WebdriverSeleneseLayer(plonetesting.Layer):
 
+    _timeout = int(os.environ.get('GOCEPT_SELENIUM_TIMEOUT', 30))
+
     def setUp(self):
         self['selenium'] = gocept.selenium.wd_selenese.Selenese(
-            self['seleniumrc'], self['http_address'])
+            self['seleniumrc'], self['http_address'], self._timeout)
 
     def testSetUp(self):
         # BBB reset settings
+        self['selenium'].timeout = self._timeout
         blank = gocept.selenium.wd_selenese.Selenese(None, None)
-        for name in ['timeout', 'screenshot_directory', 'capture_screenshot']:
+        for name in ['screenshot_directory', 'capture_screenshot']:
             setattr(self['selenium'], name, getattr(blank, name))
 
 

@@ -5,6 +5,12 @@ Changelog
 2.0.1 (unreleased)
 ------------------
 
+- Make timeout configurable via environment variable
+  ``GOCEPT_SELENIUM_TIMEOUT`` (#10497).
+
+
+internal:
+
 - Move instantiating Selenese object from testSetUp to layer setUp. This
   *should* not change the behaviour for clients (we take care to reset the
   configured timeout in testSetUp as before), but take care.
