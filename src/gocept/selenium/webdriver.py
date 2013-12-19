@@ -92,11 +92,15 @@ class Layer(plonetesting.Layer):
 
 class WebdriverSeleneseLayer(plonetesting.Layer):
 
-    def testSetUp(self):
-        # instantiate a fresh one per test run, so any configuration
-        # (e.g. timeout) is reset
+    def setUp(self):
         self['selenium'] = gocept.selenium.wd_selenese.Selenese(
             self['seleniumrc'], self['http_address'])
+
+    def testSetUp(self):
+        # BBB reset settings
+        blank = gocept.selenium.wd_selenese.Selenese(None, None)
+        for name in ['timeout', 'screenshot_directory', 'capture_screenshot']:
+            setattr(self['selenium'], name, getattr(blank, name))
 
 
 class WebdriverSeleneseTestCase(object):

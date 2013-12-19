@@ -55,6 +55,8 @@ class Layer(plonetesting.Layer):
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
         if speed is not None:
             self['seleniumrc'].set_speed(speed)
+        self['selenium'] = gocept.selenium.selenese.Selenese(
+            self['seleniumrc'], self['http_address'])
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
@@ -65,10 +67,9 @@ class Layer(plonetesting.Layer):
         self['seleniumrc'].stop()
 
     def testSetUp(self):
-        # instantiate a fresh one per test run, so any configuration
-        # (e.g. timeout) is reset
-        self['selenium'] = gocept.selenium.selenese.Selenese(
-            self['seleniumrc'], self['http_address'])
+        # BBB reset timeout
+        self['selenium'].timeout = gocept.selenium.selenese.Selenese(
+            None, None).timeout
 
 
 class IntegrationBase(object):
