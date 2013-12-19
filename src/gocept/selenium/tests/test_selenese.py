@@ -14,6 +14,7 @@
 
 from gocept.selenium.selenese import camelcase_to_underscore
 from gocept.selenium.selenese import selenese_pattern_equals as match
+from mock import Mock
 import glob
 import gocept.selenium
 import gocept.selenium.selenese
@@ -21,7 +22,6 @@ import gocept.selenium.static
 import gocept.testing.assertion
 import os
 import pkg_resources
-import random
 import shutil
 import time
 
@@ -88,7 +88,7 @@ class NonexistentNameTest(unittest.TestCase):
             def get_with_wrong_assert_type(self):
                 pass
 
-        self.selenese = Selenese(None, None)
+        self.selenese = Selenese(Mock(), None)
 
     def assertError(self, error, name, expected_msg):
         try:
@@ -228,6 +228,14 @@ class AssertionTests(gocept.testing.assertion.String,
                 AssertionError,
                 "Actual count of CSS 'css=div' is 4, expected 3.*") as err:
             self.selenium.assertCssCount("css=div", 3)
+
+    def test_configured_timeout_is_applied_for_open(self):
+        self.selenium.setTimeout(1)
+        with self.assertRaisesRegexp(
+                # we're lucky that both SeleniumRC and Webdriver word
+                # their respective exceptions similarly.
+                Exception, 'Timed out'):
+            self.selenium.open('/divs.html')
 
 
 class AssertionTest(AssertionTests, HTMLTestCase):

@@ -51,7 +51,7 @@ class Selenese(object):
         # timeout=30 default argument is due to backwards-compatibility
         self.selenium = selenium
         self.server = app_address
-        self.timeout = timeout
+        self.setTimeout(timeout * 1000)
 
     def failureException(self, msg):
         screenshot_msg = self.screenshot()
@@ -66,6 +66,7 @@ class Selenese(object):
 
     def setTimeout(self, timeout):
         self.timeout = timeout / 1000.0
+        self.selenium.set_page_load_timeout(self.timeout)
 
     def waitForPageToLoad(self):
         time.sleep(0.1)  # Give the browser a bit time to remove the old page
