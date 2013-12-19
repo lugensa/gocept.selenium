@@ -10,6 +10,8 @@ Changelog
 
 - Apply ``setTimeout`` to the ``open()`` timeout, too (#10750).
 
+- Add environment variable ``GOCEPT_SELENIUM_JUNIT_ATTACH`` to support the
+  "JUnit Attachments Plugin" for Jenkins.
 
 internal:
 
