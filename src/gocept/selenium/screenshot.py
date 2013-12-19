@@ -8,6 +8,7 @@ import tempfile
 
 
 SHOW_DIFF_IMG = os.environ.get('SHOW_DIFF_IMG', False)
+PRINT_JUNIT_ATTACHMENTS = os.environ.get('GOCEPT_SELENIUM_JUNIT_ATTACH', False)
 
 
 def get_path(resource):
@@ -113,6 +114,10 @@ class ImageDiff(object):
         return rmsd / 255
 
 
+def junit_attach_line(filename, typ):
+    return '[[ATTACHMENT|%s|{"type": "%s"}]]\n' % (filename, typ)
+
+
 class ScreenshotMismatchError(ValueError):
 
     message = ("The saved screenshot for '%s' did not match the screenshot "
@@ -127,10 +132,18 @@ class ScreenshotMismatchError(ValueError):
         self.expected = expected
         self.got = got
         self.compo = compo
+        if PRINT_JUNIT_ATTACHMENTS:
+            self._print_junit_attachments()
 
     def __str__(self):
         return self.message % (self.name, self.distance, self.expected,
                                self.got, self.compo)
+
+    def _print_junit_attachments(self):
+        print ('\n'
+               + junit_attach_line(self.expected, 'expected')
+               + junit_attach_line(self.got, 'actual')
+               + junit_attach_line(self.compo, 'diff'))
 
 
 class ScreenshotSizeMismatchError(ValueError):
@@ -150,6 +163,11 @@ class ScreenshotSizeMismatchError(ValueError):
     def __str__(self):
         return self.message % (self.name, self.expected_size, self.got_size,
                                self.expected, self.got)
+
+    def _print_junit_attachments(self):
+        print ('\n'
+               + junit_attach_line(self.expected, 'expected')
+               + junit_attach_line(self.got, 'actual'))
 
 
 class ZeroDimensionError(ValueError):

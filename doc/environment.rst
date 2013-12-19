@@ -80,6 +80,17 @@ variable::
 
 This example will introduce a 500 millisecond pause between tests.
 
+If you use Jenkins, you might be interested in the `JUnit Attachment Plugin`_,
+and setting::
+
+    GOCEPT_SELENIUM_JUNIT_ATTACH=True
+
+This will print properly formatted lines for screenshot failures, so the plugin
+can pick the images up and attach them to the test run.
+
+.. _`JUnit Attachment Plugin`: https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Attachments+Plugin
+
+
 
 Tips & Tricks
 -------------
