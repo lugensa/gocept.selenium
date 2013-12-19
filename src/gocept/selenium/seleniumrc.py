@@ -37,6 +37,7 @@ class Layer(plonetesting.Layer):
     _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
     _browser = os.environ.get('GOCEPT_SELENIUM_BROWSER', '*firefox')
+    _timeout = int(os.environ.get('GOCEPT_SELENIUM_TIMEOUT', 30))
 
     def setUp(self):
         if 'http_address' not in self:
@@ -56,7 +57,7 @@ class Layer(plonetesting.Layer):
         if speed is not None:
             self['seleniumrc'].set_speed(speed)
         self['selenium'] = gocept.selenium.selenese.Selenese(
-            self['seleniumrc'], self['http_address'])
+            self['seleniumrc'], self['http_address'], self._timeout)
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
@@ -68,8 +69,7 @@ class Layer(plonetesting.Layer):
 
     def testSetUp(self):
         # BBB reset timeout
-        self['selenium'].timeout = gocept.selenium.selenese.Selenese(
-            None, None).timeout
+        self['selenium'].timeout = self._timeout
 
 
 class IntegrationBase(object):

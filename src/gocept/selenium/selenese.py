@@ -46,10 +46,11 @@ class Selenese(object):
 
     failureException = AssertionError
 
-    def __init__(self, selenium, app_address):
+    def __init__(self, selenium, app_address, timeout=30):
+        # timeout=30 default argument is due to backwards-compatibility
         self.selenium = selenium
         self.server = app_address
-        self.timeout = 30
+        self.timeout = timeout
 
     # Actions
 
