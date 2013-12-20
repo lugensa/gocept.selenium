@@ -159,6 +159,8 @@ class ScreenshotSizeMismatchError(ValueError):
         self.got_size = got_size
         self.expected = expected
         self.got = got
+        if PRINT_JUNIT_ATTACHMENTS:
+            self._print_junit_attachments()
 
     def __str__(self):
         return self.message % (self.name, self.expected_size, self.got_size,
