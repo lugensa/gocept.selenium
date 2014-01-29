@@ -276,10 +276,13 @@ class PopUpTest(HTMLTestCase):
         self.selenium.setTimeout(0)
         self.assertRaises(Exception, self.selenium.waitForPopUp,
                           self.popup_id)
+        time.sleep(1)  # XXX remove if still failing on Jenkins
         self.assertRaises(Exception, self.selenium.waitForPopUp)
         self.selenium.setTimeout(1)
+        time.sleep(1)  # XXX remove if still failing on Jenkins
         self.assertRaises(Exception, self.selenium.waitForPopUp,
                           self.popup_id)
+        time.sleep(1)  # XXX remove if still failing on Jenkins
         self.assertRaises(Exception, self.selenium.waitForPopUp)
 
     @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
