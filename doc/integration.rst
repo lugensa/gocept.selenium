@@ -15,7 +15,7 @@ integration::
 
     http_layer = gocept.httpserverlayer.wsgi.Layer(App())
     selenium_layer = gocept.selenium.RCLayer(
-        name='SeleniumLayer', bases=(http_layer))
+        name='SeleniumLayer', bases=(http_layer,))
 
 
     class TestWSGITestCase(gocept.selenium.RCTestCase):
