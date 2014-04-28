@@ -5,7 +5,8 @@ Changelog
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Close temporary files when making screenshots. This fixes some occurrences
+  of "Too many open files".
 
 
 2.1.0 (2013-12-20)

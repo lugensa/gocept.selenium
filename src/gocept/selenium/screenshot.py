@@ -29,12 +29,13 @@ class DiffComposition(object):
         self.height = self.exp.size[1]
         self.prepare_composition()
         self.paste_screenshots()
-        ignored, compo_path = tempfile.mkstemp('.png')
+        tmpfile, compo_path = tempfile.mkstemp('.png')
         with open(compo_path, 'rw') as compo_file:
             self.path = compo_file.name
             self.compo.convert('RGB').save(self.path)
             if SHOW_DIFF_IMG:
                 self.compo.show()
+        os.close(tmpfile)
 
     def prepare_composition(self):
         """prepares and returns the composition image"""
@@ -182,8 +183,9 @@ class ZeroDimensionError(ValueError):
 
 
 def make_screenshot(selenese, locator):
-    ignored, path = tempfile.mkstemp()
+    tmpfile, path = tempfile.mkstemp()
     selenese.captureScreenshot(path)
+    os.close(tmpfile)
 
     dimensions = selenese.selenium.execute_script("""
         var e = arguments[0];
@@ -220,9 +222,10 @@ def _screenshot_path(screenshot_directory):
 def save_screenshot_temporary(screenshot):
     """Saves given screenshot to a temporary file and return
     the filename."""
-    ignored, got_path = tempfile.mkstemp('.png')
+    tmpfile, got_path = tempfile.mkstemp('.png')
     with open(got_path, 'rw') as got:
         screenshot.save(got.name)
+    os.close(tmpfile)
     os.chmod(got_path, 0o644)
     return got.name
 
