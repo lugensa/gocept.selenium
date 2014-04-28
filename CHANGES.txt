@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.1 (unreleased)
+2.1.1 (2014-04-28)
 ------------------
 
 - Close temporary files when making screenshots. This fixes some occurrences
