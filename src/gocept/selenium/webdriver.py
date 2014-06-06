@@ -66,10 +66,12 @@ class Layer(plonetesting.Layer):
         self._stop_selenium()
         # XXX upstream bug, quit should reset session_id
         self['seleniumrc'].session_id = None
+        del self['seleniumrc']
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
-        if self['seleniumrc'].session_id is None:
+        if (self.get('seleniumrc') is None
+                or self['seleniumrc'].session_id is None):
             return
 
         self['seleniumrc'].quit()
@@ -104,6 +106,9 @@ class WebdriverSeleneseLayer(plonetesting.Layer):
         class_ = gocept.selenium.wd_selenese.Selenese
         for name in ['screenshot_directory', 'capture_screenshot']:
             setattr(self['selenium'], name, getattr(class_, name))
+
+    def tearDown(self):
+        del self['selenium']
 
 
 class WebdriverSeleneseTestCase(object):
