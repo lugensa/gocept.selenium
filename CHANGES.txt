@@ -7,6 +7,9 @@ Changelog
 
 - Remove seleniumrc variable from Layer on teardown for symmetry.
 
+- Fix `isVisible` of WebDriver, so it also returns False if a parent element
+  is hidden.
+
 
 2.1.1 (2014-04-28)
 ------------------
