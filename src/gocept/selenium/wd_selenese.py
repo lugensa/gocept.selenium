@@ -521,7 +521,7 @@ class Selenese(object):
     @assert_type('locator')
     def isVisible(self, locator):
         element = self._find(locator)
-        return element.value_of_css_property('display') != 'none'
+        return element.is_displayed()
 
     @assert_type('locator')
     def isEditable(self, locator):
