@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.2 (unreleased)
+2.1.2 (2014-06-25)
 ------------------
 
 - Remove seleniumrc variable from Layer on teardown for symmetry.
