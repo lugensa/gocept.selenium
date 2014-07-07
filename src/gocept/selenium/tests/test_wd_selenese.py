@@ -188,9 +188,9 @@ class ScreenshotAssertionTest(HTMLTestCase,
         # screenshotting on every failure.
         self.selenium.open('display-delay.html')
         screenshot = 'gocept.selenium.wd_selenese.Selenese.screenshot'
-        with mock.patch(screenshot) as screenshot, \
-                self.assertRaises(AssertionError):
-            self.selenium.assertTextPresent('Hello, world')
+        with self.assertRaises(AssertionError):
+            with mock.patch(screenshot) as screenshot:
+                self.selenium.assertTextPresent('Hello, world')
             screenshot.assert_called_once_with(mock.ANY)  # called
 
 
