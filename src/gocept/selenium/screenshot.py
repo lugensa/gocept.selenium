@@ -29,7 +29,8 @@ class DiffComposition(object):
         self.height = self.exp.size[1]
         self.prepare_composition()
         self.paste_screenshots()
-        tmpfile, compo_path = tempfile.mkstemp('.png')
+        tmpfile, compo_path = tempfile.mkstemp(
+            prefix='gocept_selenium_diff', suffix='.png')
         with open(compo_path, 'rw') as compo_file:
             self.path = compo_file.name
             self.compo.convert('RGB').save(self.path)
@@ -183,7 +184,8 @@ class ZeroDimensionError(ValueError):
 
 
 def make_screenshot(selenese, locator):
-    tmpfile, path = tempfile.mkstemp()
+    tmpfile, path = tempfile.mkstemp(
+        prefix='gocept_selenium_screenshot')
     selenese.captureScreenshot(path)
     os.close(tmpfile)
 
@@ -222,7 +224,8 @@ def _screenshot_path(screenshot_directory):
 def save_screenshot_temporary(screenshot):
     """Saves given screenshot to a temporary file and return
     the filename."""
-    tmpfile, got_path = tempfile.mkstemp('.png')
+    tmpfile, got_path = tempfile.mkstemp(
+        prefix='gocept_selenium_screenshot', suffix='.png')
     with open(got_path, 'rw') as got:
         screenshot.save(got.name)
     os.close(tmpfile)
