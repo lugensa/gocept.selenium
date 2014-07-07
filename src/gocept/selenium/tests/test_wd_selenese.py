@@ -82,7 +82,7 @@ STATIC_WD_LAYER = gocept.selenium.WebdriverLayer(
     name='StaticFilesLayer',
     bases=(gocept.httpserverlayer.static.STATIC_FILES,))
 STATIC_WD_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
-    name='StaticFilesLayer', bases=(STATIC_WD_LAYER,))
+    name='WebdriverStaticFilesLayer', bases=(STATIC_WD_LAYER,))
 
 
 class HTMLTestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
