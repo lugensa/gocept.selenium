@@ -20,6 +20,7 @@ import glob
 import gocept.httpserverlayer.static
 import gocept.selenium.tests.test_selenese
 import gocept.testing.assertion
+import mock
 import os.path
 import pkg_resources
 import shutil
@@ -172,6 +173,25 @@ class ScreenshotAssertionTest(HTMLTestCase,
         filename = message.rsplit(': ', 1)[1]
         mode = stat.S_IMODE(os.stat(filename).st_mode)
         self.assertEqual(0o644, mode)
+
+    def test_waitFor_does_not_screenshot_on_each_failed_check(self):
+        # Regression test for waitFor* polling existance of locator
+        # screenshotting on every failure.
+        self.selenium.open('display-delay.html')
+        screenshot = 'gocept.selenium.wd_selenese.Selenese.screenshot'
+        with mock.patch(screenshot) as screenshot:
+            self.selenium.waitForTextPresent('Hello, world')
+        self.assertEqual([], screenshot.call_args_list)  # not called
+
+    def test_assert_takes_screenshot_on_failed_check(self):
+        # Regression test for waitFor* polling existance of locator
+        # screenshotting on every failure.
+        self.selenium.open('display-delay.html')
+        screenshot = 'gocept.selenium.wd_selenese.Selenese.screenshot'
+        with mock.patch(screenshot) as screenshot, \
+                self.assertRaises(AssertionError):
+            self.selenium.assertTextPresent('Hello, world')
+            screenshot.assert_called_once_with(mock.ANY)  # called
 
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):

@@ -25,7 +25,7 @@ import re
 import selenium.common.exceptions
 import time
 import urlparse
-
+import contextlib
 
 try:
     from .screenshot import (
@@ -43,9 +43,20 @@ def assert_type(type):
     return decorate
 
 
+@contextlib.contextmanager
+def no_screenshot(selense):
+    """Temporarly disable screenshoting exception."""
+    try:
+        selense.screenshot_on_exception = False
+        yield
+    finally:
+        selense.screenshot_on_exception = True
+
+
 class Selenese(object):
 
     failureExceptionClass = AssertionError
+    screenshot_on_exception = True
 
     def __init__(self, selenium, app_address, timeout=30):
         # timeout=30 default argument is due to backwards-compatibility
@@ -54,9 +65,10 @@ class Selenese(object):
         self.setTimeout(timeout * 1000)
 
     def failureException(self, msg):
-        screenshot_msg = self.screenshot()
-        if screenshot_msg:
-            msg += '\n' + screenshot_msg
+        if self.screenshot_on_exception:
+            screenshot_msg = self.screenshot()
+            if screenshot_msg:
+                msg += '\n' + screenshot_msg
         return self.failureExceptionClass(msg)
 
     # Actions
@@ -751,7 +763,8 @@ class Selenese(object):
         start = time.time()
         while True:
             try:
-                assertion(*args, **kw)
+                with no_screenshot(self):
+                    assertion(*args, **kw)
             except self.failureExceptionClass, e:
                 if time.time() - start > self.timeout:
                     raise self.failureException(
