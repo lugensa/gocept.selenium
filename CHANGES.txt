@@ -5,7 +5,8 @@ Changelog
 2.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Webdriver: No longer screenshotting while waiting for the condition to
+  become true when using a ``waitFor*`` method.
 
 
 2.1.2 (2014-06-25)
