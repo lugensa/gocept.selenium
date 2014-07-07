@@ -513,6 +513,12 @@ class Selenese(object):
             self._find(locator)
         except selenium.common.exceptions.InvalidSelectorException:
             raise
+        except selenium.common.exceptions.WebDriverException as e:
+            # PhantomJS uses general WebDriverException if element not found
+            if 'Unable to find element with css selector' in e.msg:
+                return False
+            else:
+                raise
         except selenium.common.exceptions.NoSuchElementException:
             return False
         else:
