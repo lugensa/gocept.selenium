@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.4 (unreleased)
+2.1.4 (2014-07-09)
 ------------------
 
 - Restore Python 2.6 compatibility of tests accidently broken in release 2.1.3.
