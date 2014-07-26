@@ -38,20 +38,28 @@ class Layer(plonetesting.Layer):
     def setUp(self):
         if 'http_address' not in self:
             raise KeyError("No base layer has set self['http_address']")
-        self.profile = selenium.webdriver.firefox.firefox_profile.\
-            FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
-        self.profile.native_events_enabled = True
-        self.profile.update_preferences()
+
         desired_capabilities = dict(browserName=self._browser)
+
         if self._browser == 'firefox':
+            self.profile = selenium.webdriver.firefox.firefox_profile.\
+                FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
+            self.profile.native_events_enabled = True
+            self.profile.update_preferences()
+
             ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
             if ff_binary:
                 desired_capabilities['firefox_binary'] = ff_binary
+        else:
+            self.profile = None
+
         try:
+            parameters = {'desired_capabilities': desired_capabilities}
+            if self._browser == 'firefox':
+                parameters['browser_profile'] = self.profile
             self['seleniumrc'] = selenium.webdriver.Remote(
                 'http://%s:%s/wd/hub' % (self._server, self._port),
-                desired_capabilities=desired_capabilities,
-                browser_profile=self.profile)
+                **parameters)
         except urllib2.URLError, e:
             raise urllib2.URLError(
                 'Failed to connect to Selenium server at %s:%s,'
@@ -76,20 +84,22 @@ class Layer(plonetesting.Layer):
 
         self['seleniumrc'].quit()
 
-        shutil.rmtree(self.profile.profile_dir)
-        if os.path.dirname(self.profile.profile_dir) != tempfile.gettempdir():
-            try:
-                os.rmdir(os.path.dirname(self.profile.profile_dir))
-            except OSError:
-                pass
+        if self._browser == 'firefox':
+            shutil.rmtree(self.profile.profile_dir)
+            if os.path.dirname(
+                    self.profile.profile_dir) != tempfile.gettempdir():
+                try:
+                    os.rmdir(os.path.dirname(self.profile.profile_dir))
+                except OSError:
+                    pass
 
-        if not os.environ.get('GOCEPT_SELENIUM_KEEP_NATIVE_FF_EVENTS_LOG'):
-            native_ff_events_log = os.path.join(
-                tempfile.gettempdir(), 'native_ff_events_log')
-            try:
-                os.remove(native_ff_events_log)
-            except OSError:
-                pass
+            if not os.environ.get('GOCEPT_SELENIUM_KEEP_NATIVE_FF_EVENTS_LOG'):
+                native_ff_events_log = os.path.join(
+                    tempfile.gettempdir(), 'native_ff_events_log')
+                try:
+                    os.remove(native_ff_events_log)
+                except OSError:
+                    pass
 
 
 class WebdriverSeleneseLayer(plonetesting.Layer):
