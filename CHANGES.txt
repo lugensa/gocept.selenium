@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.5 (unreleased)
+2.1.5 (2014-07-26)
 ------------------
 
 - Webdriver: Only create a firefox profile when the selected browser is firefox
