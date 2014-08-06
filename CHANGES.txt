@@ -5,7 +5,10 @@ Changelog
 2.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Inject JS function ``window.gocept_selenium_abort_all_xhr`` during ``open()``,
+  which is useful to call during test teardown to avoid spurious XHR requests
+  to still be performed after the actual test has already ended.
+  (Implemented in Webdriver only, but could be backported to RC if needed).
 
 
 2.1.2 (2014-06-25)

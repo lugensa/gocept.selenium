@@ -98,6 +98,21 @@ class Selenese(object):
 
     def open(self, url):
         self.selenium.get(urlparse.urljoin('http://' + self.server, url))
+        self.selenium.execute_script("""
+(function() {
+    var orig_open = XMLHttpRequest.prototype.open;
+    window._gocept_selenium_xhr_requests = [];
+    XMLHttpRequest.prototype.open = function() {
+        window._gocept_selenium_xhr_requests.push(this);
+        return orig_open.apply(this, arguments);
+    };
+
+    window.gocept_selenium_abort_all_xhr = function() {
+        for (var i = 0; i < window._gocept_selenium_xhr_requests.lenth; i++) {
+            window._gocept_selenium_xhr_requests[i].abort();
+        }
+    };
+}());""")
 
     def altKeyDown(self):
         ActionChains(self.selenium).key_down(Keys.ALT).perform()
