@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.6 (unreleased)
+2.1.6 (2014-08-06)
 ------------------
 
 - Inject JS function ``window.gocept_selenium_abort_all_xhr`` during ``open()``,
