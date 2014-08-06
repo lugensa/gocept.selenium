@@ -5,7 +5,9 @@ Changelog
 2.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove ``window.gocept_selenium_abort_all_xhr`` again, this solution is
+  incomplete, since we can only inject this during ``open()`` -- when the
+  browser then navigates to a different page, the injection is lost.
 
 
 2.1.6 (2014-08-06)
