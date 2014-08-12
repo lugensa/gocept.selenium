@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.7 (unreleased)
+2.1.7 (2014-08-12)
 ------------------
 
 - Remove ``window.gocept_selenium_abort_all_xhr`` again, this solution is
