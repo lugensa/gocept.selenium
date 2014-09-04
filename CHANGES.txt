@@ -5,7 +5,8 @@ Changelog
 2.1.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- No longer stop whole test run if an exception occures during
+  ``testSetUp`` of ``.seleniumrc.Layer`` (#13375)
 
 
 2.1.7 (2014-08-12)
