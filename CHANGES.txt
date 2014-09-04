@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.8 (unreleased)
+2.1.8 (2014-09-04)
 ------------------
 
 - No longer stop whole test run if an exception occures during
