@@ -69,7 +69,13 @@ class Layer(plonetesting.Layer):
 
     def testSetUp(self):
         # BBB reset timeout
-        self['selenium'].setTimeout(self._timeout * 1000)
+        try:
+            self['selenium'].setTimeout(self._timeout * 1000)
+        except Exception:
+            # possible exceptions:
+            # * Exception: "ERROR: There was an unexpected Alert!"
+            # * socket.timeout: "timed out"
+            pass
 
 
 class IntegrationBase(object):
