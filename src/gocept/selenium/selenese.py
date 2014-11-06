@@ -191,7 +191,7 @@ class Selenese(object):
         pass
 
     @passthrough
-    def chooseOKOnNextConfirmation(self):
+    def chooseOkOnNextConfirmation(self):
         pass
 
     @passthrough

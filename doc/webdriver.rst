@@ -84,7 +84,7 @@ WebdriverSeleneseLayer and the (old) SeleniumRC-backed gocept.selenium.RCLayer:
   * ``assignId``
   * ``captureNetworkTraffic``
   * ``chooseCancelOnNextConfirmation``
-  * ``chooseOKOnNextConfirmation``
+  * ``chooseOkOnNextConfirmation``
   * ``fireEvent``
   * ``focus``
   * ``getMouseSpeed``
