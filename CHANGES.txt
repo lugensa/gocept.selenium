@@ -5,7 +5,9 @@ Changelog
 2.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed capitalisation of Selenese's ``chooseOkOnNextConfirmation``.
+  (Backwards incompatibility should be OK as it can never have worked before,
+  anyway.)
 
 
 2.1.8 (2014-09-04)
