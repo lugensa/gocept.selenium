@@ -144,10 +144,15 @@ class Selenese(object):
     def deselectPopUp(self):
         self.selectWindow()
 
-    def dragAndDropToObject(self, locatorSource, locatorDestination):
-        ActionChains(self.selenium).drag_and_drop(
-            self._find(locatorSource), self._find(locatorDestination)
-        ).perform()
+    def dragAndDropToObject(self, locatorSource, locatorDestination,
+                            movement=None):
+        action = ActionChains(self.selenium)
+        action.click_and_hold(self._find(locatorSource))
+        if movement is not None:
+            x, y = movement.split(',')
+            action.move_by_offset(int(float(x)), int(float(y)))
+        action.release(self._find(locatorDestination))
+        action.perform()
 
     def dragAndDrop(self, locator, movement):
         x, y = movement.split(',')
