@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
 from gocept.selenium.screenshot import \
     ScreenshotMismatchError, ScreenshotSizeMismatchError
@@ -40,13 +41,16 @@ class SplitLocatorTest(unittest.TestCase):
         self.assertEqual((By.ID, 'foo'), split_locator('id=foo'))
         self.assertEqual((By.NAME, 'foo'), split_locator('name=foo'))
         self.assertEqual((By.XPATH, 'foo'), split_locator('xpath=foo'))
+        self.assertEqual((LOCATOR_JS, 'foo'), split_locator('js=foo'))
+        self.assertEqual((LOCATOR_JQUERY, 'foo'), split_locator('jquery=foo'))
         self.assertEqual(
             (By.XPATH, '//a[contains(string(.), "foo")]'),
             split_locator('link=foo'))
         self.assertEqual((By.CSS_SELECTOR, 'foo'), split_locator('css=foo'))
 
-    def test_prefix_document_yields_dom(self):
-        pass  # XXX nyi
+    def test_prefix_document_yields_js(self):
+        self.assertEqual((LOCATOR_JS, 'document.getElementById("foo")'),
+                         split_locator('document.getElementById("foo")'))
 
     def test_prefix_slashes_yields_xpath(self):
         self.assertEqual((By.XPATH, '//foo'), split_locator('//foo'))
@@ -105,6 +109,13 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
 
     def test_fireEvent_smoke(self):
         pass  # does not exist in Webdriver
+
+    def test_js_selector(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertElementPresent(
+            'js=document.getElementsByClassName("countable")[0]')
+        self.selenium.assertElementNotPresent(
+            'js=document.getElementsByClassName("countable")[7]')
 
 
 class ScreenshotAssertionTest(HTMLTestCase,

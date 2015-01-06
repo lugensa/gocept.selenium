@@ -101,6 +101,16 @@ WebdriverSeleneseLayer and the (old) SeleniumRC-backed gocept.selenium.RCLayer:
 
 - Locator patterns that can no longer be used:
 
-  * element: dom, document
   * option: id
   * frame: relative, dom
+
+
+On the other hand, here are some new features that only WebdriverSeleneseLayer
+offers:
+
+- Locator ``js`` (or ``dom`` or anything that starts with ``document``): Find
+  an element by evaluating a javascript expression.
+  Example: ``getText('js=document.getElementsByClassName("foo")')``
+- Convenience locator ``jquery`` (when your site already loads ``jQuery``).
+  Example: ``getText('jquery=.foo')`` (this is the equivalent of
+  ``getText('js=window.jQuery(".foo")[0]')``)

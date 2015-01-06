@@ -27,6 +27,10 @@ import time
 import urlparse
 import contextlib
 
+
+LOCATOR_JS = 'javascript'
+LOCATOR_JQUERY = 'jquery'
+
 try:
     from .screenshot import (
         assertScreenshot, screenshot_window, ZeroDimensionError)
@@ -598,7 +602,13 @@ class Selenese(object):
 
     def assertCssCount(self, css, count):
         by, value = split_locator(css)
-        result = self.selenium.find_elements(by, value)
+        if by == LOCATOR_JS:
+            result = self.selenium.execute_script(u'return %s' % value)
+        elif by == LOCATOR_JQUERY:
+            result = self.selenium.execute_script(
+                u'return window.jQuery("%s")' % value)
+        else:
+            result = self.selenium.find_elements(by, value)
         if len(result) != int(count):
             raise self.failureException(
                 'Actual count of CSS %r is %s, expected %s'
@@ -652,7 +662,18 @@ class Selenese(object):
 
     def _find(self, locator):
         by, value = split_locator(locator)
-        if by:
+        if by == LOCATOR_JS:
+            result = self.selenium.execute_script(u'return %s' % value)
+            if result is None:
+                raise selenium.common.exceptions.NoSuchElementException()
+            return result
+        elif by == LOCATOR_JQUERY:
+            result = self.selenium.execute_script(
+                u'return window.jQuery("%s")[0]' % value)
+            if result is None:
+                raise selenium.common.exceptions.NoSuchElementException()
+            return result
+        elif by:
             return self.selenium.find_element(by, value)
         try:
             return self.selenium.find_element(By.ID, locator)
@@ -794,8 +815,8 @@ class Selenese(object):
 def split_locator(locator):
     if locator.startswith('//'):
         return By.XPATH, locator
-    if locator.startswith('document') or locator.startswith('dom='):
-        raise NotImplementedError()
+    if locator.startswith('document'):
+        return LOCATOR_JS, locator
 
     by, sep, value = locator.partition('=')
     if not value:
@@ -808,6 +829,9 @@ def split_locator(locator):
         'xpath': By.XPATH,
         'link': By.PARTIAL_LINK_TEXT,
         'css': By.CSS_SELECTOR,
+        'dom': LOCATOR_JS,
+        'js': LOCATOR_JS,
+        'jquery': LOCATOR_JQUERY,
     }.get(by)
     if not by:
         return None, locator
