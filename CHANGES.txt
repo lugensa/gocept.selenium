@@ -9,6 +9,8 @@ Changelog
   mouse a little before releasing the button, so one gets more realistic
   behaviour when needed (Webdriver only, RC does not seem to have this issue).
 
+- Add ``js`` and ``jquery`` locators (Webdriver only).
+
 
 2.1.9 (2014-11-06)
 ------------------
