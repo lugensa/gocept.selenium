@@ -44,7 +44,7 @@ class Layer(plonetesting.Layer):
             raise KeyError("No base layer has set self['http_address']")
         self._remote = ast.literal_eval(self._remote)
 
-        if self._browser == 'firefox':
+        if self._browser.lower() == 'firefox':
             self.profile = FirefoxProfile(
                 os.environ.get(
                     'GOCEPT_WEBDRIVER_FF_PROFILE',
@@ -105,7 +105,7 @@ class Layer(plonetesting.Layer):
 
         self['seleniumrc'].quit()
 
-        if self.profile:
+        if self.profile and os.path.exists(self.profile.profile_dir):
             shutil.rmtree(self.profile.profile_dir)
             if os.path.dirname(
                     self.profile.profile_dir) != tempfile.gettempdir():
