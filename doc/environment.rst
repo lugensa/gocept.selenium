@@ -45,12 +45,24 @@ browser to run the tests with like this::
     GOCEPT_SELENIUM_BROWSER=*iexplore
 
 For use with Selenium Server's webdriver interface, the browser needs to be
-specified differently (although only Firefox is properly supported so far and
-gocept.selenium uses it by default anyway)::
+specified differently::
 
     GOCEPT_WEBDRIVER_BROWSER=firefox
 
-If you need to use a Firefox binary at a custom path, specify it like this::
+Webdriver supports instantiating the browser directly (instead of going through
+the Java-based server component). If you want to do this, set::
+
+    GOCEPT_WEBDRIVER_REMOTE=False
+
+and specify one of the `browser classes`_ defined by the Python bindings, for
+example::
+
+    GOCEPT_WEBDRIVER_BROWSER=Firefox
+
+
+.. _`browser classes`: https://code.google.com/p/selenium/source/browse/py/selenium/webdriver/__init__.py
+
+If you want to use a Firefox binary at a custom path, specify it like this::
 
     GOCEPT_WEBDRIVER_FF_BINARY=<PATH>/firefox
 

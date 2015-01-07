@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import ast
 import atexit
 import gocept.selenium.wd_selenese
 import os
@@ -34,37 +35,25 @@ class Layer(plonetesting.Layer):
     _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
     _browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', 'firefox')
+    _remote = os.environ.get('GOCEPT_WEBDRIVER_REMOTE', 'True')
 
     def setUp(self):
         if 'http_address' not in self:
             raise KeyError("No base layer has set self['http_address']")
-
-        desired_capabilities = dict(browserName=self._browser)
+        self._remote = ast.literal_eval(self._remote)
 
         if self._browser == 'firefox':
             self.profile = selenium.webdriver.firefox.firefox_profile.\
                 FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
             self.profile.native_events_enabled = True
             self.profile.update_preferences()
-
-            ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
-            if ff_binary:
-                desired_capabilities['firefox_binary'] = ff_binary
         else:
             self.profile = None
 
-        try:
-            parameters = {'desired_capabilities': desired_capabilities}
-            if self._browser == 'firefox':
-                parameters['browser_profile'] = self.profile
-            self['seleniumrc'] = selenium.webdriver.Remote(
-                'http://%s:%s/wd/hub' % (self._server, self._port),
-                **parameters)
-        except urllib2.URLError, e:
-            raise urllib2.URLError(
-                'Failed to connect to Selenium server at %s:%s,'
-                ' is it running? (%s)'
-                % (self._server, self._port, e))
+        if self._remote:
+            self._start_remote()
+        else:
+            self._start_local()
         atexit.register(self._stop_selenium)
         speed = os.environ.get('GOCEPT_SELENIUM_SPEED')
         if speed is not None:
@@ -75,6 +64,35 @@ class Layer(plonetesting.Layer):
         # XXX upstream bug, quit should reset session_id
         self['seleniumrc'].session_id = None
         del self['seleniumrc']
+
+    def _start_local(self):
+        parameters = {}
+        if self.profile:
+            parameters['firefox_profile'] = self.profile
+        ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        if ff_binary:
+            from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+            parameters['firefox_binary'] = FirefoxBinary(ff_binary)
+        self['seleniumrc'] = getattr(selenium.webdriver, self._browser)(
+            **parameters)
+
+    def _start_remote(self):
+        parameters = {'desired_capabilities': {'browserName': self._browser}}
+        ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        if ff_binary:
+            parameters['desired_capabilities']['firefox_binary'] = ff_binary
+        if self.profile:
+            parameters['browser_profile'] = self.profile
+
+        try:
+            self['seleniumrc'] = selenium.webdriver.Remote(
+                'http://%s:%s/wd/hub' % (self._server, self._port),
+                **parameters)
+        except urllib2.URLError, e:
+            raise urllib2.URLError(
+                'Failed to connect to Selenium server at %s:%s,'
+                ' is it running? (%s)'
+                % (self._server, self._port, e))
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.

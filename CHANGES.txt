@@ -5,6 +5,9 @@ Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Allow launching the browser directly when using Webdriver
+  (set ``GOCEPT_WEBDRIVER_REMOTE=False`` and the browser name accordingly).
+
 - Add optional ``movement`` parameter to ``dragAndDropToObject`` that moves the
   mouse a little before releasing the button, so one gets more realistic
   behaviour when needed (Webdriver only, RC does not seem to have this issue).
