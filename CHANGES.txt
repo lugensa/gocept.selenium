@@ -5,7 +5,7 @@ Changelog
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix handling firefox profile in remote=false mode.
 
 
 2.2.0 (2015-01-07)
