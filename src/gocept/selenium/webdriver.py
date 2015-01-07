@@ -12,6 +12,8 @@
 #
 ##############################################################################
 
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import ast
 import atexit
 import gocept.selenium.wd_selenese
@@ -43,8 +45,10 @@ class Layer(plonetesting.Layer):
         self._remote = ast.literal_eval(self._remote)
 
         if self._browser == 'firefox':
-            self.profile = selenium.webdriver.firefox.firefox_profile.\
-                FirefoxProfile(os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
+            self.profile = FirefoxProfile(
+                os.environ.get(
+                    'GOCEPT_WEBDRIVER_FF_PROFILE',
+                    os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
             self.profile.native_events_enabled = True
             self.profile.update_preferences()
         else:
@@ -71,7 +75,6 @@ class Layer(plonetesting.Layer):
             parameters['firefox_profile'] = self.profile
         ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
         if ff_binary:
-            from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
             parameters['firefox_binary'] = FirefoxBinary(ff_binary)
         self['seleniumrc'] = getattr(selenium.webdriver, self._browser)(
             **parameters)
@@ -102,7 +105,7 @@ class Layer(plonetesting.Layer):
 
         self['seleniumrc'].quit()
 
-        if self._browser == 'firefox':
+        if self.profile:
             shutil.rmtree(self.profile.profile_dir)
             if os.path.dirname(
                     self.profile.profile_dir) != tempfile.gettempdir():
