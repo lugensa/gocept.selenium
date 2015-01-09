@@ -37,12 +37,16 @@ class Layer(plonetesting.Layer):
     _port = int(os.environ.get('GOCEPT_SELENIUM_SERVER_PORT', 4444))
 
     _browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', 'firefox')
+
     _remote = os.environ.get('GOCEPT_WEBDRIVER_REMOTE', 'True')
+
+    @property
+    def is_remote(self):
+        return ast.literal_eval(self._remote)
 
     def setUp(self):
         if 'http_address' not in self:
             raise KeyError("No base layer has set self['http_address']")
-        self._remote = ast.literal_eval(self._remote)
 
         if self._browser.lower() == 'firefox':
             self.profile = FirefoxProfile(
@@ -54,7 +58,7 @@ class Layer(plonetesting.Layer):
         else:
             self.profile = None
 
-        if self._remote:
+        if self.is_remote:
             self._start_remote()
         else:
             self._start_local()
