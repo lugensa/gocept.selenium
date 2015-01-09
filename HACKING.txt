@@ -5,10 +5,10 @@ Developing gocept.selenium
     `gocept <http://gocept.com/>`_ <mail@gocept.com>
 
 :Online documentation:
-    http://packages.python.org/gocept.selenium/
+    https://goceptselenium.readthedocs.org/
 
 :PyPI page:
-    http://pypi.python.org/pypi/gocept.selenium/
+    https://pypi.python.org/pypi/gocept.selenium/
 
 :Issue tracker:
     https://projects.gocept.com/projects/gocept-selenium/
