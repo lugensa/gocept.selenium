@@ -5,7 +5,7 @@ Changelog
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve environment variable handling implementation.
 
 
 2.2.1 (2015-01-07)
