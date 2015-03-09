@@ -12,10 +12,11 @@
 #
 ##############################################################################
 
+from gocept.selenium.screenshot import ScreenshotMismatchError
+from gocept.selenium.screenshot import ScreenshotSizeMismatchError
 from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
-from gocept.selenium.screenshot import \
-    ScreenshotMismatchError, ScreenshotSizeMismatchError
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
@@ -116,6 +117,17 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
             'js=document.getElementsByClassName("countable")[0]')
         self.selenium.assertElementNotPresent(
             'js=document.getElementsByClassName("countable")[7]')
+
+    def test_wait_for_retries_assertion_when_element_was_stale(self):
+        def assertion(*args, **kw):
+            raise StaleElementReferenceException(
+                'Element is no longer attached to the DOM')
+        assertion_mock = mock.Mock(wraps=assertion)
+
+        self.selenium.setTimeout(1000)
+        with self.assertRaises(StaleElementReferenceException):
+            self.selenium._waitFor(assertion_mock)
+        self.assertGreaterEqual(assertion_mock.call_count, 10)
 
 
 class ScreenshotAssertionTest(HTMLTestCase,

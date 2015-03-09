@@ -14,18 +14,19 @@
 
 from gocept.selenium.selenese import selenese_pattern_equals
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
+import contextlib
 import json
 import re
 import selenium.common.exceptions
 import time
 import urlparse
-import contextlib
 
 
 LOCATOR_JS = 'javascript'
@@ -575,7 +576,7 @@ class Selenese(object):
             return False
         try:
             body_text = body.text
-        except selenium.common.exceptions.StaleElementReferenceException:
+        except StaleElementReferenceException:
             # The body element vanished in between. Text is not present then.
             return False
         return normalize(pattern) in normalize(body_text)
@@ -801,6 +802,10 @@ class Selenese(object):
                 if time.time() - start > self.timeout:
                     raise self.failureException(
                         'Timed out. %s' % e.args[0])
+            except StaleElementReferenceException, e:
+                if time.time() - start > self.timeout:
+                    raise StaleElementReferenceException(
+                        'Timed out. %s' % e.msg)
             else:
                 break
             time.sleep(0.1)
