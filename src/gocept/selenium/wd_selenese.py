@@ -13,8 +13,8 @@
 ##############################################################################
 
 from gocept.selenium.selenese import selenese_pattern_equals
-from selenium.common.exceptions import (
-    NoSuchElementException, WebDriverException)
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -534,9 +534,9 @@ class Selenese(object):
             self._find(locator)
         except selenium.common.exceptions.InvalidSelectorException:
             raise
-        except selenium.common.exceptions.NoSuchElementException:
+        except NoSuchElementException:
             return False
-        except selenium.common.exceptions.WebDriverException as e:
+        except WebDriverException as e:
             # PhantomJS uses general WebDriverException if element not found
             if 'Unable to find element with css selector' in e.msg:
                 return False
@@ -569,7 +569,7 @@ class Selenese(object):
     def isTextPresent(self, pattern):
         try:
             body = self.selenium.find_element(By.TAG_NAME, 'body')
-        except selenium.common.exceptions.NoSuchElementException:
+        except NoSuchElementException:
             # The body element is not there. This happens for instance during
             # page load. In this case, text matching is not possible.
             return False
@@ -665,19 +665,19 @@ class Selenese(object):
         if by == LOCATOR_JS:
             result = self.selenium.execute_script(u'return %s' % value)
             if result is None:
-                raise selenium.common.exceptions.NoSuchElementException()
+                raise NoSuchElementException()
             return result
         elif by == LOCATOR_JQUERY:
             result = self.selenium.execute_script(
                 u'return window.jQuery("%s")[0]' % value)
             if result is None:
-                raise selenium.common.exceptions.NoSuchElementException()
+                raise NoSuchElementException()
             return result
         elif by:
             return self.selenium.find_element(by, value)
         try:
             return self.selenium.find_element(By.ID, locator)
-        except selenium.common.exceptions.NoSuchElementException:
+        except NoSuchElementException:
             return self.selenium.find_element(By.NAME, locator)
 
     def __getattr__(self, name):
