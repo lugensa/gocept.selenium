@@ -14,8 +14,8 @@ Changelog
 - Webdriver: ``waitFor`` will now retry the assertion when
   ``StaleElementReferenceException`` was raised, instead of yielding the error.
   (This could happen for assertions like ``waitForAttribute``, which would
-   retrieve the DOM node and *then* ask for it's attribute. Thus the node can
-   be changed in-between, which leads to the error.)
+  retrieve the DOM node and *then* ask for it's attribute. Thus the node can
+  be changed in-between, which leads to the error.)
 
 
 2.2.2 (2015-01-09)
