@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.2.3 (unreleased)
+2.3.0 (2015-03-09)
 ------------------
 
 - Webdriver: ``waitFor`` will now retry the assertion when
