@@ -217,12 +217,19 @@ class AssertionTests(gocept.testing.assertion.String,
         self.selenium.assertXpathCount("//div", 4)
         self.selenium.assertXpathCount("//div", '4')
 
+    def test_xpathcount_raises_nice_exception_on_mismatch(self):
+        self.selenium.open('/divs.html')
+        with self.assertRaisesRegexp(
+                AssertionError,
+                "Actual count of XPath '//div' is 4, expected 3.*") as err:
+            self.selenium.assertXpathCount("//div", 3)
+
     def test_csscount_should_convert_to_ints(self):
         self.selenium.open('/divs.html')
         self.selenium.assertCssCount("css=div", 4)
         self.selenium.assertCssCount("css=div", '4')
 
-    def test_raises_nice_exception_on_mismatch(self):
+    def test_csscount_raises_nice_exception_on_mismatch(self):
         self.selenium.open('/divs.html')
         with self.assertRaisesRegexp(
                 AssertionError,
