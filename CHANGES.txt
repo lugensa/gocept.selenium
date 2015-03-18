@@ -5,7 +5,8 @@ Changelog
 2.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added ``getCssCount`` and ``getXpathCount``, so tests can get a baseline
+  before an action.
 
 
 2.3.0 (2015-03-09)

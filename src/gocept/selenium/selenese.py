@@ -599,6 +599,14 @@ class Selenese(object):
     def getLocation(self):
         pass
 
+    def getXpathCount(self, xpath):
+        result = self.selenium.get_xpath_count(xpath)
+        return int(result)
+
+    def getCssCount(self, css):
+        result = self.selenium.get_css_count(css)
+        return int(result)
+
     # Assertions
 
     def assertTextPresent(self, pattern):
@@ -611,15 +619,15 @@ class Selenese(object):
         return self.assertEval(condition, 'exact:true')
 
     def assertXpathCount(self, xpath, count):
-        result = self.selenium.get_xpath_count(xpath)
-        if int(result) != int(count):
+        result = self.getXpathCount(xpath)
+        if result != int(count):
             raise self.failureException(
                 'Actual count of XPath %r is %s, expected %s'
                 % (xpath, result, count))
 
     def assertCssCount(self, css, count):
-        result = self.selenium.get_css_count(css)
-        if int(result) != int(count):
+        result = self.getCssCount(css)
+        if result != int(count):
             raise self.failureException(
                 'Actual count of CSS %r is %s, expected %s'
                 % (css, result, count))

@@ -585,6 +585,21 @@ class Selenese(object):
     def getLocation(self):
         return self.selenium.current_url
 
+    def getXpathCount(self, xpath):
+        result = self.selenium.find_elements(By.XPATH, xpath)
+        return len(result)
+
+    def getCssCount(self, css):
+        by, value = split_locator(css)
+        if by == LOCATOR_JS:
+            result = self.selenium.execute_script(u'return %s' % value)
+        elif by == LOCATOR_JQUERY:
+            result = self.selenium.execute_script(
+                u'return window.jQuery("%s")' % value)
+        else:
+            result = self.selenium.find_elements(by, value)
+        return len(result)
+
     # Assertions
 
     def assertTextPresent(self, pattern):
@@ -595,25 +610,18 @@ class Selenese(object):
         return self.assertEval(condition, 'true')
 
     def assertXpathCount(self, xpath, count):
-        result = self.selenium.find_elements(By.XPATH, xpath)
-        if len(result) != int(count):
+        result = self.getXpathCount(xpath)
+        if result != int(count):
             raise self.failureException(
                 'Actual count of XPath %r is %s, expected %s'
-                % (xpath, len(result), count))
+                % (xpath, result, count))
 
     def assertCssCount(self, css, count):
-        by, value = split_locator(css)
-        if by == LOCATOR_JS:
-            result = self.selenium.execute_script(u'return %s' % value)
-        elif by == LOCATOR_JQUERY:
-            result = self.selenium.execute_script(
-                u'return window.jQuery("%s")' % value)
-        else:
-            result = self.selenium.find_elements(by, value)
-        if len(result) != int(count):
+        result = self.getCssCount(css)
+        if result != int(count):
             raise self.failureException(
                 'Actual count of CSS %r is %s, expected %s'
-                % (css, len(result), count))
+                % (css, result, count))
 
     # XXX works only for relative xpath locators with Webdriver
     def assertOrdered(self, locator1, locator2):
