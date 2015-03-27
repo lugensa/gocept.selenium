@@ -458,7 +458,7 @@ class Selenese(object):
     @assert_type('locator_pattern')
     def getSelectedValue(self, locator):
         select = Select(self._find(locator))
-        return select.first_selected_option.text.get_attribute('value')
+        return select.first_selected_option.get_attribute('value')
 
     @assert_type('locator_pattern')
     def getSelectedValues(self, locator):

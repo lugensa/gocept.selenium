@@ -8,6 +8,8 @@ Changelog
 - Added ``getCssCount`` and ``getXpathCount``, so tests can get a baseline
   before an action.
 
+- Fix ``getSelectedValue`` for webdriver.
+
 
 2.3.0 (2015-03-09)
 ------------------
