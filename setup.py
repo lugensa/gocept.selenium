@@ -46,7 +46,7 @@ setup(
     name='gocept.selenium',
     version='2.4.1.dev0',
     author='Zope Foundation and Contributors',
-    author_email='ws@gocept.com',
+    author_email='mail@gocept.com',
     url='https://goceptselenium.readthedocs.org/',
     description=('Test-friendly Python API for Selenium and integration with '
                  'web application frameworks.'),
