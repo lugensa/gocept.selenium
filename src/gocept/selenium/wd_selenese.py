@@ -13,6 +13,8 @@
 ##############################################################################
 
 from gocept.selenium.selenese import selenese_pattern_equals
+from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
+from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import WebDriverException
@@ -368,11 +370,13 @@ class Selenese(object):
         """Take a screenshot of the whole window."""
         if HAS_SCREENSHOT:
             try:
-                return 'A screenshot has been saved, see: %s' % (
-                    screenshot_window(self))
+                path = screenshot_window(self)
             except (ZeroDimensionError, WebDriverException):
                 return ('A screenshot could not be saved because document '
                         'body is empty.')
+            if PRINT_JUNIT_ATTACHMENTS:
+                print '\n' + junit_attach_line(path, 'screenshot')
+            return 'A screenshot has been saved, see: %s' % path
 
     # Getter
 
