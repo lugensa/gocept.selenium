@@ -813,11 +813,11 @@ class Selenese(object):
             except self.failureExceptionClass, e:
                 if time.time() - start > self.timeout:
                     raise self.failureException(
-                        'Timed out. %s' % e.args[0])
+                        'Timed out after %s s. %s' % (self.timeout, e.args[0]))
             except StaleElementReferenceException, e:
                 if time.time() - start > self.timeout:
                     raise StaleElementReferenceException(
-                        'Timed out. %s' % e.msg)
+                        'Timed out after %s s. %s' % (self.timeout, e.msg))
             else:
                 break
             time.sleep(0.1)
