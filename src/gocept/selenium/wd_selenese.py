@@ -378,6 +378,10 @@ class Selenese(object):
                 print '\n' + junit_attach_line(path, 'screenshot')
             return 'A screenshot has been saved, see: %s' % path
 
+    def clear(self, locator):
+        element = self._find(locator)
+        return element.clear()
+
     # Getter
 
     @assert_type('pattern')
