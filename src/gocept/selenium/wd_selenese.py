@@ -822,6 +822,10 @@ class Selenese(object):
                 if time.time() - start > self.timeout:
                     raise StaleElementReferenceException(
                         'Timed out after %s s. %s' % (self.timeout, e.msg))
+            except NoSuchElementException, e:
+                if time.time() - start > self.timeout:
+                    raise NoSuchElementException(
+                        'Timed out after %s s. %s' % (self.timeout, e.msg))
             else:
                 break
             time.sleep(0.1)
