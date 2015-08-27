@@ -2,10 +2,11 @@ Changelog
 =========
 
 
-2.6 (unreleased)
+2.5.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Webdriver: ``waitFor`` retries an assertion when ``NoSuchElementException``
+  was raised. (This is useful for assertions like ``waitForVisible``.)
 
 
 2.5.0 (2015-08-05)

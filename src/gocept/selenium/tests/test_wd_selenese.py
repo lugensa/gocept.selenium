@@ -16,6 +16,7 @@ from gocept.selenium.screenshot import ScreenshotMismatchError
 from gocept.selenium.screenshot import ScreenshotSizeMismatchError
 from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
+from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import glob
@@ -128,6 +129,13 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
         with self.assertRaises(StaleElementReferenceException):
             self.selenium._waitFor(assertion_mock)
         self.assertGreaterEqual(assertion_mock.call_count, 10)
+
+    def test_wait_for_retries_assertion_when_element_was_not_present(self):
+        self.selenium.setTimeout(1000)
+        with self.assertRaises(NoSuchElementException) as e:
+            self.selenium.waitForVisible('css=.foo.bar')
+        self.assertIn(
+            'Timed out after 1.0 s. Unable to locate element', e.exception.msg)
 
 
 class ScreenshotAssertionTest(HTMLTestCase,
