@@ -1,6 +1,11 @@
 syntax: glob
-.mr.developer.cfg
+
+*.pyc
+*.swp
+*~
+.Python
 .installed.cfg
+.mr.developer.cfg
 bin
 build
 buildout.cfg
@@ -9,12 +14,10 @@ dist
 doc/_api
 doc/_build
 eggs
+gocept.selenium.egg-info
 include
 lib
 local
 local.cfg
 parts
-*.pyc
-*~
-*.swp
-gocept.selenium.egg-info
+pip-selfcheck.json
