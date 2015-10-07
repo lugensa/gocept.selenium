@@ -5,7 +5,8 @@ Changelog
 2.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add documentation for the Jenkins integration of screenshots made from
+  test failures. (#13936)
 
 
 2.5.1 (2015-08-27)
