@@ -54,3 +54,5 @@ In order to build the Sphinx documentation, run the following command with a
 python, where sphinx is installed::
 
     $ python setup.py build_sphinx
+
+The generated HTML gets stored in ``doc/_build/html``.
