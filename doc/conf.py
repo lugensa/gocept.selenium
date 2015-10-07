@@ -16,7 +16,7 @@ exclude_patterns = ['_build']
 
 project = u'gocept.selenium'
 copyright = u"""\
-    2011, Zope Foundation and Contributors.
+    2011-2015, Zope Foundation and Contributors.
     <a href="http://sphinx.pocoo.org/">Sphinx</a>-Theme adapted from
     <a href="http://jinja.pocoo.org/docs/">Jinja</a>
 """
