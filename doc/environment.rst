@@ -92,16 +92,28 @@ variable::
 
 This example will introduce a 500 millisecond pause between tests.
 
+Jenkins integration
+-------------------
+
 If you use Jenkins, you might be interested in the `JUnit Attachment Plugin`_,
 and setting::
 
     GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
-This will print properly formatted lines for screenshot failures, so the plugin
-can pick the images up and attach them to the test run.
+This will print information about the screenshot of a failure that the plugin
+can read and attach the screenshot to the test run.
+
+In the configuration of the jenkins job you need a `Post-build Action` called
+`Publish JUnit test result report`. This action needs an `Additional test
+report feature` called `Publish test attachments` to ask Jenkins to keep the
+screenshots for you.
+
+*Caution:* `zope.testrunner`_ is not usable for this behavior, you have to use
+a test runner like `py.test`_.
 
 .. _`JUnit Attachment Plugin`: https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Attachments+Plugin
-
+.. _`zope.testrunner` : https://pypi.python.org/pypi/zope.testrunner
+.. _`py.test` : https://pypi.python.org/pypi/pytest
 
 
 Tips & Tricks
