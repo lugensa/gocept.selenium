@@ -8,6 +8,9 @@ Changelog
 - Add documentation for the Jenkins integration of screenshots made from
   test failures. (#13936)
 
+- Webdriver: Add a loop with time-out to ``click`` in order to deal with
+  ``NoSuchElementException`` and ``NoSuchElementException``.
+
 
 2.5.1 (2015-08-27)
 ------------------
