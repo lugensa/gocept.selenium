@@ -173,7 +173,19 @@ class Selenese(object):
         self.click(locator)
 
     def click(self, locator):
-        self._find(locator).click()
+        start = time.time()
+        while time.time() - start < self.timeout:
+            try:
+                self._find(locator).click()
+            except (StaleElementReferenceException,
+                    NoSuchElementException), e:
+                exc = e
+                time.sleep(0.1)
+            else:
+                break
+        else:
+            raise type(exc)(
+                'Timed out after %s s. %s' % (self.timeout, exc.msg))
 
     def clickAndWait(self, locator):
         self.click(locator)
