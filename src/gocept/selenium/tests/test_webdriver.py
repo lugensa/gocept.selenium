@@ -11,9 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-
 import gocept.selenium.webdriver
-
+import mock
+import os
 try:
     import unittest2 as unittest
 except ImportError:
@@ -30,3 +30,25 @@ class LayerTest(unittest.TestCase):
             layer.setUp()
         except Exception, e:
             self.assertIn('Failed to connect to Selenium server', str(e))
+
+    def assert_driver(self, remote, module):
+        layer = gocept.selenium.webdriver.Layer()
+        layer['http_address'] = 'localhost:12345'
+        with mock.patch.dict(
+                os.environ, {'GOCEPT_WEBDRIVER_REMOTE': str(remote)}):
+            try:
+                layer.setUp()
+                self.assertEqual(
+                    module, layer['seleniumrc'].__class__.__module__)
+            finally:
+                layer.tearDown()
+
+    def test_webdriver__Layer__setUp__2(self):
+        """It uses a remote driver if GOCEPT_WEBDRIVER_REMOTE == `True`."""
+        self.assert_driver(
+            remote=True, module='selenium.webdriver.remote.webdriver')
+
+    def test_webdriver__Layer__setUp__3(self):
+        """It uses a local driver if GOCEPT_WEBDRIVER_REMOTE == `False`."""
+        self.assert_driver(
+            remote=False, module='selenium.webdriver.firefox.webdriver')

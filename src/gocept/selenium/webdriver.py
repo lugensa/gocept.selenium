@@ -38,11 +38,10 @@ class Layer(plonetesting.Layer):
 
     _browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', 'firefox')
 
-    _remote = os.environ.get('GOCEPT_WEBDRIVER_REMOTE', 'True')
-
     @property
     def is_remote(self):
-        return ast.literal_eval(self._remote)
+        return ast.literal_eval(
+            os.environ.get('GOCEPT_WEBDRIVER_REMOTE', 'True'))
 
     def setUp(self):
         if 'http_address' not in self:
@@ -80,8 +79,8 @@ class Layer(plonetesting.Layer):
         ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
         if ff_binary:
             parameters['firefox_binary'] = FirefoxBinary(ff_binary)
-        self['seleniumrc'] = getattr(selenium.webdriver, self._browser)(
-            **parameters)
+        module = getattr(selenium.webdriver, self._browser)
+        self['seleniumrc'] = module.webdriver.WebDriver(**parameters)
 
     def _start_remote(self):
         parameters = {'desired_capabilities': {'browserName': self._browser}}

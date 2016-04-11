@@ -5,8 +5,8 @@ Changelog
 2.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix using a local Firefox using ``GOCEPT_WEBDRIVER_REMOTE=False`` as the
+  environment setting.
 
 2.5.3 (2016-04-11)
 ------------------
