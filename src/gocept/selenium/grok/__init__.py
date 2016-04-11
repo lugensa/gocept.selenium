@@ -46,8 +46,8 @@ class Layer(ZODBLayer, plone.testing.Layer):
             name='IntegratedWSGILayer', bases=[self])
         self.HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
             name='IntegratedHTTPLayer', bases=[self.WSGI_LAYER])
-        self.HTTP_LAYER.host = self.host
-        self.HTTP_LAYER.port = self.port
+        self.HTTP_LAYER['http_host'] = self.host
+        self.HTTP_LAYER['http_port'] = self.port
         self.SELENIUM_LAYER = gocept.selenium.seleniumrc.Layer(
             name='IntegratedSeleniumLayer', bases=[self.HTTP_LAYER])
 
