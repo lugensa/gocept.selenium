@@ -36,12 +36,8 @@ class LayerTest(unittest.TestCase):
         layer['http_address'] = 'localhost:12345'
         with mock.patch.dict(
                 os.environ, {'GOCEPT_WEBDRIVER_REMOTE': str(remote)}):
-            try:
-                layer.setUp()
-                self.assertEqual(
-                    module, layer['seleniumrc'].__class__.__module__)
-            finally:
-                layer.tearDown()
+            layer.setUp()
+            self.assertEqual(module, layer['seleniumrc'].__class__.__module__)
 
     def test_webdriver__Layer__setUp__2(self):
         """It uses a remote driver if GOCEPT_WEBDRIVER_REMOTE == `True`."""
