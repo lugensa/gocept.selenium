@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.5.2 (unreleased)
+2.5.2 (2016-04-11)
 ------------------
 
 - Add documentation for the Jenkins integration of screenshots made from
