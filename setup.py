@@ -25,7 +25,7 @@ except ImportError:
 
 
 install_requires = [
-    'gocept.httpserverlayer>1.2',
+    'gocept.httpserverlayer >= 1.4',
     'httpagentparser',
     'plone.testing',
     'selenium >= 2.28',

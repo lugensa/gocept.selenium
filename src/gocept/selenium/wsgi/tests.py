@@ -21,7 +21,7 @@ class TestWSGITestCase(gocept.selenium.wsgi.TestCase):
     layer = gocept.selenium.wsgi.Layer(SimpleApp())
 
     def test_wsgi_layer(self):
-        self.assertTrue(self.layer.thread.isAlive)
+        self.assertTrue(self.layer['httpd_thread'].isAlive())
 
     def test_simple_app(self):
         self.selenium.open('/')
