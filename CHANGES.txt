@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.5.4 (unreleased)
+2.5.4 (2016-04-12)
 ------------------
 
 - Fix using a local Firefox using ``GOCEPT_WEBDRIVER_REMOTE=False`` as the

@@ -44,7 +44,7 @@ if sys.version_info < (2, 7):
 
 setup(
     name='gocept.selenium',
-    version='2.5.4.dev0',
+    version='2.5.4',
     author='Zope Foundation and Contributors',
     author_email='mail@gocept.com',
     url='https://goceptselenium.readthedocs.org/',
