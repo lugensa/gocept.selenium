@@ -34,10 +34,16 @@ class LayerTest(unittest.TestCase):
     def assert_driver(self, remote, module):
         layer = gocept.selenium.webdriver.Layer()
         layer['http_address'] = 'localhost:12345'
-        with mock.patch.dict(
-                os.environ, {'GOCEPT_WEBDRIVER_REMOTE': str(remote)}):
-            layer.setUp()
+        try:
+            with mock.patch.dict(
+                    os.environ, {'GOCEPT_WEBDRIVER_REMOTE': str(remote)}):
+                layer.setUp()
             self.assertEqual(module, layer['seleniumrc'].__class__.__module__)
+        finally:
+            try:
+                layer.tearDown()
+            except:
+                pass
 
     def test_webdriver__Layer__setUp__2(self):
         """It uses a remote driver if GOCEPT_WEBDRIVER_REMOTE == `True`."""
