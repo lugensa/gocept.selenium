@@ -18,6 +18,7 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+import urllib2
 
 
 class LayerTest(unittest.TestCase):
@@ -26,10 +27,11 @@ class LayerTest(unittest.TestCase):
         layer = gocept.selenium.webdriver.Layer()
         layer['http_address'] = 'localhost:12345'
         layer._port = 4445  # default port is 4444
-        try:
+        with self.assertRaises(urllib2.URLError) as err:
             layer.setUp()
-        except Exception, e:
-            self.assertIn('Failed to connect to Selenium server', str(e))
+        self.assertIn(
+            'Failed to connect to Selenium server at localhost:4445, is it '
+            'running?', str(err.exception))
 
     def assert_driver(self, remote, module):
         layer = gocept.selenium.webdriver.Layer()
