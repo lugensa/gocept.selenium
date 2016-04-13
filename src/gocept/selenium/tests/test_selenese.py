@@ -24,11 +24,7 @@ import os
 import pkg_resources
 import shutil
 import time
-
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+import unittest
 
 
 class PatternTest(unittest.TestCase):
