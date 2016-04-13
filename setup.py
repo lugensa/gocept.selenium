@@ -4,7 +4,7 @@ install_requires = [
     'gocept.httpserverlayer >= 2.0.dev0',
     'httpagentparser',
     'plone.testing',
-    'selenium >= 2.28',
+    'selenium < 2.53',
     'Pillow',
     'setuptools']
 

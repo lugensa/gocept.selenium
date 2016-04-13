@@ -19,6 +19,10 @@ Changelog
 
 - Drop support for Python 2.4, 2.5, 2.6. Now only supporting Python 2.7.
 
+- Currently only supporting a ``selenium`` version < 2.53 as this version
+  breaks using a custom Firefox.
+  See https://github.com/SeleniumHQ/selenium/issues/1965
+
 
 2.5.4 (2016-04-12)
 ------------------
