@@ -28,12 +28,7 @@ import os.path
 import pkg_resources
 import shutil
 import stat
-
-
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+import unittest
 
 
 class SplitLocatorTest(unittest.TestCase):

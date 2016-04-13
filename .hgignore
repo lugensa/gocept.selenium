@@ -1,21 +1,26 @@
 syntax: glob
 
+*.egg-info
 *.pyc
 *.swp
 *~
 .Python
+.cache/
+.coverage
+.coverage.*
 .installed.cfg
-.mr.developer.cfg
+.tox/
 bin
 build
-buildout.cfg
+coverage-report/
+coverage.xml
 develop-eggs
-dist
+dist/
 doc/_api
 doc/_build
 eggs
-gocept.selenium.egg-info
 include
+junit-*.xml
 lib
 local
 local.cfg

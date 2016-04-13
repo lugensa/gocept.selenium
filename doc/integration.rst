@@ -76,30 +76,6 @@ is served via HTTP where tests can put HTML files to examine::
                 self.selenium.assertBodyText('Hello world!')
 
 
-Zope3 / ZTK (zope.app.testing)
-------------------------------
-
-Requires ``gocept.selenium[ztk]``.
-
-This test layer wraps your usual ZCMLLayer that is used for typical ZTK
-functional tests, and provides an HTTP server for testing::
-
-    import gocept.selenium.ztk
-    import zope.app.testing.functional
-
-    zcml_layer = zope.app.testing.functional.ZCMLLayer(
-        'ftesting.zcml', __name__, __name__, allow_teardown=True)
-    selenium_layer = gocept.selenium.ztk.Layer(zcml_layer)
-
-    class ZTKExample(gocept.selenium.ztk.TestCase):
-
-        layer = selenium_layer
-
-        def test(self):
-            self.selenium.open('http://%s/foo.html' % self.selenium.server)
-            self.selenium.assertBodyText('Hello world!')
-
-
 Zope3 / ZTK (zope.app.wsgi)
 ---------------------------
 
@@ -164,16 +140,6 @@ application: ``gocept.selenium.wsgi.CleanerMiddleware``. It also fixes an
 issue with ``wsgiref``. See comments in the code for more information.
 
 
-Plone
------
-
-Requires ``gocept.selenium[plone]``.
-
-This test layer requires ``Products.PloneTestCase.laye.PloneSiteLayer`` and
-provides an HTTP server for the tests. See
-``gocept.selenium.plone.tests.test_plone{3,4}`` for details how to set this up.
-
-
 Zope 2 / Plone with plone.testing
 ---------------------------------
 
@@ -226,5 +192,3 @@ import path. That layer is set on the test case generated in the Python module.
 
 An output file can be specified. In case no output file name is specified,
 the module produced is named ``tests_all_selenium.py``.
-
-On Python-2.4, converthtmltests requires ``gocept.selenium[script]``.

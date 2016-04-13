@@ -1,2 +1,2 @@
-Zope Foundation and Contributors
+gocept and contributors
 2011, Ben Firshman
