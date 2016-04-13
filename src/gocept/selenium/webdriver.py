@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import ast
 import atexit
@@ -77,7 +78,7 @@ class Layer(plonetesting.Layer):
             parameters['firefox_profile'] = self.profile
         ff_binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
         if ff_binary:
-            parameters['firefox_binary'] = ff_binary
+            parameters['firefox_binary'] = FirefoxBinary(ff_binary)
         module = getattr(selenium.webdriver, self._browser)
         self['seleniumrc'] = module.webdriver.WebDriver(**parameters)
 
