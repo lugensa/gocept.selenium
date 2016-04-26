@@ -103,8 +103,7 @@ class TestConversion(unittest.TestCase):
         parser = make_parser()
         parser.error = mock.Mock()
         source = tempfile.gettempdir()
-        options, directory = parse_options(parser,
-            ['-l', LAYER, source])
+        options, directory = parse_options(parser, ['-l', LAYER, source])
         self.assertEquals(source, directory)
         self.assertEquals(options.layer, LAYER)
         self.assertEquals(options.target, DEFAULT_TARGET)
@@ -116,8 +115,7 @@ class TestConversion(unittest.TestCase):
         parser = make_parser()
         parser.error = mock.Mock()
         source = tempfile.mkdtemp()
-        options, directory = parse_options(parser,
-            ['-q', '-l', LAYER, source])
+        options, directory = parse_options(parser, ['-q', '-l', LAYER, source])
         self.failIf(options.verbose)
 
     def test_parse_options_target(self):
@@ -127,8 +125,8 @@ class TestConversion(unittest.TestCase):
         parser.error = mock.Mock()
         source = tempfile.mkdtemp()
         target = tempfile.mktemp()
-        options, directory = parse_options(parser,
-            ['-f', target, '-l', LAYER, source])
+        options, directory = parse_options(
+            parser, ['-f', target, '-l', LAYER, source])
         self.assertEquals(options.target, target)
 
     def test_parse_file(self):
@@ -143,7 +141,7 @@ class TestConversion(unittest.TestCase):
         self.assertEquals(testname, 'plone3login')
         self.assertEquals(len(commands), 5)
         self.assertEquals('        selenium.open("/plone/login_form")',
-            commands[0])
+                          commands[0])
 
     def test_parse_file_no_title(self):
         from gocept.selenium.scripts.converthtmltests import parse_file
@@ -198,7 +196,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
 
         tests = [test for test in parse_directory(tests_dir, False)]
-        encoding = tests.pop(0)
+        tests.pop(0)  # this is the encoding
         self.assertEquals(len(tests), 1)
         self.assertEquals(tests[0], PLONE3LOGIN_METHOD)
 

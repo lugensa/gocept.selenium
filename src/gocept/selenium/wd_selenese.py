@@ -125,7 +125,7 @@ class Selenese(object):
         ActionChains(self.selenium).key_up(Keys.ALT).perform()
 
     def attachFile(self, locator, fileURL):
-        # see http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_WebDriver_support_file_uploads?
+        # see https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-does-webdriver-support-file-uploads  # noqa
         self._find(locator).send_keys(fileURL)
 
     def captureScreenshot(self, filename):

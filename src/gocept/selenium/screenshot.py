@@ -142,10 +142,10 @@ class ScreenshotMismatchError(ValueError):
                                self.got, self.compo)
 
     def _print_junit_attachments(self):
-        print ('\n'
-               + junit_attach_line(self.expected, 'expected')
-               + junit_attach_line(self.got, 'actual')
-               + junit_attach_line(self.compo, 'diff'))
+        print ('\n' +
+               junit_attach_line(self.expected, 'expected') +
+               junit_attach_line(self.got, 'actual') +
+               junit_attach_line(self.compo, 'diff'))
 
 
 class ScreenshotSizeMismatchError(ValueError):
@@ -169,9 +169,9 @@ class ScreenshotSizeMismatchError(ValueError):
                                self.expected, self.got)
 
     def _print_junit_attachments(self):
-        print ('\n'
-               + junit_attach_line(self.expected, 'expected')
-               + junit_attach_line(self.got, 'actual'))
+        print ('\n' +
+               junit_attach_line(self.expected, 'expected') +
+               junit_attach_line(self.got, 'actual'))
 
 
 class ZeroDimensionError(ValueError):
