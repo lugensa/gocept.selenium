@@ -13,8 +13,8 @@
 ##############################################################################
 
 # BBB
-from gocept.httpserverlayer.wsgi import FixupMiddleware as CleanerMiddleware
-from gocept.selenium.seleniumrc import TestCase
+from gocept.httpserverlayer.wsgi import FixupMiddleware as CleanerMiddleware  # noqa
+from gocept.selenium.seleniumrc import TestCase  # noqa
 
 from wsgiref.simple_server import WSGIRequestHandler
 import gocept.httpserverlayer.wsgi

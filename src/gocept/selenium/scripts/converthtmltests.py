@@ -72,14 +72,15 @@ def formatcommand(command, *args):
         matched = variable_regexp.match(arg)
         if matched is None:
             arguments.append('"%s"' % arg)
-        #XXX selenese should implement storeText
-        #else:
+        # XXX selenese should implement storeText
+        # else:
         #    arguments.append("self.getVar('%s')" % matched.group('varname'))
     return '        selenium.%s(%s)' % (command, ', '.join(arguments))
 
 
 def make_parser():
-    parser = OptionParser(usage="converthtmltests -l LAYER [options] directory",
+    parser = OptionParser(
+        usage="converthtmltests -l LAYER [options] directory",
         version="%prog 1.0")
     parser.add_option("-f", "--file", dest="target",
                       default=DEFAULT_TARGET,
@@ -149,8 +150,8 @@ def parse_file(filename):
         testname = tree.find('.//%s' % QName(XHTML_NAMESPACE, 'title')).text
     except AttributeError:
         return None, None, None
-    content_type = tree.find(".//%s" % QName(XHTML_NAMESPACE,
-                        "meta[@http-equiv='Content-Type']")).get('content')
+    content_type = tree.find(".//%s" % QName(
+        XHTML_NAMESPACE, "meta[@http-equiv='Content-Type']")).get('content')
     matched = encoding_regexp.search(content_type)
     if matched is not None:
         encoding = matched.group(1).lower()
@@ -159,7 +160,9 @@ def parse_file(filename):
     commands = []
     for row in tree.findall('.//%s/%s' % (QName(XHTML_NAMESPACE, 'tbody'),
                                           QName(XHTML_NAMESPACE, 'tr'))):
-        command = formatcommand(*[td.text for td in row.findall(str(QName(XHTML_NAMESPACE, 'td')))])
+        command = formatcommand(
+            *[td.text
+              for td in row.findall(str(QName(XHTML_NAMESPACE, 'td')))])
         commands.append(command)
     return testname, commands, encoding
 
@@ -200,5 +203,5 @@ def main(args=None):
     f.close()
 
 
-if  __name__ == '__main__':
+if __name__ == '__main__':
     main()

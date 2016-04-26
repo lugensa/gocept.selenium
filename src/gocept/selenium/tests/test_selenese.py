@@ -217,7 +217,7 @@ class AssertionTests(gocept.testing.assertion.String,
         self.selenium.open('/divs.html')
         with self.assertRaisesRegexp(
                 AssertionError,
-                "Actual count of XPath '//div' is 4, expected 3.*") as err:
+                "Actual count of XPath '//div' is 4, expected 3.*"):
             self.selenium.assertXpathCount("//div", 3)
 
     def test_csscount_should_convert_to_ints(self):
@@ -229,7 +229,7 @@ class AssertionTests(gocept.testing.assertion.String,
         self.selenium.open('/divs.html')
         with self.assertRaisesRegexp(
                 AssertionError,
-                "Actual count of CSS 'css=div' is 4, expected 3.*") as err:
+                "Actual count of CSS 'css=div' is 4, expected 3.*"):
             self.selenium.assertCssCount("css=div", 3)
 
     def test_configured_timeout_is_applied_for_open(self):

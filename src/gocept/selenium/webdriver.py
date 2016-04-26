@@ -102,8 +102,8 @@ class Layer(plonetesting.Layer):
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
-        if (self.get('seleniumrc') is None
-                or self['seleniumrc'].session_id is None):
+        if (self.get('seleniumrc') is None or
+                self['seleniumrc'].session_id is None):
             return
 
         self['seleniumrc'].quit()

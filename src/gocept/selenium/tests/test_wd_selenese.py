@@ -225,7 +225,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
     layer = STATIC_WD_LAYER
 
     def test_default_setting_when_not_set(self):
-        #the default is the directory where the current test is
+        # the default is the directory where the current test is
         img = pkg_resources.resource_filename(self.__module__, 'foo.png')
         self.selenium.capture_screenshot = True
         self.selenium.open('screenshot.html')
