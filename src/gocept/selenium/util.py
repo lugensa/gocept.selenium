@@ -12,16 +12,9 @@
 #
 ##############################################################################
 
+import distutils.versionpredicate
 import httpagentparser
 import re
-import warnings
-
-try:
-    import distutils.versionpredicate
-except ImportError:
-    have_predicate = False
-else:
-    have_predicate = True
 
 
 class skipUnlessBrowser(object):
@@ -57,15 +50,10 @@ class skipUnlessBrowser(object):
             test_case.skipTest('Require browser %s, but have %s.' % (
                 self.required_name, agent['browser']['name']))
         if self.required_version:
-            if have_predicate:
-                requirement = distutils.versionpredicate.VersionPredicate(
-                    'Browser (%s)' % self.required_version)
-                skip = not requirement.satisfied_by(
-                    str(agent['browser']['version']))
-            else:
-                warnings.warn(
-                    'distutils.versionpredicate not available, skipping.')
-                skip = True
+            requirement = distutils.versionpredicate.VersionPredicate(
+                'Browser (%s)' % self.required_version)
+            skip = not requirement.satisfied_by(
+                str(agent['browser']['version']))
             if skip:
                 test_case.skipTest('Require %s%s, got %s %s' % (
                     self.required_name, self.required_version,
