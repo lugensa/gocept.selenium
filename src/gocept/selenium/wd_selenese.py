@@ -913,3 +913,10 @@ WHITESPACE = re.compile(r'\s+')
 
 def normalize(text):
     return WHITESPACE.sub(' ', text)
+
+
+def abbrev_repr(x, size=70):
+    r = repr(x)
+    if len(r) > size:
+        r = r[:size - 3] + '...'
+    return r
