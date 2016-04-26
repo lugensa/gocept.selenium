@@ -60,7 +60,7 @@ example::
     GOCEPT_WEBDRIVER_BROWSER=Firefox
 
 
-.. _`browser classes`: https://code.google.com/p/selenium/source/browse/py/selenium/webdriver/__init__.py
+.. _`browser classes`: https://github.com/SeleniumHQ/selenium/blob/master/py/selenium/webdriver/__init__.py
 
 If you want to use a Firefox binary at a custom path, specify it like this::
 
