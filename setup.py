@@ -47,11 +47,11 @@ setup(
         'Topic :: Software Development :: Testing',
     ],
     long_description=(
-        open('README.txt').read() +
+        open('README.rst').read() +
         '\n\n' +
-        open('HACKING.txt').read() +
+        open('HACKING.rst').read() +
         '\n\n' +
-        open('CHANGES.txt').read()),
+        open('CHANGES.rst').read()),
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
