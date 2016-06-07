@@ -4,6 +4,7 @@ syntax: glob
 *.pyc
 *.swp
 *~
+.DS_Store
 .Python
 .cache/
 .coverage
