@@ -1,4 +1,14 @@
-include *.cfg
 exclude .installed.cfg
+exclude doc/_build
+include *.cfg
+include *.py
+include *.rst
 include *.txt
-recursive-include src *.txt *.zcml
+include .coveragerc
+include doc/_themes/LICENSE
+include doc/_themes/README
+include pytest.ini
+include tox.ini
+recursive-exclude doc/_build *
+recursive-include doc *.rst *.py *.png *.html *.conf *.css_t
+recursive-include src *.txt *.zcml *.html *.png
