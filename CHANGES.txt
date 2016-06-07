@@ -23,6 +23,9 @@ Changelog
   breaks using a custom Firefox.
   See https://github.com/SeleniumHQ/selenium/issues/1965
 
+- Add ``.wd_selense.Selenese.selectParentFrame()`` to select the
+  parent of a frame or an iframe.
+
 
 2.5.4 (2016-04-12)
 ------------------

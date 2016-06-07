@@ -331,6 +331,10 @@ class Selenese(object):
     def selectFrame(self, locator):
         self.selenium.switch_to_frame(split_frame_locator(locator))
 
+    def selectParentFrame(self):
+        self.selenium.switch_to.parent_frame()
+        return True
+
     def selectWindow(self, window_id=None):
         if not window_id:
             window_id = self.selenium.window_handles[0]
