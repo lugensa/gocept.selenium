@@ -132,6 +132,10 @@ class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
         self.assertIn(
             'Timed out after 1.0 s. Unable to locate element', e.exception.msg)
 
+    def test_wd_selense__Selense__selectParentFrame__1(self):
+        """It does nothing if there is no parent frame."""
+        assert self.selenium.selectParentFrame()
+
 
 class ScreenshotAssertionTest(HTMLTestCase,
                               gocept.testing.assertion.String):
