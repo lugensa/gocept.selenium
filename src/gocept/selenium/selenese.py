@@ -756,8 +756,8 @@ class Selenese(object):
                         break
             raise self.failureException(
                 detail + ('Expected: %s,\ngot: %s\nfrom %s' % (
-                        abbrev_repr(expected), abbrev_repr(result),
-                        self._call_repr(name))))
+                    abbrev_repr(expected), abbrev_repr(result),
+                    self._call_repr(name))))
 
     def _negate(self, assertion, name, *args, **kw):
         try:

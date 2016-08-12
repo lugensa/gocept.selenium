@@ -174,7 +174,7 @@ def make_module(methods, layer, layer_module, encoding):
         methods='\n'.join(methods),
         layer=layer,
         layer_module=layer_module,
-        ))
+    ))
 
 
 def main(args=None):
