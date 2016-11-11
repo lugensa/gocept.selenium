@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-3.1 (unreleased)
+3.1 (2016-11-11)
 ----------------
 
 - Support selenium versions >= 2.53.
