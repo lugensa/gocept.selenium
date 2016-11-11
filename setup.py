@@ -10,7 +10,7 @@ install_requires = [
 
 setup(
     name='gocept.selenium',
-    version='3.1.dev0',
+    version='3.1',
     author='gocept and contributors',
     author_email='mail@gocept.com',
     url='https://goceptselenium.readthedocs.org/',
