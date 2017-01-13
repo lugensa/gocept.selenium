@@ -126,6 +126,7 @@ class Selenese(object):
 
     def attachFile(self, locator, fileURL):
         # see https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-does-webdriver-support-file-uploads  # noqa
+        # `fileURL` might an absolute path in the filesystem, too.
         self._find(locator).send_keys(fileURL)
 
     def captureScreenshot(self, filename):
