@@ -248,3 +248,45 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
             self.selenium.assertScreenshot('foo', 'css=#block-1')
         self.assertTrue(os.path.isfile(img))
         os.unlink(img)
+
+
+class SelectFrameTests(HTMLTestCase):
+    """Testing selectFrame and selectParentFrame."""
+
+    layer = STATIC_WD_LAYER
+
+    def test_wd_selense__Selenese__selectFrame__1(self):
+        """It selects a frame by name."""
+        sel = self.selenium
+        sel.open('iframe.html')
+        assert 1 == sel.getCssCount('css=.countable')
+        sel.selectFrame('name=foo')
+        assert 3 == sel.getCssCount('css=.countable')
+
+    def test_wd_selense__Selenese__selectFrame__2(self):
+        """It selects a frame by index."""
+        sel = self.selenium
+        sel.open('iframe.html')
+        assert 1 == sel.getCssCount('css=.countable')
+        sel.selectFrame('index=0')
+        assert 3 == sel.getCssCount('css=.countable')
+
+    def test_wd_selense__Selenese__selectFrame__3(self):
+        """It does not select a frame by css."""
+        sel = self.selenium
+        sel.open('iframe.html')
+        with self.assertRaises(ValueError) as err:
+            sel.selectFrame('css=iframe')
+        self.assertEqual(
+            "Invalid frame selector 'css', valid are ['name', 'index']",
+            str(err.exception))
+
+    def test_wd_selense__Selenese__selectFrame__4(self):
+        """It does not select a frame by relative."""
+        sel = self.selenium
+        sel.open('iframe.html')
+        with self.assertRaises(NotImplementedError) as err:
+            sel.selectFrame('relative=parent')
+        self.assertEqual(
+            "Invalid frame selector 'relative', valid are ['name', 'index']",
+            str(err.exception))

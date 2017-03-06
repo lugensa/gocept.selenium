@@ -906,10 +906,13 @@ def split_frame_locator(frame_locator):
     valid_selectors = ['name', 'index']
     by, sep, value = frame_locator.partition('=')
     if by in ['relative', 'dom']:
-        raise NotImplementedError()
+        raise NotImplementedError('Invalid frame selector %r, valid are %r'
+                                  % (by, valid_selectors))
     elif by not in valid_selectors:
         raise ValueError('Invalid frame selector %r, valid are %r'
                          % (by, valid_selectors))
+    elif by == 'index':
+        value = int(value)
     return value
 
 
