@@ -14,7 +14,7 @@ Changelog
 - Support selenium versions >= 2.53.
   https://bitbucket.org/gocept/gocept.selenium/issues/12
 
-- Require an selenium version < 3.0 as this version removed the support for
+- Require a selenium version < 3.0 as this version removed the support for
   Selenium RC.
 
 
