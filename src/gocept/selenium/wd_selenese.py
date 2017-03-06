@@ -330,7 +330,7 @@ class Selenese(object):
     addSelection = select
 
     def selectFrame(self, locator):
-        self.selenium.switch_to_frame(split_frame_locator(locator))
+        self.selenium.switch_to.frame(split_frame_locator(locator))
 
     def selectParentFrame(self):
         self.selenium.switch_to.parent_frame()
