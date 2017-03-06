@@ -5,7 +5,8 @@ Changelog
 3.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix ``wd_selense.Selenese.selectFrame('index=0')`` to forward the index as
+  number to the underlying WebDriver so it is actually treated as an index.
 
 
 3.1 (2016-11-11)
