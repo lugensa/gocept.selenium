@@ -96,6 +96,7 @@ def make_parser():
                       help="do not print progress messages to stdout")
     return parser
 
+
 DEFAULT_TARGET = 'tests_all_selenium.py'
 LAYER_REQUIRED = 'Layer (-l) argument is required.'
 DIRECTORY_REQUIRED = 'Source directory is required.'
