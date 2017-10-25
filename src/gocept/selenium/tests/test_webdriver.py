@@ -41,7 +41,7 @@ class LayerTest(unittest.TestCase):
         finally:
             try:
                 layer.tearDown()
-            except:
+            except Exception:
                 pass
 
     def test_webdriver__Layer__setUp__2(self):
