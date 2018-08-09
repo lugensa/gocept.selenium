@@ -5,7 +5,8 @@ Changelog
 3.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Currently depend on ``gocept.httpserverlayer < 3`` as we are not yet ported
+  to the new version.
 
 
 3.1.1 (2017-03-07)
