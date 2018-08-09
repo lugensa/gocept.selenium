@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-    'gocept.httpserverlayer >= 2.0.dev0',
+    'gocept.httpserverlayer >= 2, < 3',
     'httpagentparser',
     'plone.testing != 5.1',
     'selenium !=2.53.0, !=2.53.1, !=2.53.2, <3.0',
