@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 install_requires = [
     'gocept.httpserverlayer >= 3',
     'httpagentparser',
-    'plone.testing != 5.1',
+    'plone.testing >= 7.0',
     'selenium !=2.53.0, !=2.53.1, !=2.53.2, <3.0',
     'Pillow',
     'setuptools']
