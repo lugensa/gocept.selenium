@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-    'gocept.httpserverlayer >= 2, < 3',
+    'gocept.httpserverlayer >= 3',
     'httpagentparser',
     'plone.testing != 5.1',
     'selenium !=2.53.0, !=2.53.1, !=2.53.2, <3.0',
@@ -10,7 +10,7 @@ install_requires = [
 
 setup(
     name='gocept.selenium',
-    version='3.2.dev0',
+    version='4.0.dev0',
     author='gocept and contributors',
     author_email='mail@gocept.com',
     url='https://goceptselenium.readthedocs.org/',
@@ -29,8 +29,9 @@ setup(
         'Framework :: Plone :: 5.0',
         'Framework :: Pylons',
         'Framework :: Pyramid',
-        'Framework :: Zope2',
-        'Framework :: Zope3',
+        'Framework :: Zope :: 2',
+        'Framework :: Zope :: 3',
+        'Framework :: Zope :: 4',
         'Intended Audience :: Developers',
         'License :: OSI Approved',
         'License :: OSI Approved :: Zope Public License',
@@ -65,7 +66,7 @@ setup(
             'zope.app.appsetup',
         ],
         plonetesting=[
-            'gocept.httpserverlayer[plonetestingz2]',
+            'gocept.httpserverlayer[plonetestingzope]',
         ],
         screenshot=[
             'Pillow'

@@ -2,11 +2,12 @@ Changelog
 =========
 
 
-3.2 (unreleased)
+4.0 (unreleased)
 ----------------
 
-- Currently depend on ``gocept.httpserverlayer < 3`` as we are not yet ported
-  to the new version.
+- Drop support for Zope 2.
+
+- Depend on ``gocept.httpserverlayer >= 3``.
 
 
 3.1.1 (2017-03-07)
