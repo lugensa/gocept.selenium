@@ -51,7 +51,7 @@ def test_suite():
     return unittest.makeSuite(TestAll)
 ''')
 
-variable_regexp = re.compile('\$\{(?P<varname>\w*)\}')
+variable_regexp = re.compile(r'\$\{(?P<varname>\w*)\}')
 encoding_regexp = re.compile(r'charset=(.*)$')
 
 method_template = Template('''\
