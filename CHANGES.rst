@@ -5,7 +5,7 @@ Changelog
 4.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix more deprecation warnings.
 
 
 4.0 (2018-11-09)

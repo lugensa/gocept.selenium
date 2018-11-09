@@ -113,7 +113,7 @@ class Selenese(object):
             windowID = self.selenium.window_handles[1]
         if not wait and not self._popup_exists(windowID):
             raise RuntimeError('Pop-up window %r not available.' % windowID)
-        self.selenium.switch_to_window(windowID)
+        self.selenium.switch_to.window(windowID)
 
     def open(self, url):
         self.selenium.get(urlparse.urljoin('http://' + self.server, url))
@@ -339,7 +339,7 @@ class Selenese(object):
     def selectWindow(self, window_id=None):
         if not window_id:
             window_id = self.selenium.window_handles[0]
-        return self.selenium.switch_to_window(window_id)
+        return self.selenium.switch_to.window(window_id)
 
     def submit(self, locator):
         self._find(locator).submit()
@@ -373,7 +373,7 @@ class Selenese(object):
         self.click(locator)
 
     def windowFocus(self):
-        self.selenium.switch_to_window(self.selenium.current_window_handle)
+        self.selenium.switch_to.window(self.selenium.current_window_handle)
 
     def windowMaximize(self):
         self.selenium.maximize_window()
