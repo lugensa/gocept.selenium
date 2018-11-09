@@ -11,6 +11,8 @@ Changelog
 
 - Depend on ``plone.testing >= 7.0``.
 
+- Fix deprecation warnings.
+
 
 3.1.1 (2017-03-07)
 ------------------
