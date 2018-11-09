@@ -9,6 +9,8 @@ Changelog
 
 - Depend on ``gocept.httpserverlayer >= 3``.
 
+- Depend on ``plone.testing >= 7.0``.
+
 
 3.1.1 (2017-03-07)
 ------------------

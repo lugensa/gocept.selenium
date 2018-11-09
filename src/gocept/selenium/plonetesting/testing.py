@@ -14,13 +14,13 @@
 
 import gocept.selenium.plonetesting.tests
 import plone.testing
-import plone.testing.z2
+import plone.testing.zope
 import zope.configuration.xmlconfig
 
 
 class Layer(plone.testing.Layer):
 
-    defaultBases = (plone.testing.z2.STARTUP,)
+    defaultBases = (plone.testing.zope.STARTUP,)
 
     def setUp(self):
         zope.configuration.xmlconfig.file(
