@@ -17,7 +17,7 @@ Developing gocept.selenium
     https://bitbucket.org/gocept/gocept.selenium/
 
 :Current change log:
-    https://bitbucket.org/gocept/gocept.selenium/raw/tip/CHANGES.txt
+    https://bitbucket.org/gocept/gocept.selenium/raw/tip/CHANGES.rst
 
 Documentation
 -------------
