@@ -403,7 +403,7 @@ class Selenese(object):
 
     @assert_type('pattern')
     def getAlert(self):
-        alert = self.selenium.switch_to_alert()
+        alert = self.selenium.switch_to.alert
         text = alert.text
         alert.dismiss()
         return text
@@ -436,7 +436,7 @@ class Selenese(object):
 
     @assert_type('pattern')
     def getConfirmation(self):
-        confirmation = self.selenium.switch_to_alert()
+        confirmation = self.selenium.switch_to.alert
         text = confirmation.text
         confirmation.accept()
         return text
@@ -467,7 +467,7 @@ class Selenese(object):
 
     @assert_type('pattern')
     def getPrompt(self):
-        prompt = self.selenium.switch_to_alert()
+        prompt = self.selenium.switch_to.alert
         return prompt.text
 
     @assert_type('locator_pattern')
@@ -543,7 +543,7 @@ class Selenese(object):
 
     @assert_type(None)
     def isAlertPresent(self):
-        alert = self.selenium.switch_to_alert()
+        alert = self.selenium.switch_to.alert
         try:
             alert.text
             return True
