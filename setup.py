@@ -29,7 +29,6 @@ setup(
         'Framework :: Plone :: 5.0',
         'Framework :: Pylons',
         'Framework :: Pyramid',
-        'Framework :: Zope :: 2',
         'Framework :: Zope :: 3',
         'Framework :: Zope :: 4',
         'Intended Audience :: Developers',
