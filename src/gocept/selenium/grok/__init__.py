@@ -15,7 +15,7 @@
 from zope.app.appsetup.testlayer import ZODBLayer
 import gocept.httpserverlayer.wsgi
 import gocept.httpserverlayer.zopeappwsgi
-import gocept.selenium.seleniumrc
+import gocept.selenium.webdriver
 import os
 import plone.testing
 import sys
@@ -48,8 +48,10 @@ class Layer(ZODBLayer, plone.testing.Layer):
             name='IntegratedHTTPLayer', bases=[self.WSGI_LAYER])
         self.HTTP_LAYER['http_host'] = self.host
         self.HTTP_LAYER['http_port'] = self.port
-        self.SELENIUM_LAYER = gocept.selenium.seleniumrc.Layer(
+        self.SELENIUM_LAYER = gocept.selenium.webdriver.Layer(
             name='IntegratedSeleniumLayer', bases=[self.HTTP_LAYER])
+        self.SELENESE_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
+            name='IntegratedSeleneseLayer', bases=[self.SELENIUM_LAYER])
 
     def setUp(self):
         ZODBLayer.setUp(self)
@@ -57,8 +59,10 @@ class Layer(ZODBLayer, plone.testing.Layer):
         self.WSGI_LAYER.setUp()
         self.HTTP_LAYER.setUp()
         self.SELENIUM_LAYER.setUp()
+        self.SELENESE_LAYER.setUp()
 
     def tearDown(self):
+        self.SELENESE_LAYER.tearDown()
         self.SELENIUM_LAYER.tearDown()
         self.HTTP_LAYER.tearDown()
         self.WSGI_LAYER.tearDown()
@@ -70,10 +74,12 @@ class Layer(ZODBLayer, plone.testing.Layer):
         self.WSGI_LAYER.testSetUp()
         self.HTTP_LAYER.testSetUp()
         self.SELENIUM_LAYER.testSetUp()
-        self['selenium'] = self.SELENIUM_LAYER['selenium']
+        self.SELENESE_LAYER.testSetUp()
+        self['selenium'] = self.SELENESE_LAYER['selenium']
 
 
-class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
+class TestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
+               unittest.TestCase):
 
     def setUp(self):
         super(TestCase, self).setUp()
