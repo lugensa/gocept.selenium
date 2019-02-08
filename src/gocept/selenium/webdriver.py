@@ -21,6 +21,7 @@ import os
 import os.path
 import selenium.webdriver
 import shutil
+import sys
 import tempfile
 import urllib2
 
@@ -143,6 +144,52 @@ class WebdriverSeleneseLayer(plonetesting.Layer):
 
     def tearDown(self):
         del self['selenium']
+
+
+class IntegrationBase(object):
+
+    # hostname and port of the local application.
+    host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
+    port = int(os.environ.get('GOCEPT_SELENIUM_APP_PORT', 0))
+
+    def __init__(self, *args, **kw):
+        kw['module'] = sys._getframe(1).f_globals['__name__']
+        super(IntegrationBase, self).__init__(*args, **kw)
+        self.SELENIUM_LAYER = Layer(
+            name='IntegratedSeleniumLayer', bases=[self])
+        self.SELENESE_LAYER = WebdriverSeleneseLayer(
+            name='IntegratedSeleneseLayer', bases=[self.SELENIUM_LAYER])
+
+    def make_layer_name(self, bases):
+        if bases:
+            base = bases[0]
+            name = '(%s.%s)' % (base.__module__, base.__name__)
+        else:
+            name = self.__class__.__name__
+        return name
+
+    def setUp(self):
+        super(IntegrationBase, self).setUp()
+        self.SELENIUM_LAYER.setUp()
+        self.SELENESE_LAYER.setUp()
+        self['seleniumrc'] = self.SELENIUM_LAYER['seleniumrc']
+
+    def tearDown(self):
+        self.SELENESE_LAYER.tearDown()
+        self.SELENIUM_LAYER.tearDown()
+        del self['seleniumrc']
+        super(IntegrationBase, self).tearDown()
+
+    def testSetUp(self):
+        super(IntegrationBase, self).testSetUp()
+        self.SELENIUM_LAYER.testSetUp()
+        self.SELENESE_LAYER.testSetUp()
+        self['selenium'] = self.SELENESE_LAYER['selenium']
+
+    def testTearDown(self):
+        self.SELENESE_LAYER.testTearDown()
+        self.SELENIUM_LAYER.testTearDown()
+        super(IntegrationBase, self).testTearDown()
 
 
 class WebdriverSeleneseTestCase(object):

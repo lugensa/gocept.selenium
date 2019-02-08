@@ -14,12 +14,11 @@
 
 # BBB
 from gocept.httpserverlayer.wsgi import FixupMiddleware as CleanerMiddleware  # noqa
-from gocept.selenium.seleniumrc import TestCase  # noqa
-
 from wsgiref.simple_server import WSGIRequestHandler
 import gocept.httpserverlayer.wsgi
-import gocept.selenium.seleniumrc
+import gocept.selenium.webdriver
 import os
+import unittest
 
 
 class LogWSGIRequestHandler(WSGIRequestHandler):
@@ -30,7 +29,7 @@ class LogWSGIRequestHandler(WSGIRequestHandler):
             WSGIRequestHandler.log_request(self, *args)
 
 
-class Layer(gocept.selenium.seleniumrc.IntegrationBase,
+class Layer(gocept.selenium.webdriver.IntegrationBase,
             gocept.httpserverlayer.wsgi.Layer):
 
     request_handler_class = LogWSGIRequestHandler
@@ -46,3 +45,8 @@ class Layer(gocept.selenium.seleniumrc.IntegrationBase,
 
     def setup_wsgi_stack(self, app):
         return app
+
+
+class TestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
+               unittest.TestCase):
+    """Webdriver test case with unittest assertions"""
