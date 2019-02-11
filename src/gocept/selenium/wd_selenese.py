@@ -62,7 +62,7 @@ def match_glob(text, pattern):
 
 
 def match_regex(text, pattern):
-    return re.search(pattern, text, re.DOTALL)
+    return bool(re.search(pattern, text, re.DOTALL))
 
 
 match_dict = {
