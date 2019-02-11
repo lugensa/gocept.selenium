@@ -408,34 +408,34 @@ class PatternTest(unittest.TestCase):
     """Testing selenese_pattern_equals"""
 
     def test_no_prefix(self):
-        self.assert_(match('foo', 'foo'))
-        self.assert_(not match('foo', 'bar'))
-        self.assert_(match('foo:bar', 'foo:bar'))
+        self.assertIs(match('foo', 'foo'), True)
+        self.assertIs(match('foo', 'bar'), False)
+        self.assertIs(match('foo:bar', 'foo:bar'), True)
 
     def test_exact(self):
-        self.assert_(match('foo', 'exact:foo'))
-        self.assert_(not match('foo', 'exact:bar'))
+        self.assertIs(match('foo', 'exact:foo'), True)
+        self.assertIs(match('foo', 'exact:bar'), False)
 
     def test_glob(self):
-        self.assert_(match('foo', 'glob:f*'))
-        self.assert_(match('foo', 'glob:fo?'))
-        self.assert_(not match('foo', 'glob:'))
+        self.assertIs(match('foo', 'glob:f*'), True)
+        self.assertIs(match('foo', 'glob:fo?'), True)
+        self.assertIs(match('foo', 'glob:'), False)
 
-        self.assert_(not match('foo', 'glob:b*'))
-        self.assert_(not match('foo', 'glob:?ar'))
+        self.assertIs(match('foo', 'glob:b*'), False)
+        self.assertIs(match('foo', 'glob:?ar'), False)
 
     def test_glob_with_regex_chars_should_work(self):
-        self.assert_(match('(foo)', 'glob:(foo)'))
-        self.assert_(match('[foo]', 'glob:[foo]'))
+        self.assertIs(match('(foo)', 'glob:(foo)'), True)
+        self.assertIs(match('[foo]', 'glob:[foo]'), True)
 
     def test_regex(self):
-        self.assert_(match('foo', 'regex:^fo+$'))
-        self.assert_(not match('foo', 'regex:^f+$'))
+        self.assertIs(match('foo', 'regex:^fo+$'), True)
+        self.assertIs(match('foo', 'regex:^f+$'), False)
 
     def test_regexp(self):
-        self.assert_(match('foo', 'regexp:^fo+$'))
-        self.assert_(not match('foo', 'regexp:^f+$'))
+        self.assertIs(match('foo', 'regexp:^fo+$'), True)
+        self.assertIs(match('foo', 'regexp:^f+$'), False)
 
     def test_multiline_strings(self):
-        self.assert_(match('foo\nbar', 'glob:foo*'))
-        self.assert_(match('foo\nbar', 'regex:^foo.*$'))
+        self.assertIs(match('foo\nbar', 'glob:foo*'), True)
+        self.assertIs(match('foo\nbar', 'regex:^foo.*$'), True)
