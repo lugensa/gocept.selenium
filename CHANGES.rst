@@ -5,7 +5,13 @@ Changelog
 5.0 (unreleased)
 ----------------
 
+- Selenium updated to version 3.
+
 - Remove support for Selenium 1, in particular ``RCTestCase`` and ``RCLayer``.
+
+- Remove support for Selenium 2.
+
+- Remove support for a remote selenium server. Gocept.selenium now uses the local implementation, starting its own browser.
 
 - Fix more deprecation warnings.
 

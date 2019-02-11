@@ -593,8 +593,8 @@ class Selenese(object):
 
     @assert_type(None)
     def isAlertPresent(self):
-        alert = self.selenium.switch_to.alert
         try:
+            alert = self.selenium.switch_to.alert
             alert.text
             return True
         except selenium.common.exceptions.NoAlertPresentException:

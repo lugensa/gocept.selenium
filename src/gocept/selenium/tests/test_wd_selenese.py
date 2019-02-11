@@ -207,7 +207,7 @@ class AssertionTests(gocept.testing.assertion.String,
         with self.assertRaisesRegexp(
                 # we're lucky that both SeleniumRC and Webdriver word
                 # their respective exceptions similarly.
-                Exception, 'Timed out'):
+                Exception, 'Message: Timeout loading page after 1ms'):
             self.selenium.open('/divs.html')
 
 
