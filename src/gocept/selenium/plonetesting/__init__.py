@@ -13,11 +13,11 @@
 ##############################################################################
 
 import gocept.httpserverlayer.plonetestingzope
-import gocept.selenium.seleniumrc
+import gocept.selenium.webdriver
 import unittest
 
 
-class Layer(gocept.selenium.seleniumrc.IntegrationBase,
+class Layer(gocept.selenium.webdriver.IntegrationBase,
             gocept.httpserverlayer.plonetestingzope.Layer):
     pass
 
@@ -25,10 +25,11 @@ class Layer(gocept.selenium.seleniumrc.IntegrationBase,
 SELENIUM = Layer()
 
 
-class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
-    """NOTE: MRO requires gocept.selenium.seleniumrc.TestCase to come first,
-    otherwise its setUp/tearDown is never called, since unittest.TestCase
-    does not call super().
+class TestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
+               unittest.TestCase):
+    """NOTE: MRO requires gocept.selenium.webdriver.WebdriverSeleneseTestCase
+    to come first, otherwise its setUp/tearDown is never called,
+    since unittest.TestCase does not call super().
     """
 
     @property

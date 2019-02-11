@@ -2,10 +2,14 @@ Changelog
 =========
 
 
-4.1 (unreleased)
+5.0 (unreleased)
 ----------------
 
+- Remove support for Selenium 1, in particular ``RCTestCase`` and ``RCLayer``.
+
 - Fix more deprecation warnings.
+
+- Selenese_pattern_equals in wd_selenese.py now returns a bool.
 
 
 4.0 (2018-11-09)
