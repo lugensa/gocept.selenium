@@ -13,11 +13,11 @@
 ##############################################################################
 
 import gocept.httpserverlayer.static
-import gocept.selenium.seleniumrc
+import gocept.selenium.webdriver
 import unittest
 
 
-class StaticFilesLayer(gocept.selenium.seleniumrc.IntegrationBase,
+class StaticFilesLayer(gocept.selenium.webdriver.IntegrationBase,
                        gocept.httpserverlayer.static.Layer):
 
     def __init__(self):
@@ -28,7 +28,8 @@ class StaticFilesLayer(gocept.selenium.seleniumrc.IntegrationBase,
 static_files_layer = StaticFilesLayer()
 
 
-class TestCase(gocept.selenium.seleniumrc.TestCase, unittest.TestCase):
+class TestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
+               unittest.TestCase):
 
     layer = static_files_layer
 

@@ -15,19 +15,20 @@
 from gocept.selenium.screenshot import ScreenshotMismatchError
 from gocept.selenium.screenshot import ScreenshotSizeMismatchError
 from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
+from gocept.selenium.wd_selenese import selenese_pattern_equals as match
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
-import gocept.selenium.tests.test_selenese
 import gocept.testing.assertion
 import mock
 import os.path
 import pkg_resources
 import shutil
 import stat
+import time
 import unittest
 
 
@@ -99,7 +100,118 @@ class HTMLTestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
                 os.path.join(directory, name), self.layer['documentroot'])
 
 
-class AssertionTest(gocept.selenium.tests.test_selenese.AssertionTests,
+class AssertionTests(gocept.testing.assertion.String,
+                     gocept.testing.assertion.Exceptions):
+
+    def test_wait_for(self):
+        self.selenium.open('/display-delay.html')
+        self.selenium.assertElementNotPresent('css=div')
+        self.selenium.waitForElementPresent('css=div')
+
+    def test_wait_for_timeout(self):
+        self.selenium.open('/display-delay.html')
+        self.selenium.assertElementNotPresent('css=div')
+        try:
+            self.selenium.setTimeout(10)
+            self.selenium.waitForElementPresent('css=div')
+        except AssertionError:
+            pass
+        else:
+            self.fail('Timeout did not raise')
+
+    def test_assert_element_present_failure(self):
+        self.selenium.open('/display-delay.html')
+        try:
+            self.selenium.assertElementNotPresent('css=body')
+        except AssertionError:
+            pass
+        else:
+            self.fail('assertion should have failed')
+
+    def test_pause(self):
+        start = time.time()
+        self.selenium.pause(3000)
+        if time.time() - start < 1:
+            self.fail('Pause did not pause long enough')
+        if time.time() - start > 10:
+            self.fail('Pause did pause too long')
+
+    def test_deleteCookie_smoke(self):
+        with self.assertNothingRaised():
+            # Smoke test: just check that we don't break
+            self.selenium.deleteCookie('foo', '/')
+
+    def test_selectFrame_frame_doesnt_exist(self):
+        self.assertRaises(Exception, self.selenium.selectFrame, 'foo')
+
+    def test_waitForCondition_timeout(self):
+        self.selenium.setTimeout(100)
+        self.assertRaises(
+            AssertionError, self.selenium.waitForCondition, 'false')
+
+    def test_fireEvent_smoke(self):
+        self.selenium.fireEvent('css=body', 'click')
+
+    def test_location(self):
+        self.selenium.open('/')
+        self.assertEquals(
+            'http://%s/' % self.layer['http_address'],
+            self.selenium.getLocation())
+
+    def test_alert_not_present(self):
+        self.selenium.open('/')
+        self.selenium.verifyAlertNotPresent()
+
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
+    def test_alert_present(self):
+        self.selenium.open('/alert.html')
+        time.sleep(3.1)
+        self.selenium.verifyAlertPresent()
+        self.selenium.getAlert()
+
+    @gocept.selenium.skipUnlessBrowser('Firefox', '>=16.0')
+    def test_wait_for_alert(self):
+        self.selenium.open('/alert.html')
+        self.selenium.verifyAlertNotPresent()
+        self.selenium.waitForAlertPresent()
+        self.selenium.getAlert()
+
+    def test_xpathcount_should_convert_to_ints(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertXpathCount("//div[@class='countable']", 3)
+        self.selenium.assertXpathCount("//div[@class='countable']", '3')
+        self.selenium.assertXpathCount("//div", 4)
+        self.selenium.assertXpathCount("//div", '4')
+
+    def test_xpathcount_raises_nice_exception_on_mismatch(self):
+        self.selenium.open('/divs.html')
+        with self.assertRaisesRegexp(
+                AssertionError,
+                "Actual count of XPath '//div' is 4, expected 3.*"):
+            self.selenium.assertXpathCount("//div", 3)
+
+    def test_csscount_should_convert_to_ints(self):
+        self.selenium.open('/divs.html')
+        self.selenium.assertCssCount("css=div", 4)
+        self.selenium.assertCssCount("css=div", '4')
+
+    def test_csscount_raises_nice_exception_on_mismatch(self):
+        self.selenium.open('/divs.html')
+        with self.assertRaisesRegexp(
+                AssertionError,
+                "Actual count of CSS 'css=div' is 4, expected 3.*"):
+            self.selenium.assertCssCount("css=div", 3)
+
+    def test_configured_timeout_is_applied_for_open(self):
+        self.selenium.setTimeout(1)
+        with self.assertRaisesRegexp(
+                # we're lucky that both SeleniumRC and Webdriver word
+                # their respective exceptions similarly.
+                Exception, 'Timed out'):
+            self.selenium.open('/divs.html')
+
+
+class AssertionTest(AssertionTests,
                     HTMLTestCase):
 
     layer = STATIC_WD_LAYER
@@ -290,3 +402,40 @@ class SelectFrameTests(HTMLTestCase):
         self.assertEqual(
             "Invalid frame selector 'relative', valid are ['name', 'index']",
             str(err.exception))
+
+
+class PatternTest(unittest.TestCase):
+    """Testing selenese_pattern_equals"""
+
+    def test_no_prefix(self):
+        self.assertIs(match('foo', 'foo'), True)
+        self.assertIs(match('foo', 'bar'), False)
+        self.assertIs(match('foo:bar', 'foo:bar'), True)
+
+    def test_exact(self):
+        self.assertIs(match('foo', 'exact:foo'), True)
+        self.assertIs(match('foo', 'exact:bar'), False)
+
+    def test_glob(self):
+        self.assertIs(match('foo', 'glob:f*'), True)
+        self.assertIs(match('foo', 'glob:fo?'), True)
+        self.assertIs(match('foo', 'glob:'), False)
+
+        self.assertIs(match('foo', 'glob:b*'), False)
+        self.assertIs(match('foo', 'glob:?ar'), False)
+
+    def test_glob_with_regex_chars_should_work(self):
+        self.assertIs(match('(foo)', 'glob:(foo)'), True)
+        self.assertIs(match('[foo]', 'glob:[foo]'), True)
+
+    def test_regex(self):
+        self.assertIs(match('foo', 'regex:^fo+$'), True)
+        self.assertIs(match('foo', 'regex:^f+$'), False)
+
+    def test_regexp(self):
+        self.assertIs(match('foo', 'regexp:^fo+$'), True)
+        self.assertIs(match('foo', 'regexp:^f+$'), False)
+
+    def test_multiline_strings(self):
+        self.assertIs(match('foo\nbar', 'glob:foo*'), True)
+        self.assertIs(match('foo\nbar', 'regex:^foo.*$'), True)

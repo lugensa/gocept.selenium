@@ -12,7 +12,6 @@
 #
 ##############################################################################
 
-from gocept.selenium.selenese import selenese_pattern_equals
 from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import NoSuchElementException
@@ -48,6 +47,57 @@ def assert_type(type):
         func.assert_type = type
         return func
     return decorate
+
+
+def match_exact(text, pattern):
+    return text == pattern
+
+
+def match_glob(text, pattern):
+    pattern = re.escape(pattern)
+    pattern = pattern.replace(r'\*', '.*')
+    pattern = pattern.replace(r'\?', '.')
+    pattern = '^%s$' % pattern
+    return match_regex(text, pattern)
+
+
+def match_regex(text, pattern):
+    return bool(re.search(pattern, text, re.DOTALL))
+
+
+match_dict = {
+    'glob': match_glob,
+    'exact': match_exact,
+    'regex': match_regex,
+    'regexp': match_regex,
+}
+
+
+def selenese_pattern_equals(text, pattern):
+    """Various Pattern syntaxes are available for matching string values:
+
+    * glob:pattern: Match a string against a "glob" (aka "wildmat") pattern.
+      "Glob" is a kind of limited regular-expression syntax typically used in
+      command-line shells. In a glob pattern, "*" represents any sequence of
+      characters, and "?" represents any single character. Glob patterns match
+      against the entire string.
+    * regexp:regexp: Match a string using a regular-expression. The full power
+      of python regular-expressions is available.
+    * exact:string: Match a string exactly, verbatim, without any of that fancy
+      wildcard stuff.
+
+      If no pattern prefix is specified, assume that it's a "glob"
+      pattern.
+    """
+    matcher = match_glob
+    if ':' in pattern:
+        prefix, remainder = pattern.split(':', 1)
+        try:
+            matcher = match_dict[prefix]
+            pattern = remainder
+        except KeyError:
+            pass
+    return matcher(text, pattern)
 
 
 @contextlib.contextmanager

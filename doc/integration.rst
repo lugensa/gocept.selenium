@@ -14,13 +14,14 @@ integration::
     from mypackage import App
 
     http_layer = gocept.httpserverlayer.wsgi.Layer(App())
-    selenium_layer = gocept.selenium.RCLayer(
+    selenium_layer = gocept.selenium.WebdriverLayer(
         name='SeleniumLayer', bases=(http_layer,))
+    selenese_layer = gocept.selenium.WebdriverSeleneseLayer(
+        name='SeleneseLayer', bases=(selenium_layer,))
 
+    class TestWSGITestCase(gocept.selenium.WebdriverSeleneseTestCase):
 
-    class TestWSGITestCase(gocept.selenium.RCTestCase):
-
-        layer = selenium_layer
+        layer = selenese_layer
 
         def test_something(self):
             self.selenium.open('http://%s/foo.html' % self.selenium.server)
@@ -48,7 +49,7 @@ This test layer takes a WSGI callable and runs it in a temporary HTTP server::
 
     test_layer = gocept.selenium.wsgi.Layer(App())
 
-    class WSGIExample(gocept.selenium.RCTestCase):
+    class WSGIExample(gocept.selenium.wsgi.TestCase):
 
         layer = test_layer
 
