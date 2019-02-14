@@ -17,6 +17,12 @@ Changelog
 
 - Selenese_pattern_equals in wd_selenese.py now returns a bool.
 
+- Add chromedriver (headless) support.
+
+- Add firefox headless support.
+
+- Add new defaults for gocept.selenium.webdriver.Layer.
+
 
 4.0 (2018-11-09)
 ----------------
