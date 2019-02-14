@@ -205,14 +205,14 @@ class AssertionTests(gocept.testing.assertion.String,
     def test_configured_timeout_is_applied_for_open(self):
         self.selenium.setTimeout(1)
         with self.assertRaisesRegexp(
-                # we're lucky that both SeleniumRC and Webdriver word
-                # their respective exceptions similarly.
-                Exception, 'Message: Timeout loading page after 1ms'):
+                # Chromium and Firefox use different messages.
+                Exception, 'Message: [T|t]imeout'):
             self.selenium.open('/divs.html')
 
 
 class AssertionTest(AssertionTests,
-                    HTMLTestCase):
+                    HTMLTestCase,
+                    gocept.testing.assertion.Ellipsis):
 
     layer = STATIC_WD_LAYER
 
@@ -241,8 +241,9 @@ class AssertionTest(AssertionTests,
         self.selenium.setTimeout(1000)
         with self.assertRaises(NoSuchElementException) as e:
             self.selenium.waitForVisible('css=.foo.bar')
-        self.assertIn(
-            'Timed out after 1.0 s. Unable to locate element', e.exception.msg)
+        self.assertEllipsis(
+            'Timed out after 1.0 s. ...Unable to locate element...',
+            e.exception.msg)
 
     def test_wd_selense__Selense__selectParentFrame__1(self):
         """It does nothing if there is no parent frame."""
