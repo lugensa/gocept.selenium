@@ -87,8 +87,6 @@ class Layer(plonetesting.Layer):
         if self._browser == 'chrome':
             options = selenium.webdriver.ChromeOptions()
             options.add_argument('--disable-dev-shm-usage')
-            # chromium needs this option to run as root.
-            options.add_argument('--no-sandbox')
 
             if self.headless:
                 options.add_argument('--headless')
