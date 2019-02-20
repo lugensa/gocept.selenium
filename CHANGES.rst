@@ -7,6 +7,8 @@ Changelog
 
 - Add support for Python 3.6 and 3.7.
 
+- Remove bootstrap.py, add requirements.txt.
+
 - Selenium updated to version 3.
 
 - Remove support for Selenium 1, in particular ``RCTestCase`` and ``RCLayer``.
