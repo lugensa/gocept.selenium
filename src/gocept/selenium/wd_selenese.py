@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from __future__ import print_function
 from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import NoSuchElementException
@@ -27,7 +28,8 @@ import json
 import re
 import selenium.common.exceptions
 import time
-import urlparse
+import six.moves.urllib.parse
+from six.moves import map
 
 
 LOCATOR_JS = 'javascript'
@@ -166,7 +168,8 @@ class Selenese(object):
         self.selenium.switch_to.window(windowID)
 
     def open(self, url):
-        self.selenium.get(urlparse.urljoin('http://' + self.server, url))
+        self.selenium.get(
+            six.moves.urllib.parse.urljoin('http://' + self.server, url))
 
     def altKeyDown(self):
         ActionChains(self.selenium).key_down(Keys.ALT).perform()
@@ -189,7 +192,7 @@ class Selenese(object):
         self.selenium.close()
 
     def createCookie(self, nameAndValue, options):
-        options = urlparse.parse_qs(options)
+        options = six.moves.urllib.parse.parse_qs(options)
         options['name'], options['value'] = nameAndValue.split('=', 1)
         self.selenium.add_cookie(options)
 
@@ -229,7 +232,7 @@ class Selenese(object):
             try:
                 self._find(locator).click()
             except (StaleElementReferenceException,
-                    NoSuchElementException), e:
+                    NoSuchElementException) as e:
                 exc = e
                 time.sleep(0.1)
             else:
@@ -442,7 +445,7 @@ class Selenese(object):
                 return ('A screenshot could not be saved because document '
                         'body is empty.')
             if PRINT_JUNIT_ATTACHMENTS:
-                print '\n' + junit_attach_line(path, 'screenshot')
+                print('\n' + junit_attach_line(path, 'screenshot'))
             return 'A screenshot has been saved, see: %s' % path
 
     def clear(self, locator):
@@ -881,15 +884,15 @@ class Selenese(object):
             try:
                 with no_screenshot(self):
                     assertion(*args, **kw)
-            except self.failureExceptionClass, e:
+            except self.failureExceptionClass as e:
                 if time.time() - start > self.timeout:
                     raise self.failureException(
                         'Timed out after %s s. %s' % (self.timeout, e.args[0]))
-            except StaleElementReferenceException, e:
+            except StaleElementReferenceException as e:
                 if time.time() - start > self.timeout:
                     raise StaleElementReferenceException(
                         'Timed out after %s s. %s' % (self.timeout, e.msg))
-            except NoSuchElementException, e:
+            except NoSuchElementException as e:
                 if time.time() - start > self.timeout:
                     raise NoSuchElementException(
                         'Timed out after %s s. %s' % (self.timeout, e.msg))
@@ -900,7 +903,7 @@ class Selenese(object):
     def _call_repr(self, name, *args, **kw):
         return '%s(%s)' % (
             name,
-            ', '.join(map(repr, args) +
+            ', '.join(list(map(repr, args)) +
                       ['%s=%r' % item for item in sorted(kw.items())]))
 
 
