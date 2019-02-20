@@ -5,6 +5,8 @@ Changelog
 5.0 (unreleased)
 ----------------
 
+- Add support for Python 3.6 and 3.7.
+
 - Selenium updated to version 3.
 
 - Remove support for Selenium 1, in particular ``RCTestCase`` and ``RCLayer``.

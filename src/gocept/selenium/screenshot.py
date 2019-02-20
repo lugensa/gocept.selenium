@@ -1,3 +1,4 @@
+from __future__ import print_function
 from PIL import Image, ImageChops
 import inspect
 import itertools
@@ -5,6 +6,8 @@ import math
 import os
 import pkg_resources
 import tempfile
+from six.moves import zip
+from io import open
 
 
 SHOW_DIFF_IMG = os.environ.get('SHOW_DIFF_IMG', False)
@@ -31,7 +34,7 @@ class DiffComposition(object):
         self.paste_screenshots()
         tmpfile, compo_path = tempfile.mkstemp(
             prefix='gocept_selenium_diff', suffix='.png')
-        with open(compo_path, 'rw') as compo_file:
+        with open(compo_path, 'r+b') as compo_file:
             self.path = compo_file.name
             self.compo.convert('RGB').save(self.path)
             if SHOW_DIFF_IMG:
@@ -107,7 +110,7 @@ class ImageDiff(object):
         a_values = itertools.chain(*self.image_a.getdata())
         b_values = itertools.chain(*self.image_b.getdata())
         rmsd = 0
-        for a, b in itertools.izip(a_values, b_values):
+        for a, b in zip(a_values, b_values):
             rmsd += (a - b) ** 2
         rmsd = math.sqrt(float(rmsd) / (
             self.image_a.size[0] * self.image_a.size[1] * len(
@@ -142,10 +145,10 @@ class ScreenshotMismatchError(ValueError):
                                self.got, self.compo)
 
     def _print_junit_attachments(self):
-        print ('\n' +
+        print(('\n' +
                junit_attach_line(self.expected, 'expected') +
                junit_attach_line(self.got, 'actual') +
-               junit_attach_line(self.compo, 'diff'))
+               junit_attach_line(self.compo, 'diff')))
 
 
 class ScreenshotSizeMismatchError(ValueError):
@@ -169,9 +172,9 @@ class ScreenshotSizeMismatchError(ValueError):
                                self.expected, self.got)
 
     def _print_junit_attachments(self):
-        print ('\n' +
+        print(('\n' +
                junit_attach_line(self.expected, 'expected') +
-               junit_attach_line(self.got, 'actual'))
+               junit_attach_line(self.got, 'actual')))
 
 
 class ZeroDimensionError(ValueError):
@@ -207,7 +210,7 @@ def make_screenshot(selenese, locator):
     if 0 in (dimensions['width'], dimensions['height']):
         raise ZeroDimensionError(locator)
 
-    with open(path, 'rw') as screenshot:
+    with open(path, 'r+b') as screenshot:
         box = (dimensions['left'], dimensions['top'],
                dimensions['left'] + dimensions['width'],
                dimensions['top'] + dimensions['height'])
@@ -226,7 +229,7 @@ def save_screenshot_temporary(screenshot):
     the filename."""
     tmpfile, got_path = tempfile.mkstemp(
         prefix='gocept_selenium_screenshot', suffix='.png')
-    with open(got_path, 'rw') as got:
+    with open(got_path, 'r+b') as got:
         screenshot.save(got.name)
     os.close(tmpfile)
     os.chmod(got_path, 0o644)
