@@ -36,16 +36,14 @@ class LayerTest(unittest.TestCase):
             os.environ.clear()
             os.environ.update(_environ)
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'chrome',
+        reason='This configuration raises not implemented')
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_SELENIUM_HEADLESS').lower() == 'true',
+        reason='Headless tests don\'t support this part. See test_chrome_head')
     def test_wrong_headless_warning(self):
         _environ = dict(os.environ)
-
-        if os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'chrome':
-            pytest.skip('This configuration raises not implemented')
-
-        if os.environ.get('GOCEPT_SELENIUM_HEADLESS').lower() == 'true':
-            pytest.skip('Headless tests don\'t support this part. \
-                See test_chrome_head')
-
         try:
             os.environ['GOCEPT_SELENIUM_HEADLESS'] = 'fasdfasdf'
             with pytest.warns(UserWarning) as warning:
