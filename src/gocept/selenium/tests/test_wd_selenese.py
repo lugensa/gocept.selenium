@@ -84,7 +84,7 @@ class SplitOptionLocatorTest(unittest.TestCase):
 STATIC_WD_LAYER = gocept.selenium.WebdriverLayer(
     name='StaticFilesLayer',
     bases=(gocept.httpserverlayer.static.STATIC_FILES,))
-STATIC_WD_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
+STATIC_WD_SELENESE_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
     name='WebdriverStaticFilesLayer', bases=(STATIC_WD_LAYER,))
 
 
@@ -214,7 +214,7 @@ class AssertionTest(AssertionTests,
                     HTMLTestCase,
                     gocept.testing.assertion.Ellipsis):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_fireEvent_smoke(self):
         pass  # does not exist in Webdriver
@@ -253,7 +253,7 @@ class AssertionTest(AssertionTests,
 class ScreenshotAssertionTest(HTMLTestCase,
                               gocept.testing.assertion.String):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def setUp(self):
         super(ScreenshotAssertionTest, self).setUp()
@@ -339,7 +339,7 @@ class ScreenshotAssertionTest(HTMLTestCase,
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_default_setting_when_not_set(self):
         # the default is the directory where the current test is
@@ -366,7 +366,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
 class SelectFrameTests(HTMLTestCase):
     """Testing selectFrame and selectParentFrame."""
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_wd_selense__Selenese__selectFrame__1(self):
         """It selects a frame by name."""
