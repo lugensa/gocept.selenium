@@ -15,13 +15,14 @@ Changelog
 
 - Remove support for Selenium 2.
 
-- Remove support for a remote selenium server. Gocept.selenium now uses the local implementation, starting its own browser.
+- Remove support for a remote selenium server. `gocept.selenium` now uses the
+  local implementation, starting its own browser.
 
 - Fix more deprecation warnings.
 
 - Selenese_pattern_equals in wd_selenese.py now returns a bool.
 
-- Add chromedriver (headless) support.
+- Add experimental support for chromedriver in headless mode only.
 
 - Add firefox headless support.
 
