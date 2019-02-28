@@ -36,6 +36,23 @@ class LayerTest(unittest.TestCase):
             os.environ.clear()
             os.environ.update(_environ)
 
+    def test_wrong_browser_warning_2(self):
+        """It raises a warning if no environment variable was set."""
+        _environ = dict(os.environ)
+
+        try:
+            del os.environ['GOCEPT_WEBDRIVER_BROWSER']
+            with pytest.warns(UserWarning) as warning:
+                layer = gocept.selenium.webdriver.Layer()
+                layer['http_address'] = 'localhost:34234'
+                layer.setUp()
+            assert 'GOCEPT_WEBDRIVER_BROWSER invalid.' in str(
+                warning[0].message)
+        finally:
+            layer.tearDown()
+            os.environ.clear()
+            os.environ.update(_environ)
+
     @pytest.mark.skipif(
         os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'chrome',
         reason='This configuration raises not implemented')
@@ -46,6 +63,29 @@ class LayerTest(unittest.TestCase):
         _environ = dict(os.environ)
         try:
             os.environ['GOCEPT_SELENIUM_HEADLESS'] = 'fasdfasdf'
+            with pytest.warns(UserWarning) as warning:
+                layer = gocept.selenium.webdriver.Layer()
+                layer['http_address'] = 'localhost:34234'
+                layer.setUp()
+
+            assert 'GOCEPT_SELENIUM_HEADLESS invalid.' in str(
+                warning[0].message)
+        finally:
+            layer.tearDown()
+            os.environ.clear()
+            os.environ.update(_environ)
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'chrome',
+        reason='This configuration raises not implemented')
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_SELENIUM_HEADLESS').lower() == 'true',
+        reason='Headless tests don\'t support this part. See test_chrome_head')
+    def test_wrong_headless_warning_2(self):
+        """It raises a warning if no environment variable was set."""
+        _environ = dict(os.environ)
+        try:
+            del os.environ['GOCEPT_SELENIUM_HEADLESS']
             with pytest.warns(UserWarning) as warning:
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
