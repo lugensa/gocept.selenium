@@ -45,6 +45,7 @@ class Layer(plonetesting.Layer):
                           Possible Values are true and false. Got: %s.\
                           Falling back to default (false).' %
                           os.environ.get('GOCEPT_SELENIUM_HEADLESS'))
+            headless = 'false'
 
         if headless.lower() == 'true':
             self.headless = True
@@ -54,6 +55,7 @@ class Layer(plonetesting.Layer):
                           Possible Values are firefox and chrome. Got: %s.\
                           Falling back to firefox.' %
                           os.environ.get('GOCEPT_WEBDRIVER_BROWSER'))
+            browser = 'firefox'
 
         if browser.lower() == 'chrome':
             self._browser = 'chrome'
