@@ -4,7 +4,7 @@ install_requires = [
     'gocept.httpserverlayer >= 3',
     'httpagentparser',
     'plone.testing >= 7.0',
-    'selenium !=2.53.0, !=2.53.1, !=2.53.2, <3.0',
+    'selenium >= 3.141.0',
     'Pillow',
     'setuptools']
 
@@ -39,7 +39,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 2 :: Only',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Zope',

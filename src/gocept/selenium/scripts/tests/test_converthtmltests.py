@@ -1,9 +1,9 @@
+from io import StringIO
 import unittest
 import mock
 import tempfile
 import os
 import sys
-import StringIO
 
 PLONE3LOGIN_METHOD = '''\
     def test_plone3login(self):
@@ -221,7 +221,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         target = tempfile.mktemp()
 
-        output = StringIO.StringIO()
+        output = StringIO()
 
         sys.stdout = output
         try:
@@ -248,7 +248,7 @@ class TestConversion(unittest.TestCase):
         tests_dir = os.path.dirname(gocept.selenium.scripts.__file__)
         target = tempfile.mktemp()
 
-        output = StringIO.StringIO()
+        output = StringIO()
 
         sys.stdout = output
         try:

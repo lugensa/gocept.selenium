@@ -3,34 +3,15 @@
 Convert HTML selenium tests to gocept.selenium.seleniumrcd test cases.
 """
 
+from __future__ import print_function
 import re
 import os
 import glob
 from string import Template
 from optparse import OptionParser
-try:
-    from xml.etree import ElementTree as HTMLTreeBuilder
-    from xml.etree.ElementTree import QName
-except ImportError:
-    # Python < 2.5
-    from elementtree import HTMLTreeBuilder
-
-    class QName(object):
-        def __init__(self, text_or_uri, tag=None):
-            if tag:
-                text_or_uri = "{%s}%s" % (text_or_uri, tag)
-            self.text = text_or_uri
-
-        def __str__(self):
-            return self.text
-
-        def __hash__(self):
-            return hash(self.text)
-
-        def __cmp__(self, other):
-            if isinstance(other, QName):
-                return cmp(self.text, other.text)
-            return cmp(self.text, other)
+from io import open
+from xml.etree import ElementTree as HTMLTreeBuilder
+from xml.etree.ElementTree import QName
 
 
 module_template = Template('''\
@@ -129,7 +110,7 @@ def parse_directory(directory, verbose):
     prev_encoding = encoding = None
     for filename in glob.glob(pattern):
         if verbose:
-            print "Parsing [%s]" % filename
+            print(u"Parsing [%s]" % filename)
         filename = os.path.abspath(filename)
         testname, commands, encoding = parse_file(filename)
         if encoding and prev_encoding is None:
@@ -193,10 +174,10 @@ def main(args=None):
         encoding = 'utf-8'
 
     if len(methods) == 0:
-        print "No file was generated !"
+        print(u"No file was generated !")
         return
     if options.verbose:
-        print "Generating [%s]" % target
+        print(u"Generating [%s]" % target)
     f = open(target, 'wb')
     module = make_module(methods, layer, layer_module, encoding)
     module = module.encode(encoding)

@@ -5,11 +5,28 @@ Changelog
 5.0 (unreleased)
 ----------------
 
+- Add support for Python 3.6 and 3.7.
+
+- Remove bootstrap.py, add requirements.txt.
+
+- Selenium updated to version 3.
+
 - Remove support for Selenium 1, in particular ``RCTestCase`` and ``RCLayer``.
+
+- Remove support for Selenium 2.
+
+- Remove support for a remote selenium server. `gocept.selenium` now uses the
+  local implementation, starting its own browser.
 
 - Fix more deprecation warnings.
 
 - Selenese_pattern_equals in wd_selenese.py now returns a bool.
+
+- Add experimental support for chromedriver in headless mode only.
+
+- Add firefox headless support.
+
+- Add new defaults for gocept.selenium.webdriver.Layer.
 
 
 4.0 (2018-11-09)

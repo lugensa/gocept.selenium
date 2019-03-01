@@ -56,10 +56,9 @@ class IsolationTests(object):
         # so we cheat and force the opening of another connection by claiming
         # one here.
         db = self.getDatabase()
-        conn = db.open()
+        db.pool.clear()
         self.selenium.open(
             'http://%s/inc-volatile.html' % self.selenium.server)
-        conn.close()
         self.selenium.assertBodyText('1')
 
     def test_requests_get_different_zodb_connection_than_tests(self):
