@@ -212,6 +212,8 @@ class Selenese(object):
         if movement is not None:
             x, y = movement.split(',')
             action.move_by_offset(int(float(x)), int(float(y)))
+        else:
+            action.move_to_element(self._find(locatorDestination))
         action.release(self._find(locatorDestination))
         action.perform()
 
