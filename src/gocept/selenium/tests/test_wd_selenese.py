@@ -84,7 +84,7 @@ class SplitOptionLocatorTest(unittest.TestCase):
 STATIC_WD_LAYER = gocept.selenium.WebdriverLayer(
     name='StaticFilesLayer',
     bases=(gocept.httpserverlayer.static.STATIC_FILES,))
-STATIC_WD_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
+STATIC_WD_SELENESE_LAYER = gocept.selenium.webdriver.WebdriverSeleneseLayer(
     name='WebdriverStaticFilesLayer', bases=(STATIC_WD_LAYER,))
 
 
@@ -205,16 +205,16 @@ class AssertionTests(gocept.testing.assertion.String,
     def test_configured_timeout_is_applied_for_open(self):
         self.selenium.setTimeout(1)
         with self.assertRaisesRegexp(
-                # we're lucky that both SeleniumRC and Webdriver word
-                # their respective exceptions similarly.
-                Exception, 'Timed out'):
+                # Chromium and Firefox use different messages.
+                Exception, 'Message: [T|t]imeout'):
             self.selenium.open('/divs.html')
 
 
 class AssertionTest(AssertionTests,
-                    HTMLTestCase):
+                    HTMLTestCase,
+                    gocept.testing.assertion.Ellipsis):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_fireEvent_smoke(self):
         pass  # does not exist in Webdriver
@@ -241,8 +241,9 @@ class AssertionTest(AssertionTests,
         self.selenium.setTimeout(1000)
         with self.assertRaises(NoSuchElementException) as e:
             self.selenium.waitForVisible('css=.foo.bar')
-        self.assertIn(
-            'Timed out after 1.0 s. Unable to locate element', e.exception.msg)
+        self.assertEllipsis(
+            'Timed out after 1.0 s. ...Unable to locate element...',
+            e.exception.msg)
 
     def test_wd_selense__Selense__selectParentFrame__1(self):
         """It does nothing if there is no parent frame."""
@@ -252,7 +253,7 @@ class AssertionTest(AssertionTests,
 class ScreenshotAssertionTest(HTMLTestCase,
                               gocept.testing.assertion.String):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def setUp(self):
         super(ScreenshotAssertionTest, self).setUp()
@@ -338,7 +339,7 @@ class ScreenshotAssertionTest(HTMLTestCase,
 
 class ScreenshotDirectorySettingTest(HTMLTestCase):
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_default_setting_when_not_set(self):
         # the default is the directory where the current test is
@@ -365,7 +366,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
 class SelectFrameTests(HTMLTestCase):
     """Testing selectFrame and selectParentFrame."""
 
-    layer = STATIC_WD_LAYER
+    layer = STATIC_WD_SELENESE_LAYER
 
     def test_wd_selense__Selenese__selectFrame__1(self):
         """It selects a frame by name."""

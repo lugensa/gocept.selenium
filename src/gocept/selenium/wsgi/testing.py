@@ -19,12 +19,12 @@ class SimpleApp(object):
         path = environ['PATH_INFO']
 
         statuscode = '404 Not Found'
-        body = 'Not Found'
+        body = [b'Not Found']
         headers = []
         if path == '/':
             statuscode = '200 OK'
             headers.append(('Content-Type', 'text/html'))
-            body = '''
+            body = [b'''
               <html>
               <head>
                 <script src="colors.js"></script>
@@ -32,15 +32,15 @@ class SimpleApp(object):
               <body>
                 <p id="foo">Testing...</p>
               </body>
-              </html>'''
+              </html>''']
         elif path == '/colors.js':
             statuscode = '200 OK'
             headers.append(('Content-Type', 'text/javascript'))
-            body = '''\
+            body = [b'''
 var hello = function hello () {
     document.getElementById('foo').innerHTML = 'Hello from javascript';
 };
-window.onload = hello;'''
+window.onload = hello;''']
         start_response(statuscode, headers)
         return body
 
