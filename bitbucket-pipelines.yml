@@ -7,8 +7,24 @@ image: gocept/pipelines-selenium:latest
 
 pipelines:
   default:
-    - step:
-        caches:
-          - pip
-        script: # Modify the commands below to build your repository.
-          - tox
+    caches:
+      - pip
+    parallel:
+      - step:
+          script:  # Python 2.7 using Firefox
+            - tox -epy27-wsgi-ff-headless,py27-wsgi-ff-head,py27-plonetesting-ff-headless,py27-plonetesting-ff-head,py27-grok-ff-headless,py27-grok-ff-head
+      - step:
+          script:  # Python 3.6 using Firefox
+            - tox -epy36-wsgi-ff-headless,py36-wsgi-ff-head,py36-plonetesting-ff-headless,py36-plonetesting-ff-head,py36-grok-ff-headless,py36-grok-ff-head
+      - step:
+          script:  # Python 3.7 using Firefox
+            - tox -epy37-wsgi-ff-headless,py37-wsgi-ff-head,py37-plonetesting-ff-headless,py37-plonetesting-ff-head,py37-grok-ff-headless,py37-grok-ff-head
+      - step:
+          script:  # Python 2.7 using Chrome
+            - tox -epy27-wsgi-chrome-headless,py27-plonetesting-chrome-headless,py27-grok-chrome-headles
+      - step:
+          script:  # Python 3.6 using Chrome
+            - tox -epy36-wsgi-chrome-headless,py36-plonetesting-chrome-headless,py36-grok-chrome-headless
+      - step:
+          script:  # Python 3.7 using Chrome
+            - tox -epy37-wsgi-chrome-headless,py37-plonetesting-chrome-headless,py37-grok-chrome-headles
