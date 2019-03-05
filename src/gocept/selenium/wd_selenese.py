@@ -104,6 +104,7 @@ def selenese_pattern_equals(text, pattern):
             pass
     return matcher(text, pattern)
 
+
 @contextlib.contextmanager
 def no_screenshot(selense):
     """Temporarly disable screenshoting exception."""
