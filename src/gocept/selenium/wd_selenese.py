@@ -17,7 +17,6 @@ from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
