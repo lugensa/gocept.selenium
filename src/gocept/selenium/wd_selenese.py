@@ -17,12 +17,15 @@ from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import contextlib
 import json
 import re
@@ -100,7 +103,6 @@ def selenese_pattern_equals(text, pattern):
         except KeyError:
             pass
     return matcher(text, pattern)
-
 
 @contextlib.contextmanager
 def no_screenshot(selense):
@@ -232,7 +234,7 @@ class Selenese(object):
         start = time.time()
         while time.time() - start < self.timeout:
             try:
-                self._find(locator).click()
+                self._find(locator, True).click()
             except (StaleElementReferenceException,
                     NoSuchElementException) as e:
                 exc = e
@@ -268,7 +270,8 @@ class Selenese(object):
         ActionChains(self.selenium).key_up(Keys.CONTROL).perform()
 
     def doubleClick(self, locator):
-        ActionChains(self.selenium).double_click(self._find(locator)).perform()
+        ActionChains(self.selenium).double_click(
+            self._find(locator, True)).perform()
 
     def doubleClickAt(self, locator, coordString):
         x, y = coordString.split(',')
@@ -413,12 +416,12 @@ class Selenese(object):
     def shiftKeyUp(self):
         ActionChains(self.selenium).key_up(Keys.SHIFT).perform()
 
-    def type(self, locator, value):
-        element = self._find(locator)
-        element.send_keys(value)
+    def type(self, locator, *values):
+        element = self._find(locator, True)
+        element.send_keys(*values)
 
     def typeKeys(self, locator, value):
-        element = self._find(locator)
+        element = self._find(locator, True)
         element.send_keys(value)
 
     def runScript(self, script):
@@ -749,7 +752,14 @@ class Selenese(object):
                    "screenshot" extra to use assertScreenshot.""")
         assertScreenshot(self, name, locator, threshold)
 
-    def _find(self, locator):
+    def _get_find_object(self, by, value, wait=False):
+        if wait:
+            return WebDriverWait(self.selenium, 5).until(
+                EC.presence_of_element_located((by, value)))
+        else:
+            return self.selenium.find_element(by, value)
+
+    def _find(self, locator, wait=False):
         by, value = split_locator(locator)
         if by == LOCATOR_JS:
             result = self.selenium.execute_script(u'return %s' % value)
@@ -763,11 +773,11 @@ class Selenese(object):
                 raise NoSuchElementException()
             return result
         elif by:
-            return self.selenium.find_element(by, value)
+            return self._get_find_object(by, value, wait)
         try:
-            return self.selenium.find_element(By.ID, locator)
+            return self._get_find_object(By.ID, locator, wait)
         except NoSuchElementException:
-            return self.selenium.find_element(By.NAME, locator)
+            return self._get_find_object(By.NAME, locator, wait)
 
     def __getattr__(self, name):
         requested_name = name
