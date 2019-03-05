@@ -1,5 +1,6 @@
 exclude .installed.cfg
 exclude doc/_build
+exclude bitbucket-pipelines.yml
 include *.cfg
 include *.py
 include *.rst
@@ -12,3 +13,5 @@ include tox.ini
 recursive-exclude doc/_build *
 recursive-include doc *.rst *.py *.png *.html *.conf *.css_t
 recursive-include src *.txt *.zcml *.html *.png
+recursive-include src *.json
+recursive-include src *.parentlock
