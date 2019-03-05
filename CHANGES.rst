@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-5.0 (unreleased)
-----------------
+5.0a1 (2019-03-05)
+------------------
 
 Backwards incompatible changes
 ++++++++++++++++++++++++++++++
