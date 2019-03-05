@@ -16,7 +16,7 @@ pipelines:
       - step:
           name: Py27-FF-head
           script:
-            - tox -py27-wsgi-ff-head,py27-plonetesting-ff-head,py27-grok-ff-head
+            - tox -epy27-wsgi-ff-head,py27-plonetesting-ff-head,py27-grok-ff-head
       - step:
           name: Py27-FF-headless
           script:
@@ -24,7 +24,7 @@ pipelines:
       - step:
           name: Py36-FF-head
           script:
-            - tox -py36-wsgi-ff-head,py36-plonetesting-ff-head,py36-grok-ff-head
+            - tox -epy36-wsgi-ff-head,py36-plonetesting-ff-head,py36-grok-ff-head
       - step:
           name: Py36-FF-headless
           script:
@@ -32,7 +32,7 @@ pipelines:
       - step:
           name: Py37-FF-head
           script:
-            - tox -py37-wsgi-ff-head,py37-plonetesting-ff-head,py37-grok-ff-head
+            - tox -epy37-wsgi-ff-head,py37-plonetesting-ff-head,py37-grok-ff-head
       - step:
           name: Py37-FF-headless
           script:
