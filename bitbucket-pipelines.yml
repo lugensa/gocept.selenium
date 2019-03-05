@@ -14,26 +14,26 @@ pipelines:
           - tox -epy37-wsgi-ff-headless
     - parallel:
       - step:
-          name: Py27-FF
+          name: Py27-FF-head
           script:
-            - tox -epy27-wsgi-ff-headless,py27-wsgi-ff-head,py27-plonetesting-ff-headless,py27-plonetesting-ff-head,py27-grok-ff-headless,py27-grok-ff-head
+            - tox -py27-wsgi-ff-head,py27-plonetesting-ff-head,py27-grok-ff-head
       - step:
-          name: Py36-FF
+          name: Py27-FF-headless
           script:
-            - tox -epy36-wsgi-ff-headless,py36-wsgi-ff-head,py36-plonetesting-ff-headless,py36-plonetesting-ff-head,py36-grok-ff-headless,py36-grok-ff-head
+            - tox -epy27-wsgi-ff-headless,py27-plonetesting-ff-headless,py27-grok-ff-headless
       - step:
-          name: Py37-FF
+          name: Py36-FF-head
           script:
-            - tox -epy37-wsgi-ff-headless,py37-wsgi-ff-head,py37-plonetesting-ff-headless,py37-plonetesting-ff-head,py37-grok-ff-headless,py37-grok-ff-head
+            - tox -py36-wsgi-ff-head,py36-plonetesting-ff-head,py36-grok-ff-head
       - step:
-          name: Py27-Chrome
+          name: Py36-FF-headless
           script:
-            - tox -epy27-wsgi-chrome-headless,py27-plonetesting-chrome-headless,py27-grok-chrome-headles
+            - tox -epy36-wsgi-ff-headless,py36-plonetesting-ff-headless,py36-grok-ff-headless
       - step:
-          name: Py36-Chrome
+          name: Py37-FF-head
           script:
-            - tox -epy36-wsgi-chrome-headless,py36-plonetesting-chrome-headless,py36-grok-chrome-headless
+            - tox -py37-wsgi-ff-head,py37-plonetesting-ff-head,py37-grok-ff-head
       - step:
-          name: Py37-Chrome
+          name: Py37-FF-headless
           script:
-            - tox -epy37-wsgi-chrome-headless,py37-plonetesting-chrome-headless,py37-grok-chrome-headles
+            - tox -epy37-wsgi-ff-headless,py37-plonetesting-ff-headless,py37-grok-ff-headless
