@@ -188,7 +188,7 @@ class ZeroDimensionError(ValueError):
 
 def make_screenshot(selenese, locator):
     tmpfile, path = tempfile.mkstemp(
-        prefix='gocept_selenium_screenshot')
+        prefix='gocept_selenium_screenshot', suffix='.png')
     selenese.captureScreenshot(path)
     os.close(tmpfile)
 
