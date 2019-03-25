@@ -5,7 +5,8 @@ Changelog
 5.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix `UserWarning` in `selenium >= 3`, that screenshot name should end with
+  `.png`.
 
 
 5.0a1 (2019-03-05)
