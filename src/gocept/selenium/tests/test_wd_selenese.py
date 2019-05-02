@@ -154,7 +154,7 @@ class AssertionTests(gocept.testing.assertion.String,
 
     def test_location(self):
         self.selenium.open('/')
-        self.assertEquals(
+        self.assertEqual(
             'http://%s/' % self.layer['http_address'],
             self.selenium.getLocation())
 

@@ -30,8 +30,8 @@ class IsolationTests(object):
 
     def test_1_get(self):
         global ENSURE_ORDER
-        self.assertEquals(ENSURE_ORDER, True,
-                          'Set test was not run before get test')
+        self.assertEqual(ENSURE_ORDER, True,
+                         'Set test was not run before get test')
         self.selenium.open('http://%s/get.html' % self.selenium.server)
         self.selenium.assertNotBodyText('1')
         ENSURE_ORDER = False

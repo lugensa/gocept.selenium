@@ -36,4 +36,4 @@ class TestWSGILayerName(gocept.selenium.wsgi.TestCase):
     layer = gocept.selenium.wsgi.Layer(SimpleApp2())
 
     def test_layer_name(self):
-        self.assertEquals(self.layer.__name__, 'Layer.SimpleApp2')
+        self.assertEqual(self.layer.__name__, 'Layer.SimpleApp2')
