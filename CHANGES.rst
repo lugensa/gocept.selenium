@@ -400,11 +400,9 @@ internal:
 0.14 (2012-06-06)
 -----------------
 
-- API expansion: Added ``assertCssCount``. Thus requiring selenium_ >= 2.0.
+- API expansion: Added ``assertCssCount``. Thus requiring selenium >= 2.0.
 - Added Trove classifiers to package metadata.
 - Moved code to Mercurial.
-
-.. _selenium : http://pypi.python.org/pypi/selenium
 
 
 0.13.2 (2012-03-15)
