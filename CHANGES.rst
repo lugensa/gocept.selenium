@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-5.0 (unreleased)
+5.0 (2019-05-02)
 ----------------
 
 - Fix `UserWarning` in `selenium >= 3`, that screenshot name should end with
