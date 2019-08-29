@@ -11,13 +11,13 @@ Developing gocept.selenium
     https://pypi.python.org/pypi/gocept.selenium/
 
 :Issue tracker:
-    https://bitbucket.org/gocept/gocept.selenium/issues
+    https://github.com/gocept/gocept.selenium/issues
 
 :Source code:
-    https://bitbucket.org/gocept/gocept.selenium/
+    https://github.com/gocept/gocept.selenium
 
 :Current change log:
-    https://bitbucket.org/gocept/gocept.selenium/raw/tip/CHANGES.rst
+    https://raw.githubusercontent.com/gocept/gocept.selenium/master/CHANGES.rst
 
 Documentation
 -------------

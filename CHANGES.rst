@@ -7,6 +7,8 @@ Changelog
 
 - Nothing changed yet.
 
+- Migrate to Github.
+
 
 5.0 (2019-05-02)
 ----------------
