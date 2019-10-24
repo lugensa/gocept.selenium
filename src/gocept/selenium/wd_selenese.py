@@ -15,6 +15,7 @@
 from __future__ import print_function
 from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import WebDriverException
@@ -236,7 +237,8 @@ class Selenese(object):
             try:
                 self._find(locator, True).click()
             except (StaleElementReferenceException,
-                    NoSuchElementException) as e:
+                    NoSuchElementException,
+                    ElementClickInterceptedException) as e:
                 exc = e
                 time.sleep(0.1)
             else:

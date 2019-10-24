@@ -5,7 +5,7 @@ Changelog
 5.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Catch ElementClickInterceptedException when an element is clicked.
 
 - Migrate to Github.
 
