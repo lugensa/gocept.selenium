@@ -6,7 +6,7 @@ addons:
 python:
   - 2.7
 script:
-  - xvfb-run tox -e py27-wsgi-ff-head
+  - xvfb-run -a --server-args="-screen 0 1024x768x24" tox -e py27-wsgi-ff-head 2>&1
 cache:
   pip: true
   directories:
