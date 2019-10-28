@@ -11,6 +11,8 @@ python:
 install: pip install tox-travis
 script:
   - xvfb-run -a --server-args="-screen 0 1024x768x24" tox -e py27-wsgi-ff-head 2>&1 -- --reruns=0
+after_failure:
+  - cat geckodriver.log
 cache:
   pip: true
   directories:
