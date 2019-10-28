@@ -2,15 +2,15 @@ language: python
 services:
   - xvfb
 addons:
-  firefox: latest
   apt:
     packages:
+      - firefox
       - firefox-geckodriver
 python:
   - 2.7
 install: pip install tox-travis
 script:
-  - xvfb-run -a --server-args="-screen 0 1024x768x24" tox -e py27-wsgi-ff-head 2>&1
+  - xvfb-run -a --server-args="-screen 0 1024x768x24" tox -e py27-wsgi-ff-head 2>&1 -- --reruns=0
 cache:
   pip: true
   directories:
