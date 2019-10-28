@@ -79,7 +79,6 @@ class Layer(plonetesting.Layer):
     def _start_selenium(self):
         if self._browser == 'firefox':
             options = selenium.webdriver.FirefoxOptions()
-            options.log.level = 'trace'
 
             if self.headless:
                 options.add_argument('-headless')
