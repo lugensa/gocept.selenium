@@ -3,6 +3,9 @@ services:
   - xvfb
 addons:
   firefox: latest
+  apt:
+    packages:
+      - firefox-geckodriver
 python:
   - 2.7
 install: pip install tox-travis
