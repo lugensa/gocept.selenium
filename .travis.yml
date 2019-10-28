@@ -8,11 +8,11 @@ addons:
       - firefox-geckodriver
 python:
   - 2.7
+  - 3.6
+  - 3.7
 install: pip install tox-travis
 script:
-  - tox -e py27-wsgi-ff-head -- --reruns=0
-after_failure:
-  - cat geckodriver.log
+  - tox
 cache:
   pip: true
   directories:
