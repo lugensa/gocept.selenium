@@ -1,47 +1,25 @@
 language: python
+services:
+  - xvfb
+addons:
+  apt:
+    packages:
+      - firefox
+      - firefox-geckodriver
 python:
-- 2.7
-install:
-- pip install -U setuptools zc.buildout setuptools-scm
-- buildout -n
+  - 2.7
+  - 3.6
+  - 3.7
+install: pip install tox-travis coveralls
 script:
-- bin/test --cache-clear --cov-report term-missing --cov src
+  - tox
+after_success:
+    - coverage combine
+    - coveralls
 cache:
   pip: true
   directories:
   - eggs/
-pipelines:
-  default:
-  - step:
-      caches:
-      - pip
-      script:
-      - tox -epy37-wsgi-ff-headless
-  - parallel:
-    - step:
-        name: Py27-FF-head
-        script:
-        - tox -epy27-wsgi-ff-head,py27-plonetesting-ff-head,py27-grok-ff-head
-    - step:
-        name: Py27-FF-headless
-        script:
-        - tox -epy27-wsgi-ff-headless,py27-plonetesting-ff-headless,py27-grok-ff-headless
-    - step:
-        name: Py36-FF-head
-        script:
-        - tox -epy36-wsgi-ff-head,py36-plonetesting-ff-head,py36-grok-ff-head
-    - step:
-        name: Py36-FF-headless
-        script:
-        - tox -epy36-wsgi-ff-headless,py36-plonetesting-ff-headless,py36-grok-ff-headless
-    - step:
-        name: Py37-FF-head
-        script:
-        - tox -epy37-wsgi-ff-head,py37-plonetesting-ff-head,py37-grok-ff-head
-    - step:
-        name: Py37-FF-headless
-        script:
-        - tox -epy37-wsgi-ff-headless,py37-plonetesting-ff-headless,py37-grok-ff-headless
 notifications:
   webhooks:
     secure: hdgd6QpN8dONqmeUs+io/DtjlOsqPgOTRTW0jDbEE3AMuD/6GqTXJGrgXoB22nPdICy9R/tDVAkJu2N6r2F0vMrCdFLQubV/f6AKfXJxwO6NR058E4ac1MnQ3Fg97PqU+gscawKoaOyd1MIUFsKWOYYAQxlUW4cpie0kmOi8Mm3c7J1lzHd/b/JQ2hb+0OdFe6V2yiK5iYCeGZLfaCQnb0Ql2Cxs2TVxCaJ8U5IpvI41dO1A+VDZ7FQ/KLjNNzVk81Pd11MNk0KY/shoTlRR6B+k50PzzloGgsbo8cZxto4ewJ683Nxn1Ui2AvLYBpDNQslMMbjQmRSvTc/q4/1AmNErwGEWUYaCMXjFJ7hgNd/J1b6wWZhmVsDG38xb3A5PIRkw92HqGs7quea6fGCEHFwOKiomTnJC03rgOuIVnobX7p6h+7wfbBAOyZUGLFHagAfuvUiYtQMakza+qDx1cBNTGm3yZE/n2QusUI6L9E7i0MuEqT4Mx7t9qcRfTaJG/gEqJ14J36J6leNAOc/OiD2ukw58HVXXswqf4d9YHDLWFOAWItzHXmwSSNa+O3ngsTdd3EDjhS+L+dTR95/8cBb3e6a9zE+o7CCHp+BxAuSFmELziQugMjmenFLL2VL8CDC8Hv0wtM+O0FHwsj3bzKs4QiDYrxUSBzEjOMCHhVU=
