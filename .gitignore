@@ -21,6 +21,7 @@ dist/
 doc/_api
 doc/_build
 eggs
+geckodriver.log
 include
 junit-*.xml
 lib
