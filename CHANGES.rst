@@ -51,7 +51,7 @@ Other changes
 
 - Fix more deprecation warnings.
 
-- Selenese_pattern_equals in wd_selenese.py now returns a bool.
+- ``selenese_pattern_equals()`` in `wd_selenese.py` now returns a bool.
 
 
 4.0 (2018-11-09)
