@@ -17,6 +17,7 @@ from gocept.selenium.screenshot import ScreenshotSizeMismatchError
 from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
 from gocept.selenium.wd_selenese import selenese_pattern_equals as match
 from gocept.selenium.wd_selenese import split_locator, split_option_locator
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -245,7 +246,17 @@ class AssertionTest(AssertionTests,
             'Timed out after 1.0 s. ...Unable to locate element...',
             e.exception.msg)
 
-    def test_wd_selense__Selense__selectParentFrame__1(self):
+    def test_wd_selenese__Selenese__click__1(self):
+        """It waits for retries when a click is intercepted by an element."""
+        self.selenium.setTimeout(1000)
+        self.selenium.open('/intercepted.html')
+        with self.assertRaises(ElementClickInterceptedException) as e:
+            self.selenium.click('css=.intercepted')
+        self.assertEllipsis(
+            'Timed out after 1.0 s. Element ... not clickable ... obscures it',
+            e.exception.msg)
+
+    def test_wd_selenese__Selense__selectParentFrame__1(self):
         """It does nothing if there is no parent frame."""
         assert self.selenium.selectParentFrame()
 
