@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-5.1 (unreleased)
+5.1 (2019-11-14)
 ----------------
 
 - Catch ElementClickInterceptedException when an element is clicked.
