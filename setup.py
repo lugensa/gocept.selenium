@@ -16,6 +16,7 @@ setup(
     url='https://goceptselenium.readthedocs.org/',
     description=('Test-friendly Python API for Selenium and integration with '
                  'web application frameworks.'),
+    keywords='selenium zope grok plone pyramid pylons testing',
     classifiers=[
         'Development Status :: 6 - Mature',
         'Environment :: Console',
