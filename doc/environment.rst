@@ -109,7 +109,11 @@ report feature` called `Publish test attachments` to ask Jenkins to keep the
 screenshots for you.
 
 *Caution:* `zope.testrunner`_ is not usable for this behavior, you have to use
-a test runner like `py.test`_.
+a test runner like `py.test`_. Newer `py.test`_ versions require you to write
+``junit_logging = system-out`` to *pytest.ini*  so the information is written
+to the *junit.xml* file. Run `py.test`_ with the command line option
+``--junitxml=junit.xml`` to create this file. (That's what you'll normally do
+to get the test results to Jenkins.)
 
 .. _`JUnit Attachment Plugin`: https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Attachments+Plugin
 .. _`zope.testrunner` : https://pypi.python.org/pypi/zope.testrunner
