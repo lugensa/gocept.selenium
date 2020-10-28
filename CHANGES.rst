@@ -5,7 +5,7 @@ Changelog
 5.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Wait for elements the time defined as timeout instead of always 5 seconds.
 
 
 5.1 (2019-11-14)
