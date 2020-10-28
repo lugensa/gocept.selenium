@@ -756,7 +756,7 @@ class Selenese(object):
 
     def _get_find_object(self, by, value, wait=False):
         if wait:
-            return WebDriverWait(self.selenium, 5).until(
+            return WebDriverWait(self.selenium, self.timeout).until(
                 EC.presence_of_element_located((by, value)))
         else:
             return self.selenium.find_element(by, value)
