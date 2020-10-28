@@ -451,3 +451,28 @@ class PatternTest(unittest.TestCase):
     def test_multiline_strings(self):
         self.assertIs(match('foo\nbar', 'glob:foo*'), True)
         self.assertIs(match('foo\nbar', 'regex:^foo.*$'), True)
+
+
+class IsolationTest(HTMLTestCase):
+
+    layer = STATIC_WD_SELENESE_LAYER
+
+    def setUp(self):
+        super(IsolationTest, self).setUp()
+        self.selenium.open('divs.html')
+
+    def test_isolation_1(self):
+        assert None is self.selenium.selenium.execute_script(
+            "return localStorage.getItem('test-selenium');")
+        self.selenium.selenium.execute_script(
+            "localStorage.setItem('test-selenium', true);")
+        assert 'true' == self.selenium.selenium.execute_script(
+            "return localStorage.getItem('test-selenium');")
+
+    def test_isolation_2(self):
+        assert None is self.selenium.selenium.execute_script(
+            "return localStorage.getItem('test-selenium');")
+        self.selenium.selenium.execute_script(
+            "localStorage.setItem('test-selenium', true);")
+        assert 'true' == self.selenium.selenium.execute_script(
+            "return localStorage.getItem('test-selenium');")
