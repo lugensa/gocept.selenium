@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-5.2 (unreleased)
+5.2 (2020-10-28)
 ----------------
 
 - Delete localStorage on testTearDown of ``.webdriver.Layer``.
