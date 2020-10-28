@@ -23,11 +23,11 @@ Plone or Grok application.
 While the testing API could be used independently, the integration is done
 using `test layers`_, which are a feature of `zope.testrunner`_.
 
-Use `gocept.pytestlayer`_ to integrate it with `py.test`_.
+Use `gocept.pytestlayer`_ to integrate it with `pytest`_.
 
 
 .. _`Selenium`: http://seleniumhq.org/
 .. _`test layers`: http://pypi.python.org/pypi/plone.testing#layers
 .. _`zope.testrunner`: http://pypi.python.org/pypi/zope.testrunner
 .. _`gocept.pytestlayer`: https://bitbucket.org/gocept/gocept.pytestlayer
-.. _`py.test`: http://pytest.org
+.. _`pytest`: http://pytest.org
