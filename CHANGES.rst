@@ -5,7 +5,7 @@ Changelog
 5.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Delete localStorage on testTearDown of ``.webdriver.Layer``.
 
 
 5.1 (2019-11-14)
