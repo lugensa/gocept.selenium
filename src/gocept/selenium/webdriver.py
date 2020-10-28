@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from selenium.common.exceptions import JavascriptException
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import atexit
 import gocept.selenium.wd_selenese
@@ -108,6 +109,13 @@ class Layer(plonetesting.Layer):
 
         # Quit also removes the tempdir the ff profile is copied in.
         self['seleniumrc'].quit()
+
+    def testTearDown(self):
+        try:
+            self['seleniumrc'].execute_script('window.localStorage.clear()')
+        except JavascriptException:
+            # We can't do anything here, there might be no current_url
+            pass
 
 
 class WebdriverSeleneseLayer(plonetesting.Layer):

@@ -5,6 +5,8 @@ Changelog
 5.2 (unreleased)
 ----------------
 
+- Delete localStorage on testTearDown of ``.webdriver.Layer``.
+
 - Wait for elements the time defined as timeout instead of always 5 seconds.
 
 
