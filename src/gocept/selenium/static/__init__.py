@@ -21,7 +21,7 @@ class StaticFilesLayer(gocept.selenium.webdriver.IntegrationBase,
                        gocept.httpserverlayer.static.Layer):
 
     def __init__(self):
-        super(StaticFilesLayer, self).__init__(
+        super().__init__(
             name='StaticFilesLayer', bases=())
 
 

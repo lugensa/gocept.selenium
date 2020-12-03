@@ -12,7 +12,6 @@
 #
 ##############################################################################
 
-from __future__ import print_function
 from gocept.selenium.screenshot import PRINT_JUNIT_ATTACHMENTS
 from gocept.selenium.screenshot import junit_attach_line
 from selenium.common.exceptions import ElementClickInterceptedException
@@ -31,8 +30,7 @@ import json
 import re
 import selenium.common.exceptions
 import time
-import six.moves.urllib.parse
-from six.moves import map
+import urllib.parse
 
 
 LOCATOR_JS = 'javascript'
@@ -115,7 +113,7 @@ def no_screenshot(selense):
         selense.screenshot_on_exception = True
 
 
-class Selenese(object):
+class Selenese:
 
     failureExceptionClass = AssertionError
     screenshot_on_exception = True
@@ -171,8 +169,7 @@ class Selenese(object):
         self.selenium.switch_to.window(windowID)
 
     def open(self, url):
-        self.selenium.get(
-            six.moves.urllib.parse.urljoin('http://' + self.server, url))
+        self.selenium.get(urllib.parse.urljoin('http://' + self.server, url))
 
     def altKeyDown(self):
         ActionChains(self.selenium).key_down(Keys.ALT).perform()
@@ -195,7 +192,7 @@ class Selenese(object):
         self.selenium.close()
 
     def createCookie(self, nameAndValue, options):
-        options = six.moves.urllib.parse.parse_qs(options)
+        options = urllib.parse.parse_qs(options)
         options['name'], options['value'] = nameAndValue.split('=', 1)
         self.selenium.add_cookie(options)
 
@@ -245,7 +242,7 @@ class Selenese(object):
                 break
         else:
             raise type(exc)(
-                'Timed out after %s s. %s' % (self.timeout, exc.msg))
+                f'Timed out after {self.timeout} s. {exc.msg}')
 
     def clickAndWait(self, locator):
         self.click(locator)
@@ -368,7 +365,7 @@ class Selenese(object):
 
     def openWindow(self, url, window_id):
         self.selenium.execute_script(
-            'window.open("%s", "%s")' % (url, window_id))
+            f'window.open("{url}", "{window_id}")')
 
     def refresh(self):
         self.selenium.refresh()
@@ -677,10 +674,10 @@ class Selenese(object):
     def getCssCount(self, css):
         by, value = split_locator(css)
         if by == LOCATOR_JS:
-            result = self.selenium.execute_script(u'return %s' % value)
+            result = self.selenium.execute_script(f'return {value}')
         elif by == LOCATOR_JQUERY:
             result = self.selenium.execute_script(
-                u'return window.jQuery("%s")' % value)
+                f'return window.jQuery("{value}")')
         else:
             result = self.selenium.find_elements(by, value)
         return len(result)
@@ -689,7 +686,7 @@ class Selenese(object):
 
     def assertTextPresent(self, pattern):
         if not self.isTextPresent(pattern):
-            raise self.failureException('Text %r not present' % pattern)
+            raise self.failureException('Text {pattern} not present')
 
     def assertCondition(self, condition):
         return self.assertEval(condition, 'true')
@@ -710,9 +707,9 @@ class Selenese(object):
 
     # XXX works only for relative xpath locators with Webdriver
     def assertOrdered(self, locator1, locator2):
-        if self._find(locator2).id not in set(
+        if self._find(locator2).id not in {
             x.id for x in self.selenium.find_elements_by_xpath(
-                locator1 + '/following-sibling::*')):
+                locator1 + '/following-sibling::*')}:
             raise self.failureException(
                 'Element order did not match expected %r,%r'
                 % (locator1, locator2))
@@ -721,13 +718,13 @@ class Selenese(object):
         got = self.getElementWidth(locator)
         if width != got:
             raise self.failureException(
-                'Width of %r is %r, expected %r.' % (locator, got, width))
+                f'Width of {locator!r} is {got!r}, expected {width!r}.')
 
     def assertElementHeight(self, locator, height):
         got = self.getElementHeight(locator)
         if height != got:
             raise self.failureException(
-                'Height of %r is %r, expected %r.' % (locator, got, height))
+                f'Height of {locator!r} is {got!r}, expected {height!r}.')
 
     capture_screenshot = False
     screenshot_directory = '.'
@@ -764,13 +761,13 @@ class Selenese(object):
     def _find(self, locator, wait=False):
         by, value = split_locator(locator)
         if by == LOCATOR_JS:
-            result = self.selenium.execute_script(u'return %s' % value)
+            result = self.selenium.execute_script('return %s' % value)
             if result is None:
                 raise NoSuchElementException()
             return result
         elif by == LOCATOR_JQUERY:
             result = self.selenium.execute_script(
-                u'return window.jQuery("%s")[0]' % value)
+                'return window.jQuery("%s")[0]' % value)
             if result is None:
                 raise NoSuchElementException()
             return result
@@ -879,7 +876,7 @@ class Selenese(object):
                             '- %r\n+ %r\n\n' % (i, x, result[i]))
                         break
             raise self.failureException(
-                detail + ('Expected: %s,\ngot: %s\nfrom %s' % (
+                detail + ('Expected: {},\ngot: {}\nfrom {}'.format(
                     abbrev_repr(expected), abbrev_repr(result),
                     self._call_repr(name))))
 
@@ -901,21 +898,21 @@ class Selenese(object):
             except self.failureExceptionClass as e:
                 if time.time() - start > self.timeout:
                     raise self.failureException(
-                        'Timed out after %s s. %s' % (self.timeout, e.args[0]))
+                        f'Timed out after {self.timeout} s. {e.args[0]}')
             except StaleElementReferenceException as e:
                 if time.time() - start > self.timeout:
                     raise StaleElementReferenceException(
-                        'Timed out after %s s. %s' % (self.timeout, e.msg))
+                        f'Timed out after {self.timeout} s. {e.msg}')
             except NoSuchElementException as e:
                 if time.time() - start > self.timeout:
                     raise NoSuchElementException(
-                        'Timed out after %s s. %s' % (self.timeout, e.msg))
+                        f'Timed out after {self.timeout} s. {e.msg}')
             else:
                 break
             time.sleep(0.1)
 
     def _call_repr(self, name, *args, **kw):
-        return '%s(%s)' % (
+        return '{}({})'.format(
             name,
             ', '.join(list(map(repr, args)) +
                       ['%s=%r' % item for item in sorted(kw.items())]))

@@ -1,6 +1,6 @@
 from io import StringIO
 import unittest
-import mock
+from unittest import mock
 import tempfile
 import os
 import sys

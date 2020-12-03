@@ -25,7 +25,7 @@ from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
 import gocept.testing.assertion
-import mock
+from unittest import mock
 import os.path
 import pkg_resources
 import shutil
@@ -94,7 +94,7 @@ class HTMLTestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
                    unittest.TestCase):
 
     def setUp(self):
-        super(HTMLTestCase, self).setUp()
+        super().setUp()
         directory = pkg_resources.resource_filename(
             'gocept.selenium.tests.fixture', '')
         for name in glob.glob(os.path.join(directory, '*.html')):
@@ -187,7 +187,7 @@ class AssertionTests(gocept.testing.assertion.String,
 
     def test_xpathcount_raises_nice_exception_on_mismatch(self):
         self.selenium.open('/divs.html')
-        with self.assertRaisesRegexp(
+        with self.assertRaisesRegex(
                 AssertionError,
                 "Actual count of XPath '//div' is 4, expected 3.*"):
             self.selenium.assertXpathCount("//div", 3)
@@ -199,7 +199,7 @@ class AssertionTests(gocept.testing.assertion.String,
 
     def test_csscount_raises_nice_exception_on_mismatch(self):
         self.selenium.open('/divs.html')
-        with self.assertRaisesRegexp(
+        with self.assertRaisesRegex(
                 AssertionError,
                 "Actual count of CSS 'css=div' is 4, expected 3.*"):
             self.selenium.assertCssCount("css=div", 3)
@@ -266,7 +266,7 @@ class ScreenshotAssertionTest(HTMLTestCase,
     layer = STATIC_WD_SELENESE_LAYER
 
     def setUp(self):
-        super(ScreenshotAssertionTest, self).setUp()
+        super().setUp()
         self.selenium.screenshot_directory = 'gocept.selenium.tests.fixture'
 
     def test_successful_comparison(self):
@@ -356,7 +356,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
         img = pkg_resources.resource_filename(self.__module__, 'foo.png')
         self.selenium.capture_screenshot = True
         self.selenium.open('screenshot.html')
-        with self.assertRaisesRegexp(ValueError, img):
+        with self.assertRaisesRegex(ValueError, img):
             self.selenium.assertScreenshot('foo', 'css=#block-1')
         self.assertTrue(os.path.isfile(img))
         os.unlink(img)
@@ -367,7 +367,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
         img = pkg_resources.resource_filename(directory, 'foo.png')
         self.selenium.capture_screenshot = True
         self.selenium.open('screenshot.html')
-        with self.assertRaisesRegexp(ValueError, img):
+        with self.assertRaisesRegex(ValueError, img):
             self.selenium.assertScreenshot('foo', 'css=#block-1')
         self.assertTrue(os.path.isfile(img))
         os.unlink(img)

@@ -15,7 +15,7 @@
 import zope.security.proxy
 
 
-class Set(object):
+class Set:
 
     def __call__(self):
         c = zope.security.proxy.removeSecurityProxy(self.context)
@@ -23,20 +23,20 @@ class Set(object):
         return 'setting done'
 
 
-class Get(object):
+class Get:
 
     def __call__(self):
         c = zope.security.proxy.removeSecurityProxy(self.context)
         return str(getattr(c, 'foo', 0))
 
 
-class Error(object):
+class Error:
 
     def __call__(Self):
         raise ValueError()
 
 
-class IncrementVolatile(object):
+class IncrementVolatile:
 
     def __call__(self):
         c = zope.security.proxy.removeSecurityProxy(self.context)

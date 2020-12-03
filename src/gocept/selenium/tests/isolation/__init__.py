@@ -15,7 +15,7 @@
 ENSURE_ORDER = False
 
 
-class IsolationTests(object):
+class IsolationTests:
 
     # test_0_set and test_1_get verify that different test methods are isolated
     # from each other, i.e. that the underlying DemoStorage stacking is wired

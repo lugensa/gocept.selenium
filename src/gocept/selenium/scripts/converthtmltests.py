@@ -3,13 +3,11 @@
 Convert HTML selenium tests to gocept.selenium.seleniumrcd test cases.
 """
 
-from __future__ import print_function
 import re
 import os
 import glob
 from string import Template
 from optparse import OptionParser
-from io import open
 from xml.etree import ElementTree as HTMLTreeBuilder
 from xml.etree.ElementTree import QName
 
@@ -56,7 +54,7 @@ def formatcommand(command, *args):
         # XXX selenese should implement storeText
         # else:
         #    arguments.append("self.getVar('%s')" % matched.group('varname'))
-    return '        selenium.%s(%s)' % (command, ', '.join(arguments))
+    return '        selenium.{}({})'.format(command, ', '.join(arguments))
 
 
 def make_parser():
@@ -110,7 +108,7 @@ def parse_directory(directory, verbose):
     prev_encoding = encoding = None
     for filename in glob.glob(pattern):
         if verbose:
-            print(u"Parsing [%s]" % filename)
+            print("Parsing [%s]" % filename)
         filename = os.path.abspath(filename)
         testname, commands, encoding = parse_file(filename)
         if encoding and prev_encoding is None:
@@ -140,8 +138,8 @@ def parse_file(filename):
     else:
         encoding = 'utf-8'
     commands = []
-    for row in tree.findall('.//%s/%s' % (QName(XHTML_NAMESPACE, 'tbody'),
-                                          QName(XHTML_NAMESPACE, 'tr'))):
+    for row in tree.findall('.//{}/{}'.format(QName(XHTML_NAMESPACE, 'tbody'),
+                                              QName(XHTML_NAMESPACE, 'tr'))):
         command = formatcommand(
             *[td.text
               for td in row.findall(str(QName(XHTML_NAMESPACE, 'td')))])
@@ -174,10 +172,10 @@ def main(args=None):
         encoding = 'utf-8'
 
     if len(methods) == 0:
-        print(u"No file was generated !")
+        print("No file was generated !")
         return
     if options.verbose:
-        print(u"Generating [%s]" % target)
+        print("Generating [%s]" % target)
     f = open(target, 'wb')
     module = make_module(methods, layer, layer_module, encoding)
     module = module.encode(encoding)

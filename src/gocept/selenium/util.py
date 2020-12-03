@@ -17,7 +17,7 @@ import httpagentparser
 import re
 
 
-class skipUnlessBrowser(object):
+class skipUnlessBrowser:
 
     def __init__(self, name, version=None):
         self.required_name = name
@@ -47,7 +47,7 @@ class skipUnlessBrowser(object):
             user_agent_string = user_agent_string[1:-1]
         agent = httpagentparser.detect(user_agent_string)
         if re.match(self.required_name, agent['browser']['name']) is None:
-            test_case.skipTest('Require browser %s, but have %s.' % (
+            test_case.skipTest('Require browser {}, but have {}.'.format(
                 self.required_name, agent['browser']['name']))
         if self.required_version:
             requirement = distutils.versionpredicate.VersionPredicate(
@@ -55,6 +55,6 @@ class skipUnlessBrowser(object):
             skip = not requirement.satisfied_by(
                 str(agent['browser']['version']))
             if skip:
-                test_case.skipTest('Require %s%s, got %s %s' % (
+                test_case.skipTest('Require {}{}, got {} {}'.format(
                     self.required_name, self.required_version,
                     agent['browser']['name'], agent['browser']['version']))

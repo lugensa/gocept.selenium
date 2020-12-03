@@ -13,7 +13,7 @@
 ##############################################################################
 
 
-class SimpleApp(object):
+class SimpleApp:
 
     def __call__(self, environ, start_response):
         path = environ['PATH_INFO']
@@ -45,7 +45,7 @@ window.onload = hello;''']
         return body
 
 
-class SimpleApp2(object):
+class SimpleApp2:
 
     def __call__(self, environ, start_response):
         start_response('200 OK', [('Content-Type', 'text/html')])
