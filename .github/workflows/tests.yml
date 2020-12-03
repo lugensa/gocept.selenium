@@ -27,10 +27,10 @@ jobs:
         # - ["3.8",   "coverage"]
         flavour:
           - wsgi
-          - plonetesting
-          - grok
+          # - plonetesting
+          # - grok
         state:
-          - headless
+          # - headless
           - head
 
     runs-on: ubuntu-latest
@@ -52,6 +52,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install tox
+        sudo apt-get install firefox firefox-geckodriver
     - name: Test
       uses: GabrielBB/xvfb-action@v1
       with:
