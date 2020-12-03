@@ -27,11 +27,11 @@ jobs:
         # - ["3.8",   "coverage"]
         flavour:
           - wsgi
-          # - plonetesting
-          # - grok
+          - plonetesting
+          - grok
         state:
           - headless
-          # - head
+          # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
 
     runs-on: ubuntu-latest
     name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
@@ -54,11 +54,7 @@ jobs:
         pip install tox
         sudo apt-get install firefox firefox-geckodriver
     - name: Test
-      # uses: GabrielBB/xvfb-action@v1
-      # with:
-      #   working-directory: ./
-      #   run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}} -- -k test_webdriver
-      run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}} -- -k test_webdriver
+      run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
     - name: Coverage
       if: matrix.config[1] == 'coverage'
       run: |
