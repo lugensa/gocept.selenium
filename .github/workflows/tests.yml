@@ -1,0 +1,59 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/pure-python
+name: tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  schedule:
+    - cron: '0 1 * * 0'  # run once a week on Sunday
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config:
+        # [Python version, tox env]
+        - ["2.7",   "py27"]
+        - ["3.6",   "py36"]
+        - ["3.7",   "py37"]
+        flavour:
+          - wsgi
+          - plonetesting
+          - grok
+        state:
+          - headless
+          # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
+
+    runs-on: ubuntu-latest
+    name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.config[0] }}
+    - name: Pip cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('setup.*', 'tox.ini') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+        sudo apt-get install firefox firefox-geckodriver
+    - name: Test
+      run: |
+        tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
+    - name: Report to coveralls
+      if: "matrix.config[0] != '2.7'"
+      run:
+        pip install coverage coveralls
+        coverage combine
+        coveralls
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
