@@ -30,8 +30,8 @@ jobs:
           # - plonetesting
           # - grok
         state:
-          # - headless
-          - head
+          - headless
+          # - head
 
     runs-on: ubuntu-latest
     name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
@@ -54,10 +54,11 @@ jobs:
         pip install tox
         sudo apt-get install firefox firefox-geckodriver
     - name: Test
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        working-directory: ./
-        run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}} -- -k test_webdriver
+      # uses: GabrielBB/xvfb-action@v1
+      # with:
+      #   working-directory: ./
+      #   run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}} -- -k test_webdriver
+      run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}} -- -k test_webdriver
     - name: Coverage
       if: matrix.config[1] == 'coverage'
       run: |
