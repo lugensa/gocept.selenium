@@ -686,7 +686,7 @@ class Selenese:
 
     def assertTextPresent(self, pattern):
         if not self.isTextPresent(pattern):
-            raise self.failureException('Text {pattern} not present')
+            raise self.failureException(f'Text {pattern!r} not present')
 
     def assertCondition(self, condition):
         return self.assertEval(condition, 'true')
