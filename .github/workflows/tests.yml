@@ -25,9 +25,16 @@ jobs:
         # - ["pypy3", "pypy3"]
         # - ["3.8",   "docs"]
         # - ["3.8",   "coverage"]
+        flavour:
+          - wsgi
+          - plonetesting
+          - grok
+        state:
+          - headless
+          - head
 
     runs-on: ubuntu-latest
-    name: ${{ matrix.config[1] }}
+    name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -49,7 +56,7 @@ jobs:
       uses: GabrielBB/xvfb-action@v1
       with:
         working-directory: ./
-        run: tox -e ${{ matrix.config[1] }}
+        run: tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
     - name: Coverage
       if: matrix.config[1] == 'coverage'
       run: |
