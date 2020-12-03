@@ -30,8 +30,8 @@ jobs:
           # - plonetesting
           # - grok
         state:
-          - headless
-          # - head
+          # - headless
+          - head
 
     runs-on: ubuntu-latest
     name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
