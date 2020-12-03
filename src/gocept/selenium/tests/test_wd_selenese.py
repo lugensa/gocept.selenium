@@ -20,6 +20,7 @@ from gocept.selenium.wd_selenese import split_locator, split_option_locator
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 import glob
 import gocept.httpserverlayer.static
@@ -205,9 +206,7 @@ class AssertionTests(gocept.testing.assertion.String,
 
     def test_configured_timeout_is_applied_for_open(self):
         self.selenium.setTimeout(1)
-        with self.assertRaisesRegexp(
-                # Chromium and Firefox use different messages.
-                Exception, 'Message: [T|t]imeout'):
+        with self.assertRaises(TimeoutException):
             self.selenium.open('/divs.html')
 
 
