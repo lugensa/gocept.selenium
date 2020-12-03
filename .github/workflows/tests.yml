@@ -15,7 +15,6 @@ jobs:
       matrix:
         config:
         # [Python version, tox env]
-        - ["3.8",   "lint"]
         - ["2.7",   "py27"]
         - ["3.6",   "py36"]
         - ["3.7",   "py37"]
@@ -45,15 +44,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install tox
-    - name: Lint
-      if: matrix.config[1] == 'lint'
-      run: tox -e lint
-    - name: Test
-      if: matrix.config[1] != 'lint'
-      run: |
-        pip install coveralls
+        pip install tox coveralls
         sudo apt-get install firefox firefox-geckodriver
+    - name: Test
+      run: |
         tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
         coveralls
       env:
