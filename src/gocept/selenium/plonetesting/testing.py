@@ -36,7 +36,7 @@ selenium_layer = plone.testing.Layer(
     name='layer')
 
 
-class IsolationTestHelper(object):
+class IsolationTestHelper:
     """
     plone.testing implementation of methods needed by common isolation tests
     """

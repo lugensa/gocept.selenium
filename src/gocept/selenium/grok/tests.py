@@ -26,7 +26,7 @@ class TestGrokTestCase(gocept.selenium.grok.TestCase):
     layer = test_layer
 
     def setUp(self):
-        super(TestGrokTestCase, self).setUp()
+        super().setUp()
         root = self.getRootFolder()
         root['app'] = gocept.selenium.grok.fixtures.App()
         transaction.commit()

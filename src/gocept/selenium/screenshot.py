@@ -1,4 +1,3 @@
-from __future__ import print_function
 from PIL import Image, ImageChops
 import inspect
 import itertools
@@ -6,8 +5,6 @@ import math
 import os
 import pkg_resources
 import tempfile
-from six.moves import zip
-from io import open
 
 
 SHOW_DIFF_IMG = os.environ.get('SHOW_DIFF_IMG', False)
@@ -21,7 +18,7 @@ def get_path(resource):
 WHITE = (255, 255, 255, 0)
 
 
-class DiffComposition(object):
+class DiffComposition:
 
     label_margin = 20
 
@@ -93,7 +90,7 @@ class DiffComposition(object):
         return diff
 
 
-class ImageDiff(object):
+class ImageDiff:
 
     def __init__(self, image_a, image_b):
         self.image_a = image_a
@@ -120,7 +117,7 @@ class ImageDiff(object):
 
 
 def junit_attach_line(filename, typ):
-    return '[[ATTACHMENT|%s|{"type": "%s"}]]\n' % (filename, typ)
+    return f'[[ATTACHMENT|{filename}|{{"type": "{typ}"}}]]\n'
 
 
 class ScreenshotMismatchError(ValueError):
@@ -145,10 +142,10 @@ class ScreenshotMismatchError(ValueError):
                                self.got, self.compo)
 
     def _print_junit_attachments(self):
-        print(('\n' +
-               junit_attach_line(self.expected, 'expected') +
-               junit_attach_line(self.got, 'actual') +
-               junit_attach_line(self.compo, 'diff')))
+        print('\n' +
+              junit_attach_line(self.expected, 'expected') +
+              junit_attach_line(self.got, 'actual') +
+              junit_attach_line(self.compo, 'diff'))
 
 
 class ScreenshotSizeMismatchError(ValueError):
@@ -172,9 +169,9 @@ class ScreenshotSizeMismatchError(ValueError):
                                self.expected, self.got)
 
     def _print_junit_attachments(self):
-        print(('\n' +
-               junit_attach_line(self.expected, 'expected') +
-               junit_attach_line(self.got, 'actual')))
+        print('\n' +
+              junit_attach_line(self.expected, 'expected') +
+              junit_attach_line(self.got, 'actual'))
 
 
 class ZeroDimensionError(ValueError):
@@ -239,13 +236,13 @@ def save_screenshot_temporary(screenshot):
 def save_as_expected(screenshot, img_basename, exp_path):
     if os.path.exists(exp_path):
         raise ValueError(
-            'Not capturing {0}, image already exists. If you '
-            'want to capture this element again, delete {1}'.format(
+            'Not capturing {}, image already exists. If you '
+            'want to capture this element again, delete {}'.format(
                 img_basename, exp_path))
     screenshot.save(exp_path)
     raise ValueError(
-        'Captured {0}. You might now want to remove capture mode and '
-        'check in the created screenshot {1}.'.format(
+        'Captured {}. You might now want to remove capture mode and '
+        'check in the created screenshot {}.'.format(
             img_basename, exp_path))
 
 

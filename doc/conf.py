@@ -14,8 +14,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = ['_build']
 
-project = u'gocept.selenium'
-copyright = u"""\
+project = 'gocept.selenium'
+copyright = """\
     2011-2015, Zope Foundation and Contributors.
     <a href="http://sphinx.pocoo.org/">Sphinx</a>-Theme adapted from
     <a href="http://jinja.pocoo.org/docs/">Jinja</a>

@@ -82,5 +82,5 @@ class TestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
                unittest.TestCase):
 
     def setUp(self):
-        super(TestCase, self).setUp()
+        super().setUp()
         self.getRootFolder = self.layer.getRootFolder

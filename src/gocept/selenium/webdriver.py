@@ -18,17 +18,13 @@ import atexit
 import gocept.selenium.wd_selenese
 import os
 import os.path
+import plone.testing
 import selenium.webdriver
 import sys
 import warnings
 
 
-# work around Python 2.4 lack of absolute_import,
-# see gocept.selenium.seleniumrc for details
-plonetesting = __import__('plone.testing', {}, {}, [''])
-
-
-class Layer(plonetesting.Layer):
+class Layer(plone.testing.Layer):
 
     profile = None
     headless = False
@@ -118,7 +114,7 @@ class Layer(plonetesting.Layer):
             pass
 
 
-class WebdriverSeleneseLayer(plonetesting.Layer):
+class WebdriverSeleneseLayer(plone.testing.Layer):
 
     _timeout = int(os.environ.get('GOCEPT_SELENIUM_TIMEOUT', 30))
 
@@ -137,7 +133,7 @@ class WebdriverSeleneseLayer(plonetesting.Layer):
         del self['selenium']
 
 
-class IntegrationBase(object):
+class IntegrationBase:
 
     # hostname and port of the local application.
     host = os.environ.get('GOCEPT_SELENIUM_APP_HOST', 'localhost')
@@ -145,7 +141,7 @@ class IntegrationBase(object):
 
     def __init__(self, *args, **kw):
         kw['module'] = sys._getframe(1).f_globals['__name__']
-        super(IntegrationBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.SELENIUM_LAYER = Layer(
             name='IntegratedSeleniumLayer', bases=[self])
         self.SELENESE_LAYER = WebdriverSeleneseLayer(
@@ -154,13 +150,13 @@ class IntegrationBase(object):
     def make_layer_name(self, bases):
         if bases:
             base = bases[0]
-            name = '(%s.%s)' % (base.__module__, base.__name__)
+            name = f'({base.__module__}.{base.__name__})'
         else:
             name = self.__class__.__name__
         return name
 
     def setUp(self):
-        super(IntegrationBase, self).setUp()
+        super().setUp()
         self.SELENIUM_LAYER.setUp()
         self.SELENESE_LAYER.setUp()
         self['seleniumrc'] = self.SELENIUM_LAYER['seleniumrc']
@@ -169,10 +165,10 @@ class IntegrationBase(object):
         self.SELENESE_LAYER.tearDown()
         self.SELENIUM_LAYER.tearDown()
         del self['seleniumrc']
-        super(IntegrationBase, self).tearDown()
+        super().tearDown()
 
     def testSetUp(self):
-        super(IntegrationBase, self).testSetUp()
+        super().testSetUp()
         self.SELENIUM_LAYER.testSetUp()
         self.SELENESE_LAYER.testSetUp()
         self['selenium'] = self.SELENESE_LAYER['selenium']
@@ -180,10 +176,10 @@ class IntegrationBase(object):
     def testTearDown(self):
         self.SELENESE_LAYER.testTearDown()
         self.SELENIUM_LAYER.testTearDown()
-        super(IntegrationBase, self).testTearDown()
+        super().testTearDown()
 
 
-class WebdriverSeleneseTestCase(object):
+class WebdriverSeleneseTestCase:
 
     @property
     def selenium(self):

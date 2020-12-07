@@ -2,10 +2,18 @@ Changelog
 =========
 
 
-5.3 (unreleased)
+6.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Backwards incompatible changes
+++++++++++++++++++++++++++++++
+
+- Drop support for Python 2, 3.5 and 3.6.
+
+Features
+++++++++
+
+- Add support for Python 3.8 and 3.9.
 
 
 5.2 (2020-10-28)

@@ -12,14 +12,14 @@
 #
 ##############################################################################
 
-import mock
+from unittest import mock
 import unittest
 
 
 class TestBrowserSkip(unittest.TestCase):
 
     user_agent = (
-        u"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0 "
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0 "
         "Gecko/20100101 Firefox/16.0")
 
     def call_test(self, browser, version=None):
@@ -87,7 +87,7 @@ class TestBrowserSkip(unittest.TestCase):
         # we fail in a useful way.
         from gocept.selenium import skipUnlessBrowser
         try:
-            class MyTest(object):
+            class MyTest:
                 pass
             skipUnlessBrowser('hurz')(MyTest)
         except ValueError:

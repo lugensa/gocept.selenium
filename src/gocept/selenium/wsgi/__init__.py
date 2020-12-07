@@ -40,7 +40,7 @@ class Layer(gocept.selenium.webdriver.IntegrationBase,
         # the testrunner distinguish between layers with different
         # applications.
         name += '.' + application.__class__.__name__
-        super(Layer, self).__init__(name=name, bases=bases)
+        super().__init__(name=name, bases=bases)
         self.wsgi_app = self.setup_wsgi_stack(application)
 
     def setup_wsgi_stack(self, app):
