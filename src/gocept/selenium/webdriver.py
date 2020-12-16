@@ -17,10 +17,11 @@ from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import atexit
 import gocept.selenium.wd_selenese
 import os
-import os.path
+import pathlib
 import plone.testing
 import selenium.webdriver
 import sys
+import tempfile
 import warnings
 
 
@@ -63,12 +64,25 @@ class Layer(plone.testing.Layer):
                     os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
             self.profile.native_events_enabled = True
             self.profile.update_preferences()
+            # Save downloads always to disk into a predefined dir.
+            self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
+                prefix='gocept.selenium.download-dir'))
+            self.profile.set_preference("browser.download.folderList", 2)
+            self.profile.set_preference(
+                "browser.download.manager.showWhenStarting", False)
+            self.profile.set_preference(
+                "browser.download.dir", str(self['selenium_download_dir']))
+            self.profile.set_preference(
+                "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+            self.profile.set_preference("pdfjs.disabled", True)
 
         self._start_selenium()
         atexit.register(self._stop_selenium)
 
     def tearDown(self):
         self._stop_selenium()
+        self['selenium_download_dir'].rmdir()
+        del self['selenium_download_dir']
         # XXX upstream bug, quit should reset session_id
         self['seleniumrc'].session_id = None
         del self['seleniumrc']
@@ -112,6 +126,8 @@ class Layer(plone.testing.Layer):
         except JavascriptException:
             # We can't do anything here, there might be no current_url
             pass
+        for path in self['selenium_download_dir'].iterdir():
+            path.unlink()
 
 
 class WebdriverSeleneseLayer(plone.testing.Layer):

@@ -25,6 +25,8 @@ Documentation
 In order to build the Sphinx documentation, run the following command with a
 python, where sphinx is installed::
 
-    $ python setup.py build_sphinx
+    $ python3 -m venv .
+    $ bin/pip install Sphinx
+    $ bin/sphinx-build doc doc/build
 
-The generated HTML gets stored in ``doc/_build/html``.
+The generated HTML gets stored in ``doc/build``.
