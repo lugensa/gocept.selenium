@@ -70,3 +70,18 @@ skipping tests in these cases, there is a test decorator
 
 .. [#1] The difference is computed as normalised root mean square deviation of
         the two images.
+
+
+Downloading files
+~~~~~~~~~~~~~~~~~
+
+By default ``selenium`` does not support to download files because this is done
+via native operating system dialogues which ``selenium`` cannot intercept.
+
+The only way seems to be to instruct the browser to always store downloads of a
+certain MIME type in the download directory.
+
+This is implemented in ``gocept.selenium`` for PDF files when using
+``Firefox``. The download directory is accessible as a ``pathlib.Path`` via
+``self.layer['selenium_download_dir']``. It gets cleared at the end of every
+test.
