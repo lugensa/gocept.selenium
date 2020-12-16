@@ -10,8 +10,9 @@ include doc/_themes/LICENSE
 include doc/_themes/README
 include pytest.ini
 include tox.ini
-recursive-exclude doc/_build *
+recursive-exclude doc/build *
 recursive-include doc *.rst *.py *.png *.html *.conf *.css_t
-recursive-include src *.txt *.zcml *.html *.png
 recursive-include src *.json
 recursive-include src *.parentlock
+recursive-include src *.pdf
+recursive-include src *.txt *.zcml *.html *.png
