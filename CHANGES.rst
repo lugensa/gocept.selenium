@@ -10,6 +10,8 @@ Backwards incompatible changes
 
 - Drop support for Python 2, 3.5 and 3.6.
 
+- Remove ``requirements.txt``.
+
 Features
 ++++++++
 
