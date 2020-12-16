@@ -17,6 +17,9 @@ Features
 
 - Add support for Python 3.8 and 3.9.
 
+- Firefox: Add a temporary download directory for PDF files. It is accessible
+  as a ``pathlib.Path`` via ``self.layer['selenium_download_dir']``.
+
 
 5.2 (2020-10-28)
 ----------------

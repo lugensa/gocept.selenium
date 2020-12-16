@@ -22,11 +22,11 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-import glob
 import gocept.httpserverlayer.static
 import gocept.testing.assertion
 from unittest import mock
 import os.path
+import pathlib
 import pkg_resources
 import shutil
 import stat
@@ -95,11 +95,11 @@ class HTMLTestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
 
     def setUp(self):
         super().setUp()
-        directory = pkg_resources.resource_filename(
-            'gocept.selenium.tests.fixture', '')
-        for name in glob.glob(os.path.join(directory, '*.html')):
-            shutil.copy(
-                os.path.join(directory, name), self.layer['documentroot'])
+        directory = pathlib.Path(pkg_resources.resource_filename(
+            'gocept.selenium.tests.fixture', ''))
+        for glob in ('*.html', '*.pdf'):
+            for name in directory.glob(glob):
+                shutil.copy(directory / name, self.layer['documentroot'])
 
 
 class AssertionTests(gocept.testing.assertion.String,
@@ -413,6 +413,29 @@ class SelectFrameTests(HTMLTestCase):
         self.assertEqual(
             "Invalid frame selector 'relative', valid are ['name', 'index']",
             str(err.exception))
+
+
+class DownloadTests(HTMLTestCase):
+    """Testing downloading of files."""
+
+    layer = STATIC_WD_SELENESE_LAYER
+
+    def test_webdriver__Layer__setUp__1(self):
+        """It stores PDF files in a temporary download directory."""
+        sel = self.selenium
+        sel.open('download.html')
+        sel.click('link=Example')
+        download_dir = self.layer['selenium_download_dir']
+        for i in range(10 * int(sel.timeout)):
+            time.sleep(0.1)
+            if list(download_dir.iterdir()):
+                break
+        else:
+            self.fail('PDF-File was not downloaded, download dir is empty.')
+        download_files = list(download_dir.iterdir())
+        assert len(download_files) == 1
+        assert download_files[0].name == 'example.pdf'
+        assert download_files[0].read_bytes().startswith(b'%PDF-1.3')
 
 
 class PatternTest(unittest.TestCase):
