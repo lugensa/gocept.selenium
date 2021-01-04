@@ -5,7 +5,7 @@ Changelog
 6.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix links and typos in documentation.
 
 
 6.0 (2020-12-16)
