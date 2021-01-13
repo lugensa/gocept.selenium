@@ -252,7 +252,7 @@ class AssertionTest(AssertionTests,
         with self.assertRaises(ElementClickInterceptedException) as e:
             self.selenium.click('css=.intercepted')
         self.assertEllipsis(
-            'Timed out after 1.0 s. Element ... not clickable ... obscures it',
+            'Timed out after 1.0 s...',
             e.exception.msg)
 
     def test_wd_selenese__Selense__selectParentFrame__1(self):
