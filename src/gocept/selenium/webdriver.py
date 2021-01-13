@@ -105,6 +105,17 @@ class Layer(plone.testing.Layer):
             raise NotImplementedError(
                 'Chromedriver currently only works headless.')
 
+        # Setup download dir.
+        self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
+            prefix='gocept.selenium.download-dir'))
+
+        prefs = {
+            'download.default_directory': str(self['selenium_download_dir']),
+            'download.prompt_for_download': False,
+        }
+
+        options.add_experimental_option('prefs', prefs)
+
         return {
             'options': options,
             'service_args': ['--log-path=chromedriver.log']
