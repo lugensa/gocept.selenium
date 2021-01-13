@@ -48,6 +48,7 @@ jobs:
     - name: Test
       run: |
         tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
+        tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-chrome-headless
     - name: Report to coveralls
       run:
         pip install coverage coveralls
