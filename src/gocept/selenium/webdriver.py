@@ -116,6 +116,16 @@ class Layer(plone.testing.Layer):
 
         options.add_experimental_option('prefs', prefs)
 
+        mobile_emulation = {
+            'deviceMetrics': {
+                'pixelRatio': 1.0,
+                'width': 1600,
+                'height': 1200,
+            }
+        }
+
+        options.add_experimental_option('mobileEmulation', mobile_emulation)
+
         return {
             'options': options,
             'service_args': ['--log-path=chromedriver.log']
