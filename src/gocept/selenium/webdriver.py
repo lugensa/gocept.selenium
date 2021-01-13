@@ -58,6 +58,10 @@ class Layer(plone.testing.Layer):
         if browser.lower() == 'chrome':
             self._browser = 'chrome'
 
+        # Setup download dir.
+        self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
+            prefix='gocept.selenium.download-dir'))
+
         self._start_selenium()
         atexit.register(self._stop_selenium)
 
@@ -81,9 +85,8 @@ class Layer(plone.testing.Layer):
                 os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
         profile.native_events_enabled = True
         profile.update_preferences()
+
         # Save downloads always to disk into a predefined dir.
-        self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
-            prefix='gocept.selenium.download-dir'))
         profile.set_preference("browser.download.folderList", 2)
         profile.set_preference(
             "browser.download.manager.showWhenStarting", False)
@@ -105,10 +108,7 @@ class Layer(plone.testing.Layer):
             raise NotImplementedError(
                 'Chromedriver currently only works headless.')
 
-        # Setup download dir.
-        self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
-            prefix='gocept.selenium.download-dir'))
-
+        # Save downloads always to disk into a predefined dir.
         prefs = {
             'download.default_directory': str(self['selenium_download_dir']),
             'download.prompt_for_download': False,
