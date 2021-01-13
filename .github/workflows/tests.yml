@@ -52,6 +52,6 @@ jobs:
       run:
         pip install coverage coveralls
         coverage combine
-        coveralls
+        coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
