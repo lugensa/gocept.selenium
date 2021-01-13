@@ -5,8 +5,8 @@ gocept.selenium
 .. image:: https://readthedocs.org/projects/goceptselenium/badge/?version=latest
     :target: https://goceptselenium.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-.. image:: https://travis-ci.com/gocept/gocept.selenium.svg?branch=master
-    :target: https://travis-ci.com/gocept/gocept.selenium
+.. image:: https://github.com/gocept/gocept.selenium/workflows/tests/badge.svg
+    :target: https://github.com/gocept/gocept.selenium/actions?query=workflow%3Atests
 .. image:: https://coveralls.io/repos/github/gocept/gocept.selenium/badge.svg
     :target: https://coveralls.io/github/gocept/gocept.selenium
 .. image:: https://img.shields.io/pypi/v/gocept.selenium.svg
