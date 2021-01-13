@@ -52,9 +52,9 @@ jobs:
       run: |
         tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-${{ matrix.browser }}-${{ matrix.state }}
     - name: Report to coveralls
-      run:
+      run: |
         pip install coverage coveralls
         coverage combine
-        coveralls
+        coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
