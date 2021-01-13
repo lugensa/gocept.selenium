@@ -46,10 +46,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install firefox firefox-geckodriver
     - name: Test
-      run: |
+      run:
         tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
     - name: Report to coveralls
-      run:
+      run: |
         pip install coverage coveralls
         coverage combine
         coveralls --service=github
