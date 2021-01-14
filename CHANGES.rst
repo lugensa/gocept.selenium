@@ -7,6 +7,11 @@ Changelog
 
 - Fix links and typos in documentation.
 
+- Fix tests running on ``Google Chrome``. (Issue #20)
+
+- Google Chrome: Add temporary download directory support. It is
+  accessible as a ``pathlib.Path`` via ``self.layer['selenium_download_dir']``.
+
 
 6.0 (2020-12-16)
 ----------------

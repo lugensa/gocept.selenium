@@ -20,12 +20,15 @@ jobs:
           - wsgi
           - plonetesting
           - grok
+        browser:
+          - ff
+          - chrome
         state:
           - headless
           # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
 
     runs-on: ubuntu-latest
-    name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
+    name: ${{ matrix.config[1] }}-${{ matrix.flavour }}-${{ matrix.browser }}-${{ matrix.state }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -46,8 +49,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install firefox firefox-geckodriver
     - name: Test
-      run:
-        tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-ff-${{ matrix.state}}
+      run: |
+        tox -e ${{ matrix.config[1] }}-${{ matrix.flavour }}-${{ matrix.browser }}-${{ matrix.state }}
     - name: Report to coveralls
       run: |
         pip install coverage coveralls

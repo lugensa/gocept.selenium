@@ -12,7 +12,7 @@
 #
 ##############################################################################
 
-from selenium.common.exceptions import JavascriptException
+from selenium.common.exceptions import JavascriptException, WebDriverException
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import atexit
 import gocept.selenium.wd_selenese
@@ -57,24 +57,10 @@ class Layer(plone.testing.Layer):
 
         if browser.lower() == 'chrome':
             self._browser = 'chrome'
-        else:
-            self.profile = FirefoxProfile(
-                os.environ.get(
-                    'GOCEPT_WEBDRIVER_FF_PROFILE',
-                    os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
-            self.profile.native_events_enabled = True
-            self.profile.update_preferences()
-            # Save downloads always to disk into a predefined dir.
-            self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
-                prefix='gocept.selenium.download-dir'))
-            self.profile.set_preference("browser.download.folderList", 2)
-            self.profile.set_preference(
-                "browser.download.manager.showWhenStarting", False)
-            self.profile.set_preference(
-                "browser.download.dir", str(self['selenium_download_dir']))
-            self.profile.set_preference(
-                "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-            self.profile.set_preference("pdfjs.disabled", True)
+
+        # Setup download dir.
+        self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
+            prefix='gocept.selenium.download-dir'))
 
         self._start_selenium()
         atexit.register(self._stop_selenium)
@@ -87,29 +73,74 @@ class Layer(plone.testing.Layer):
         self['seleniumrc'].session_id = None
         del self['seleniumrc']
 
+    def get_firefox_webdriver_args(self):
+        options = selenium.webdriver.FirefoxOptions()
+
+        if self.headless:
+            options.add_argument('-headless')
+
+        profile = FirefoxProfile(
+            os.environ.get(
+                'GOCEPT_WEBDRIVER_FF_PROFILE',
+                os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
+        profile.native_events_enabled = True
+        profile.update_preferences()
+
+        # Save downloads always to disk into a predefined dir.
+        profile.set_preference("browser.download.folderList", 2)
+        profile.set_preference(
+            "browser.download.manager.showWhenStarting", False)
+        profile.set_preference(
+            "browser.download.dir", str(self['selenium_download_dir']))
+        profile.set_preference(
+            "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+        profile.set_preference("pdfjs.disabled", True)
+
+        return {'options': options, 'firefox_profile': profile}
+
+    def get_chrome_webdriver_args(self):
+        options = selenium.webdriver.ChromeOptions()
+        options.add_argument('--disable-dev-shm-usage')
+
+        if self.headless:
+            options.add_argument('--headless')
+        else:
+            raise NotImplementedError(
+                'Chromedriver currently only works headless.')
+
+        # Save downloads always to disk into a predefined dir.
+        prefs = {
+            'download.default_directory': str(self['selenium_download_dir']),
+            'download.prompt_for_download': False,
+        }
+
+        options.add_experimental_option('prefs', prefs)
+
+        mobile_emulation = {
+            'deviceMetrics': {
+                'pixelRatio': 1.0,
+                'width': 1600,
+                'height': 1200,
+            }
+        }
+
+        options.add_experimental_option('mobileEmulation', mobile_emulation)
+
+        return {
+            'options': options,
+            'service_args': ['--log-path=chromedriver.log']
+        }
+
     def _start_selenium(self):
         if self._browser == 'firefox':
-            options = selenium.webdriver.FirefoxOptions()
-
-            if self.headless:
-                options.add_argument('-headless')
-
             self['seleniumrc'] = selenium.webdriver.Firefox(
-                firefox_profile=self.profile, options=options)
+                **self.get_firefox_webdriver_args(),
+            )
 
         if self._browser == 'chrome':
-            options = selenium.webdriver.ChromeOptions()
-            options.add_argument('--disable-dev-shm-usage')
-
-            if self.headless:
-                options.add_argument('--headless')
-            else:
-                raise NotImplementedError(
-                    'Chromedriver currently only works headless.')
-
             self['seleniumrc'] = selenium.webdriver.Chrome(
-                options=options,
-                service_args=['--log-path=chromedriver.log'])
+                **self.get_chrome_webdriver_args(),
+            )
 
     def _stop_selenium(self):
         # Only stop selenium if it is still active.
@@ -123,7 +154,7 @@ class Layer(plone.testing.Layer):
     def testTearDown(self):
         try:
             self['seleniumrc'].execute_script('window.localStorage.clear()')
-        except JavascriptException:
+        except (JavascriptException, WebDriverException):
             # We can't do anything here, there might be no current_url
             pass
         for path in self['selenium_download_dir'].iterdir():
