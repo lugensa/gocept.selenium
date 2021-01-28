@@ -22,9 +22,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import contextlib
 import json
 import re
@@ -37,8 +37,9 @@ LOCATOR_JS = 'javascript'
 LOCATOR_JQUERY = 'jquery'
 
 try:
-    from .screenshot import (
-        assertScreenshot, screenshot_window, ZeroDimensionError)
+    from .screenshot import ZeroDimensionError
+    from .screenshot import assertScreenshot
+    from .screenshot import screenshot_window
 except ImportError:
     HAS_SCREENSHOT = False
 else:

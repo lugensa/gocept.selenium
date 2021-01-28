@@ -46,4 +46,3 @@
   <grant role="zope.Manager" principal="zope.mgr" />
 
 </configure>
-

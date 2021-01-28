@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import transaction
-
 import gocept.selenium.grok
 import gocept.selenium.grok.fixtures
-
 import gocept.selenium.tests.isolation
+import transaction
+
 
 test_layer = gocept.selenium.grok.Layer(gocept.selenium.grok)
 
