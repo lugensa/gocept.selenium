@@ -12,8 +12,9 @@
 #
 ##############################################################################
 
+from gocept.selenium.wsgi.testing import SimpleApp
+from gocept.selenium.wsgi.testing import SimpleApp2
 import gocept.selenium.wsgi
-from gocept.selenium.wsgi.testing import SimpleApp, SimpleApp2
 
 
 class TestWSGITestCase(gocept.selenium.wsgi.TestCase):

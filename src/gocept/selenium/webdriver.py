@@ -12,7 +12,8 @@
 #
 ##############################################################################
 
-from selenium.common.exceptions import JavascriptException, WebDriverException
+from selenium.common.exceptions import JavascriptException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import atexit
 import gocept.selenium.wd_selenese

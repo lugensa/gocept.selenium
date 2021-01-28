@@ -3,13 +3,13 @@
 Convert HTML selenium tests to gocept.selenium.seleniumrcd test cases.
 """
 
-import re
-import os
-import glob
-from string import Template
 from optparse import OptionParser
+from string import Template
 from xml.etree import ElementTree as HTMLTreeBuilder
 from xml.etree.ElementTree import QName
+import glob
+import os
+import re
 
 
 module_template = Template('''\

@@ -14,17 +14,19 @@
 
 from gocept.selenium.screenshot import ScreenshotMismatchError
 from gocept.selenium.screenshot import ScreenshotSizeMismatchError
-from gocept.selenium.wd_selenese import LOCATOR_JS, LOCATOR_JQUERY
+from gocept.selenium.wd_selenese import LOCATOR_JQUERY
+from gocept.selenium.wd_selenese import LOCATOR_JS
 from gocept.selenium.wd_selenese import selenese_pattern_equals as match
-from gocept.selenium.wd_selenese import split_locator, split_option_locator
+from gocept.selenium.wd_selenese import split_locator
+from gocept.selenium.wd_selenese import split_option_locator
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+from unittest import mock
 import gocept.httpserverlayer.static
 import gocept.testing.assertion
-from unittest import mock
 import os.path
 import pathlib
 import pkg_resources

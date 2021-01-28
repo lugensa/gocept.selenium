@@ -1,9 +1,10 @@
 from io import StringIO
-import unittest
 from unittest import mock
-import tempfile
 import os
 import sys
+import tempfile
+import unittest
+
 
 PLONE3LOGIN_METHOD = '''\
     def test_plone3login(self):
@@ -46,9 +47,9 @@ def test_suite():
 class TestConversion(unittest.TestCase):
 
     def test_parse_options_no_layer(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
-        from gocept.selenium.scripts.converthtmltests import make_parser
         from gocept.selenium.scripts.converthtmltests import LAYER_REQUIRED
+        from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         parse_options(parser, [])
@@ -56,9 +57,9 @@ class TestConversion(unittest.TestCase):
         parser.error.assert_called_with(LAYER_REQUIRED)
 
     def test_parse_options_no_directory(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
-        from gocept.selenium.scripts.converthtmltests import make_parser
         from gocept.selenium.scripts.converthtmltests import DIRECTORY_REQUIRED
+        from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         parse_options(parser, ['-l', LAYER])
@@ -66,9 +67,9 @@ class TestConversion(unittest.TestCase):
         parser.error.assert_called_with(DIRECTORY_REQUIRED)
 
     def test_parse_options_no_module(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
-        from gocept.selenium.scripts.converthtmltests import make_parser
         from gocept.selenium.scripts.converthtmltests import LAYER_WITH_MODULE
+        from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         parse_options(parser, ['-l', 'layer', 'dummy'])
@@ -76,9 +77,9 @@ class TestConversion(unittest.TestCase):
         parser.error.assert_called_with(LAYER_WITH_MODULE)
 
     def test_parse_options_one_directory(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
-        from gocept.selenium.scripts.converthtmltests import make_parser
         from gocept.selenium.scripts.converthtmltests import ONE_DIRECTORY
+        from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         parse_options(parser, ['-l', LAYER, 'first', 'second'])
@@ -86,10 +87,10 @@ class TestConversion(unittest.TestCase):
         parser.error.assert_called_with(ONE_DIRECTORY)
 
     def test_parse_options_directory_not_exist(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
+        from gocept.selenium.scripts.converthtmltests import \
+            DIRECTORY_NOT_EXIST
         from gocept.selenium.scripts.converthtmltests import make_parser
-        from gocept.selenium.scripts.converthtmltests import (
-            DIRECTORY_NOT_EXIST)
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         parse_options(parser, ['-l', LAYER, 'first'])
@@ -97,9 +98,9 @@ class TestConversion(unittest.TestCase):
         parser.error.assert_called_with(DIRECTORY_NOT_EXIST)
 
     def test_parse_options_directory_exists(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
-        from gocept.selenium.scripts.converthtmltests import make_parser
         from gocept.selenium.scripts.converthtmltests import DEFAULT_TARGET
+        from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         source = tempfile.gettempdir()
@@ -110,8 +111,8 @@ class TestConversion(unittest.TestCase):
         self.assertTrue(options.verbose)
 
     def test_parse_options_quiet(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
         from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         source = tempfile.mkdtemp()
@@ -119,8 +120,8 @@ class TestConversion(unittest.TestCase):
         self.assertFalse(options.verbose)
 
     def test_parse_options_target(self):
-        from gocept.selenium.scripts.converthtmltests import parse_options
         from gocept.selenium.scripts.converthtmltests import make_parser
+        from gocept.selenium.scripts.converthtmltests import parse_options
         parser = make_parser()
         parser.error = mock.Mock()
         source = tempfile.mkdtemp()
@@ -131,7 +132,6 @@ class TestConversion(unittest.TestCase):
 
     def test_parse_file(self):
         from gocept.selenium.scripts.converthtmltests import parse_file
-
         import gocept.selenium.scripts.tests
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'plone3login.html')
@@ -145,7 +145,6 @@ class TestConversion(unittest.TestCase):
 
     def test_parse_file_no_title(self):
         from gocept.selenium.scripts.converthtmltests import parse_file
-
         import gocept.selenium.scripts.tests
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'notitle.html')
@@ -155,7 +154,6 @@ class TestConversion(unittest.TestCase):
 
     def test_parse_file_no_commands(self):
         from gocept.selenium.scripts.converthtmltests import parse_file
-
         import gocept.selenium.scripts.tests
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
         filename = os.path.join(tests_dir, 'nocommands.html')
@@ -191,7 +189,6 @@ class TestConversion(unittest.TestCase):
 
     def test_parse_directory(self):
         from gocept.selenium.scripts.converthtmltests import parse_directory
-
         import gocept.selenium.scripts.tests
         tests_dir = os.path.dirname(gocept.selenium.scripts.tests.__file__)
 
@@ -202,7 +199,6 @@ class TestConversion(unittest.TestCase):
 
     def test_parse_directory_no_html(self):
         from gocept.selenium.scripts.converthtmltests import parse_directory
-
         import gocept.selenium.scripts
         tests_dir = os.path.dirname(gocept.selenium.scripts.__file__)
 

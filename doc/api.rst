@@ -1,8 +1,6 @@
 Selenese API
 ------------
 
-.. _general-information:
-
 General information
 ~~~~~~~~~~~~~~~~~~~
 

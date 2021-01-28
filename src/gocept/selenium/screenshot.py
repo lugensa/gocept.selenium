@@ -1,4 +1,5 @@
-from PIL import Image, ImageChops
+from PIL import Image
+from PIL import ImageChops
 import inspect
 import itertools
 import math
