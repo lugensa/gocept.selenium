@@ -40,9 +40,9 @@ class Layer(plone.testing.Layer):
         headless = os.environ.get('GOCEPT_SELENIUM_HEADLESS')
 
         if headless is None or headless.lower() not in ['true', 'false']:
-            warnings.warn('GOCEPT_SELENIUM_HEADLESS invalid. \
-                          Possible values are true and false. Got: %s.\
-                          Falling back to default (false).' %
+            warnings.warn('GOCEPT_SELENIUM_HEADLESS invalid.'
+                          ' Possible values are true and false. Got: %s.'
+                          ' Falling back to default (false).' %
                           os.environ.get('GOCEPT_SELENIUM_HEADLESS'))
             headless = 'false'
 
@@ -50,9 +50,9 @@ class Layer(plone.testing.Layer):
             self.headless = True
 
         if browser is None or browser.lower() not in ['chrome', 'firefox']:
-            warnings.warn('GOCEPT_WEBDRIVER_BROWSER invalid. \
-                          Possible values are firefox and chrome. Got: %s.\
-                          Falling back to firefox.' %
+            warnings.warn('GOCEPT_WEBDRIVER_BROWSER invalid.'
+                          ' Possible values are firefox and chrome. Got: %s.'
+                          ' Falling back to firefox.' %
                           os.environ.get('GOCEPT_WEBDRIVER_BROWSER'))
             browser = 'firefox'
 

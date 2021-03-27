@@ -12,6 +12,9 @@ Changelog
 - Google Chrome: Add temporary download directory support. It is
   accessible as a ``pathlib.Path`` via ``self.layer['selenium_download_dir']``.
 
+- Improve formatting of warnings when environment variables are not set to a
+  valid value.
+
 
 6.0 (2020-12-16)
 ----------------
