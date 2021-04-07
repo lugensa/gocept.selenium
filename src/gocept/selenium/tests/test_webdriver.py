@@ -97,20 +97,3 @@ class LayerTest(unittest.TestCase):
             layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
-
-    def test_chrome_head(self):
-        _environ = dict(os.environ)
-        if os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'chrome':
-            pytest.skip('This test is for chrome only')
-
-        try:
-            os.environ['GOCEPT_SELENIUM_HEADLESS'] = 'false'
-            with pytest.raises(NotImplementedError) as err:
-                layer = gocept.selenium.webdriver.Layer()
-                layer['http_address'] = 'localhost:34234'
-                layer.setUp()
-            assert 'Chromedriver currently only works headless.' in str(
-                err.value)
-        finally:
-            os.environ.clear()
-            os.environ.update(_environ)

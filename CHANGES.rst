@@ -12,6 +12,8 @@ Changelog
 - Google Chrome: Add temporary download directory support. It is
   accessible as a ``pathlib.Path`` via ``self.layer['selenium_download_dir']``.
 
+- Google Chrome: Add support for head mode.
+
 
 6.0 (2020-12-16)
 ----------------

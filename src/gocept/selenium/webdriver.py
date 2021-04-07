@@ -105,9 +105,6 @@ class Layer(plone.testing.Layer):
 
         if self.headless:
             options.add_argument('--headless')
-        else:
-            raise NotImplementedError(
-                'Chromedriver currently only works headless.')
 
         # Save downloads always to disk into a predefined dir.
         prefs = {
