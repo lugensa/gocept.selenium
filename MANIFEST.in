@@ -1,15 +1,17 @@
 exclude .installed.cfg
 exclude doc/_build
-exclude bitbucket-pipelines.yml
+
 include *.cfg
 include *.py
 include *.rst
 include *.txt
+include *.yaml
 include .coveragerc
 include doc/_themes/LICENSE
 include doc/_themes/README
 include pytest.ini
 include tox.ini
+
 recursive-exclude doc/build *
 recursive-include doc *.rst *.py *.png *.html *.conf *.css_t
 recursive-include src *.json
