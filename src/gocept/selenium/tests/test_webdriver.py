@@ -97,3 +97,24 @@ class LayerTest(unittest.TestCase):
             layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',
+        reason='This test is for edge only')
+    def test_webdriver__Layer__get_edge_webdriver_args__1(self):
+        """It prevents edge in headless mode.
+
+        Selenium 3 just does not support to switch to headless mode.
+        """
+        _environ = dict(os.environ)
+        try:
+            os.environ['GOCEPT_SELENIUM_HEADLESS'] = 'true'
+            with pytest.raises(NotImplementedError) as err:
+                layer = gocept.selenium.webdriver.Layer()
+                layer['http_address'] = 'localhost:34234'
+                layer.setUp()
+            assert 'Edgedriver currently only works in head mode.' in str(
+                err.value)
+        finally:
+            os.environ.clear()
+            os.environ.update(_environ)

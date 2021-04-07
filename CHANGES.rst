@@ -14,6 +14,12 @@ Changelog
 
 - Google Chrome: Add support for head mode.
 
+- Add beta support for ``Microsoft Edge``. (It currently supports all features
+  besides headless mode and download directory support but is only tested using
+  the tests of ``gocept.selenium``. **Caution:** Edge is not really stable on
+  Mac OS, after some test runs in refuses to start and requires to delete its
+  preferences etc.)
+
 
 6.0 (2020-12-16)
 ----------------

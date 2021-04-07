@@ -30,6 +30,7 @@ import gocept.testing.assertion
 import os.path
 import pathlib
 import pkg_resources
+import pytest
 import shutil
 import stat
 import time
@@ -271,9 +272,26 @@ class ScreenshotAssertionTest(HTMLTestCase,
         super().setUp()
         self.selenium.screenshot_directory = 'gocept.selenium.tests.fixture'
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'firefox',
+        reason='This test is for firefox only.')
     def test_successful_comparison(self):
         self.selenium.open('screenshot.html')
         self.selenium.assertScreenshot('screenshot', 'css=#block-1')
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'chrome',
+        reason='This test is for chrome only.')
+    def test_successful_comparison_chrome(self):
+        self.selenium.open('screenshot.html')
+        self.selenium.assertScreenshot('screenshot-chromium', 'css=#block-1')
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',
+        reason='This test is for edge only.')
+    def test_successful_comparison_edge(self):
+        self.selenium.open('screenshot.html')
+        self.selenium.assertScreenshot('screenshot-edge', 'css=#block-1')
 
     def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
@@ -422,6 +440,9 @@ class DownloadTests(HTMLTestCase):
 
     layer = STATIC_WD_SELENESE_LAYER
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'edge',
+        reason='Edge currently does not support using a custom download dir.')
     def test_webdriver__Layer__setUp__1(self):
         """It stores PDF files in a temporary download directory."""
         sel = self.selenium

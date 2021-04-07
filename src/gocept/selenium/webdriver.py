@@ -21,6 +21,8 @@ import os
 import pathlib
 import plone.testing
 import selenium.webdriver
+import selenium.webdriver.edge.options
+import shutil
 import sys
 import tempfile
 import warnings
@@ -31,7 +33,7 @@ class Layer(plone.testing.Layer):
     profile = None
     headless = False
     _browser = 'firefox'
-    _supported_browsers = ('chrome', 'firefox')
+    _supported_browsers = ('chrome', 'edge', 'firefox')
 
     def setUp(self):
         if 'http_address' not in self:
@@ -103,6 +105,21 @@ class Layer(plone.testing.Layer):
 
         return {'options': options, 'firefox_profile': profile}
 
+    def get_edge_webdriver_args(self):
+        options = selenium.webdriver.edge.options.Options()
+        if self.headless:
+            raise NotImplementedError(
+                'Edgedriver currently only works in head mode.'
+                ' After Selenium 4 is released, we can fix this.')
+
+        capabilities = options.to_capabilities()
+        if sys.platform == 'darwin':
+            capabilities['platform'] = 'MAC'
+        args = {'capabilities': capabilities}
+        if os.name == 'posix':
+            args['executable_path'] = shutil.which('msedgedriver')
+        return args
+
     def get_chrome_webdriver_args(self):
         options = selenium.webdriver.ChromeOptions()
         options.add_argument('--disable-dev-shm-usage')
@@ -142,6 +159,10 @@ class Layer(plone.testing.Layer):
         if self._browser == 'chrome':
             self['seleniumrc'] = selenium.webdriver.Chrome(
                 **self.get_chrome_webdriver_args(),
+            )
+        if self._browser == 'edge':
+            self['seleniumrc'] = selenium.webdriver.Edge(
+                **self.get_edge_webdriver_args(),
             )
 
     def _stop_selenium(self):
