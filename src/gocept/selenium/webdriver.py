@@ -31,33 +31,37 @@ class Layer(plone.testing.Layer):
     profile = None
     headless = False
     _browser = 'firefox'
+    _supported_browsers = ('chrome', 'firefox')
 
     def setUp(self):
         if 'http_address' not in self:
             raise KeyError("No base layer has set self['http_address']")
 
-        browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER')
-        headless = os.environ.get('GOCEPT_SELENIUM_HEADLESS')
+        browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', '').lower()
+        headless = os.environ.get('GOCEPT_SELENIUM_HEADLESS', '').lower()
 
-        if headless is None or headless.lower() not in ['true', 'false']:
-            warnings.warn('GOCEPT_SELENIUM_HEADLESS invalid. \
-                          Possible values are true and false. Got: %s.\
-                          Falling back to default (false).' %
-                          os.environ.get('GOCEPT_SELENIUM_HEADLESS'))
+        if headless not in {'true', 'false'}:
+            warnings.warn(
+                "The environment variable 'GOCEPT_SELENIUM_HEADLESS' has an"
+                " invalid value. Allowed values are 'true' and 'false'."
+                f" Got: {os.environ.get('GOCEPT_SELENIUM_HEADLESS')!r}."
+                " Falling back to default ('false').")
             headless = 'false'
 
-        if headless.lower() == 'true':
+        if headless == 'true':
             self.headless = True
 
-        if browser is None or browser.lower() not in ['chrome', 'firefox']:
-            warnings.warn('GOCEPT_WEBDRIVER_BROWSER invalid. \
-                          Possible values are firefox and chrome. Got: %s.\
-                          Falling back to firefox.' %
-                          os.environ.get('GOCEPT_WEBDRIVER_BROWSER'))
+        if browser not in self._supported_browsers:
+            warnings.warn(
+                "The environment variable 'GOCEPT_WEBDRIVER_BROWSER' has an "
+                "invalid value. Possible values are:"
+                f" {self._supported_browsers}."
+                f" Got: {os.environ.get('GOCEPT_WEBDRIVER_BROWSER')!r}."
+                " Falling back to 'firefox'.")
             browser = 'firefox'
 
-        if browser.lower() == 'chrome':
-            self._browser = 'chrome'
+        if browser in self._supported_browsers:
+            self._browser = browser
 
         # Setup download dir.
         self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(

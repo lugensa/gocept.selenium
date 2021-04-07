@@ -29,7 +29,7 @@ class LayerTest(unittest.TestCase):
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
                 layer.setUp()
-            assert 'GOCEPT_WEBDRIVER_BROWSER invalid.' in str(
+            assert "'GOCEPT_WEBDRIVER_BROWSER' has an invalid value." in str(
                 warning[0].message)
         finally:
             layer.tearDown()
@@ -46,7 +46,7 @@ class LayerTest(unittest.TestCase):
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
                 layer.setUp()
-            assert 'GOCEPT_WEBDRIVER_BROWSER invalid.' in str(
+            assert "'GOCEPT_WEBDRIVER_BROWSER' has an invalid value." in str(
                 warning[0].message)
         finally:
             layer.tearDown()
@@ -68,7 +68,7 @@ class LayerTest(unittest.TestCase):
                 layer['http_address'] = 'localhost:34234'
                 layer.setUp()
 
-            assert 'GOCEPT_SELENIUM_HEADLESS invalid.' in str(
+            assert "'GOCEPT_SELENIUM_HEADLESS' has an invalid value." in str(
                 warning[0].message)
         finally:
             layer.tearDown()
@@ -91,7 +91,7 @@ class LayerTest(unittest.TestCase):
                 layer['http_address'] = 'localhost:34234'
                 layer.setUp()
 
-            assert 'GOCEPT_SELENIUM_HEADLESS invalid.' in str(
+            assert "'GOCEPT_SELENIUM_HEADLESS' has an invalid value." in str(
                 warning[0].message)
         finally:
             layer.tearDown()
