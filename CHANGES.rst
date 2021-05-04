@@ -16,9 +16,9 @@ Changelog
 
 - Add beta support for ``Microsoft Edge``. (It currently supports all features
   besides headless mode and download directory support but is only tested using
-  the tests of ``gocept.selenium``. **Caution:** Edge is not really stable on
-  Mac OS, after some test runs in refuses to start and requires to delete its
-  preferences etc.)
+  the tests of ``gocept.selenium``. **Caution:** Edge does not seem to be
+  really stable on Mac OS, after some test runs it sometimes refuses to start
+  and requires to delete its preferences etc.)
 
 
 6.0 (2020-12-16)

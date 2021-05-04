@@ -284,7 +284,7 @@ class ScreenshotAssertionTest(HTMLTestCase,
         reason='This test is for chrome only.')
     def test_successful_comparison_chrome(self):
         self.selenium.open('screenshot.html')
-        self.selenium.assertScreenshot('screenshot-chromium', 'css=#block-1')
+        self.selenium.assertScreenshot('screenshot-chrome', 'css=#block-1')
 
     @pytest.mark.skipif(
         os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',

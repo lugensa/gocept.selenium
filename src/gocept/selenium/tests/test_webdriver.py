@@ -22,17 +22,18 @@ class LayerTest(unittest.TestCase):
 
     def test_wrong_browser_warning(self):
         _environ = dict(os.environ)
-
         try:
             os.environ['GOCEPT_WEBDRIVER_BROWSER'] = 'sfsdfsd'
             with pytest.warns(UserWarning) as warning:
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
-                layer.setUp()
+                try:
+                    layer.setUp()
+                finally:
+                    layer.tearDown()
             assert "'GOCEPT_WEBDRIVER_BROWSER' has an invalid value." in str(
                 warning[0].message)
         finally:
-            layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
 
@@ -45,11 +46,13 @@ class LayerTest(unittest.TestCase):
             with pytest.warns(UserWarning) as warning:
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
-                layer.setUp()
+                try:
+                    layer.setUp()
+                finally:
+                    layer.tearDown()
             assert "'GOCEPT_WEBDRIVER_BROWSER' has an invalid value." in str(
                 warning[0].message)
         finally:
-            layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
 
@@ -66,12 +69,13 @@ class LayerTest(unittest.TestCase):
             with pytest.warns(UserWarning) as warning:
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
-                layer.setUp()
-
+                try:
+                    layer.setUp()
+                finally:
+                    layer.tearDown()
             assert "'GOCEPT_SELENIUM_HEADLESS' has an invalid value." in str(
                 warning[0].message)
         finally:
-            layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
 
@@ -89,12 +93,13 @@ class LayerTest(unittest.TestCase):
             with pytest.warns(UserWarning) as warning:
                 layer = gocept.selenium.webdriver.Layer()
                 layer['http_address'] = 'localhost:34234'
-                layer.setUp()
-
+                try:
+                    layer.setUp()
+                finally:
+                    layer.tearDown()
             assert "'GOCEPT_SELENIUM_HEADLESS' has an invalid value." in str(
                 warning[0].message)
         finally:
-            layer.tearDown()
             os.environ.clear()
             os.environ.update(_environ)
 
