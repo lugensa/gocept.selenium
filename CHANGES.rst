@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-6.1 (unreleased)
+6.1 (2021-05-04)
 ----------------
 
 - Fix links and typos in documentation.
