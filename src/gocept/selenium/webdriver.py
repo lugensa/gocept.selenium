@@ -21,6 +21,8 @@ import os
 import pathlib
 import plone.testing
 import selenium.webdriver
+import selenium.webdriver.edge.options
+import shutil
 import sys
 import tempfile
 import warnings
@@ -29,35 +31,40 @@ import warnings
 class Layer(plone.testing.Layer):
 
     profile = None
-    headless = False
-    _browser = 'firefox'
+    _default_headless = False
+    _default_browser = 'firefox'
+    _supported_browsers = ('chrome', 'edge', 'firefox')
 
     def setUp(self):
         if 'http_address' not in self:
             raise KeyError("No base layer has set self['http_address']")
 
-        browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER')
-        headless = os.environ.get('GOCEPT_SELENIUM_HEADLESS')
+        browser = os.environ.get('GOCEPT_WEBDRIVER_BROWSER', '').lower()
+        headless = os.environ.get('GOCEPT_SELENIUM_HEADLESS', '').lower()
 
-        if headless is None or headless.lower() not in ['true', 'false']:
-            warnings.warn('GOCEPT_SELENIUM_HEADLESS invalid. \
-                          Possible values are true and false. Got: %s.\
-                          Falling back to default (false).' %
-                          os.environ.get('GOCEPT_SELENIUM_HEADLESS'))
+        if headless not in {'true', 'false'}:
+            warnings.warn(
+                "The environment variable 'GOCEPT_SELENIUM_HEADLESS' has an"
+                " invalid value. Allowed values are 'true' and 'false'."
+                f" Got: {os.environ.get('GOCEPT_SELENIUM_HEADLESS')!r}."
+                " Falling back to default ('false').")
             headless = 'false'
 
-        if headless.lower() == 'true':
-            self.headless = True
+        self['headless'] = (headless == 'true')
 
-        if browser is None or browser.lower() not in ['chrome', 'firefox']:
-            warnings.warn('GOCEPT_WEBDRIVER_BROWSER invalid. \
-                          Possible values are firefox and chrome. Got: %s.\
-                          Falling back to firefox.' %
-                          os.environ.get('GOCEPT_WEBDRIVER_BROWSER'))
+        if browser not in self._supported_browsers:
+            warnings.warn(
+                "The environment variable 'GOCEPT_WEBDRIVER_BROWSER' has an "
+                "invalid value. Possible values are:"
+                f" {self._supported_browsers}."
+                f" Got: {os.environ.get('GOCEPT_WEBDRIVER_BROWSER')!r}."
+                " Falling back to 'firefox'.")
             browser = 'firefox'
 
-        if browser.lower() == 'chrome':
-            self._browser = 'chrome'
+        if browser in self._supported_browsers:
+            self['browser'] = browser
+        else:
+            self['browser'] = self._default_browser
 
         # Setup download dir.
         self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
@@ -73,11 +80,13 @@ class Layer(plone.testing.Layer):
         # XXX upstream bug, quit should reset session_id
         self['seleniumrc'].session_id = None
         del self['seleniumrc']
+        del self['browser']
+        del self['headless']
 
     def get_firefox_webdriver_args(self):
         options = selenium.webdriver.FirefoxOptions()
 
-        if self.headless:
+        if self['headless']:
             options.add_argument('-headless')
 
         profile = FirefoxProfile(
@@ -99,15 +108,27 @@ class Layer(plone.testing.Layer):
 
         return {'options': options, 'firefox_profile': profile}
 
+    def get_edge_webdriver_args(self):
+        options = selenium.webdriver.edge.options.Options()
+        if self['headless']:
+            raise NotImplementedError(
+                'Edgedriver currently only works in head mode.'
+                ' After Selenium 4 is released, we can fix this.')
+
+        capabilities = options.to_capabilities()
+        if sys.platform == 'darwin':
+            capabilities['platform'] = 'MAC'
+        args = {'capabilities': capabilities}
+        if os.name == 'posix':
+            args['executable_path'] = shutil.which('msedgedriver')
+        return args
+
     def get_chrome_webdriver_args(self):
         options = selenium.webdriver.ChromeOptions()
         options.add_argument('--disable-dev-shm-usage')
 
-        if self.headless:
+        if self['headless']:
             options.add_argument('--headless')
-        else:
-            raise NotImplementedError(
-                'Chromedriver currently only works headless.')
 
         # Save downloads always to disk into a predefined dir.
         prefs = {
@@ -133,14 +154,18 @@ class Layer(plone.testing.Layer):
         }
 
     def _start_selenium(self):
-        if self._browser == 'firefox':
+        if self['browser'] == 'firefox':
             self['seleniumrc'] = selenium.webdriver.Firefox(
                 **self.get_firefox_webdriver_args(),
             )
 
-        if self._browser == 'chrome':
+        if self['browser'] == 'chrome':
             self['seleniumrc'] = selenium.webdriver.Chrome(
                 **self.get_chrome_webdriver_args(),
+            )
+        if self['browser'] == 'edge':
+            self['seleniumrc'] = selenium.webdriver.Edge(
+                **self.get_edge_webdriver_args(),
             )
 
     def _stop_selenium(self):

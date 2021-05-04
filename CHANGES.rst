@@ -12,6 +12,17 @@ Changelog
 - Google Chrome: Add temporary download directory support. It is
   accessible as a ``pathlib.Path`` via ``self.layer['selenium_download_dir']``.
 
+- Google Chrome: Add support for head mode.
+
+- Add beta support for ``Microsoft Edge``. (It currently supports all features
+  besides headless mode and download directory support but is only tested using
+  the tests of ``gocept.selenium``. **Caution:** Edge does not seem to be
+  really stable on Mac OS, after some test runs it sometimes refuses to start
+  and requires to delete its preferences etc.)
+
+- Add access to the selected browser and headless mode via a getitem call on
+  the layer.
+
 
 6.0 (2020-12-16)
 ----------------

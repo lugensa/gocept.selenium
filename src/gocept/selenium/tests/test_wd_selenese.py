@@ -30,6 +30,7 @@ import gocept.testing.assertion
 import os.path
 import pathlib
 import pkg_resources
+import pytest
 import shutil
 import stat
 import time
@@ -271,9 +272,27 @@ class ScreenshotAssertionTest(HTMLTestCase,
         super().setUp()
         self.selenium.screenshot_directory = 'gocept.selenium.tests.fixture'
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'firefox',
+        reason='This test is for firefox only.')
     def test_successful_comparison(self):
         self.selenium.open('screenshot.html')
         self.selenium.assertScreenshot('screenshot', 'css=#block-1')
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'chrome',
+        reason='This test is for chrome only.')
+    def test_successful_comparison_chrome(self):
+        self.selenium.open('screenshot.html')
+        self.selenium.assertScreenshot(
+            'screenshot-chrome', 'css=#block-1', threshold=14)
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',
+        reason='This test is for edge only.')
+    def test_successful_comparison_edge(self):
+        self.selenium.open('screenshot.html')
+        self.selenium.assertScreenshot('screenshot-edge', 'css=#block-1')
 
     def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
@@ -422,6 +441,9 @@ class DownloadTests(HTMLTestCase):
 
     layer = STATIC_WD_SELENESE_LAYER
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'edge',
+        reason='Edge currently does not support using a custom download dir.')
     def test_webdriver__Layer__setUp__1(self):
         """It stores PDF files in a temporary download directory."""
         sel = self.selenium
@@ -433,7 +455,12 @@ class DownloadTests(HTMLTestCase):
             if list(download_dir.iterdir()):
                 break
         else:
-            self.fail('PDF-File was not downloaded, download dir is empty.')
+            if (self.layer['browser'] == 'chrome'
+                    and not self.layer['headless']):
+                pytest.xfail('Chrome head mode currently seems to have a bug:'
+                             'It does not store the download file.')
+            else:
+                self.fail('PDF-File not downloaded, download dir is empty.')
         download_files = list(download_dir.iterdir())
         assert len(download_files) == 1
         assert download_files[0].name == 'example.pdf'
