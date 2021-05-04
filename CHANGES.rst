@@ -20,6 +20,9 @@ Changelog
   really stable on Mac OS, after some test runs it sometimes refuses to start
   and requires to delete its preferences etc.)
 
+- Add access to the selected browser and headless mode via a getitem call on
+  the layer.
+
 
 6.0 (2020-12-16)
 ----------------

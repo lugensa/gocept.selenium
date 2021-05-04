@@ -454,7 +454,12 @@ class DownloadTests(HTMLTestCase):
             if list(download_dir.iterdir()):
                 break
         else:
-            self.fail('PDF-File was not downloaded, download dir is empty.')
+            if (self.layer['browser'] == 'chrome'
+                    and not self.layer['headless']):
+                pytest.xfail('Chrome head mode currently seems to have a bug:'
+                             'It does not store the download file.')
+            else:
+                self.fail('PDF-File not downloaded, download dir is empty.')
         download_files = list(download_dir.iterdir())
         assert len(download_files) == 1
         assert download_files[0].name == 'example.pdf'

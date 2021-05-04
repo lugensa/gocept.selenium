@@ -31,8 +31,8 @@ import warnings
 class Layer(plone.testing.Layer):
 
     profile = None
-    headless = False
-    _browser = 'firefox'
+    _default_headless = False
+    _default_browser = 'firefox'
     _supported_browsers = ('chrome', 'edge', 'firefox')
 
     def setUp(self):
@@ -50,8 +50,7 @@ class Layer(plone.testing.Layer):
                 " Falling back to default ('false').")
             headless = 'false'
 
-        if headless == 'true':
-            self.headless = True
+        self['headless'] = (headless == 'true')
 
         if browser not in self._supported_browsers:
             warnings.warn(
@@ -63,7 +62,9 @@ class Layer(plone.testing.Layer):
             browser = 'firefox'
 
         if browser in self._supported_browsers:
-            self._browser = browser
+            self['browser'] = browser
+        else:
+            self['browser'] = self._default_browser
 
         # Setup download dir.
         self['selenium_download_dir'] = pathlib.Path(tempfile.mkdtemp(
@@ -79,11 +80,13 @@ class Layer(plone.testing.Layer):
         # XXX upstream bug, quit should reset session_id
         self['seleniumrc'].session_id = None
         del self['seleniumrc']
+        del self['browser']
+        del self['headless']
 
     def get_firefox_webdriver_args(self):
         options = selenium.webdriver.FirefoxOptions()
 
-        if self.headless:
+        if self['headless']:
             options.add_argument('-headless')
 
         profile = FirefoxProfile(
@@ -107,7 +110,7 @@ class Layer(plone.testing.Layer):
 
     def get_edge_webdriver_args(self):
         options = selenium.webdriver.edge.options.Options()
-        if self.headless:
+        if self['headless']:
             raise NotImplementedError(
                 'Edgedriver currently only works in head mode.'
                 ' After Selenium 4 is released, we can fix this.')
@@ -124,7 +127,7 @@ class Layer(plone.testing.Layer):
         options = selenium.webdriver.ChromeOptions()
         options.add_argument('--disable-dev-shm-usage')
 
-        if self.headless:
+        if self['headless']:
             options.add_argument('--headless')
 
         # Save downloads always to disk into a predefined dir.
@@ -151,16 +154,16 @@ class Layer(plone.testing.Layer):
         }
 
     def _start_selenium(self):
-        if self._browser == 'firefox':
+        if self['browser'] == 'firefox':
             self['seleniumrc'] = selenium.webdriver.Firefox(
                 **self.get_firefox_webdriver_args(),
             )
 
-        if self._browser == 'chrome':
+        if self['browser'] == 'chrome':
             self['seleniumrc'] = selenium.webdriver.Chrome(
                 **self.get_chrome_webdriver_args(),
             )
-        if self._browser == 'edge':
+        if self['browser'] == 'edge':
             self['seleniumrc'] = selenium.webdriver.Edge(
                 **self.get_edge_webdriver_args(),
             )
