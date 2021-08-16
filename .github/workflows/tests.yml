@@ -6,6 +6,8 @@ on:
   pull_request:
   schedule:
     - cron: '0 1 * * 0'  # run once a week on Sunday
+  # Allow to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build:
