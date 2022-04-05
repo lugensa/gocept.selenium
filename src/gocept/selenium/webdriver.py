@@ -79,12 +79,11 @@ class Layer(plonetesting.Layer):
     def _start_selenium(self):
         if self._browser == 'firefox':
             options = selenium.webdriver.FirefoxOptions()
-
+            options.set_preference('profile', self.profile)
             if self.headless:
                 options.add_argument('-headless')
 
-            self['seleniumrc'] = selenium.webdriver.Firefox(
-                firefox_profile=self.profile, options=options)
+            self['seleniumrc'] = selenium.webdriver.Firefox(options=options)
 
         if self._browser == 'chrome':
             options = selenium.webdriver.ChromeOptions()

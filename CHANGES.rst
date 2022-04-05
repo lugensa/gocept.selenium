@@ -5,7 +5,8 @@ Changelog
 5.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix a deprecation warning by using new way to provide firefox profile.
+  (#20582)
 
 
 5.1 (2019-11-14)
