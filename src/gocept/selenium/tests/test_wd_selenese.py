@@ -333,9 +333,9 @@ class ScreenshotAssertionTest(HTMLTestCase,
         self.selenium.open('display-delay.html')
         with self.assertRaises(AssertionError) as err:
             self.selenium.assertTextPresent('FooBar')
-        self.assertEqual(
-            "Text 'FooBar' not present\nA screenshot could not be saved "
-            "because document body is empty.", str(err.exception))
+        self.assertStartsWith(
+            "Text 'FooBar' not present\nA screenshot has been saved, see: ",
+            str(err.exception))
 
     def test_screenshot_files_have_normal_file_mode(self):
         self.selenium.open('screenshot.html')
