@@ -37,7 +37,6 @@ LOCATOR_JS = 'javascript'
 LOCATOR_JQUERY = 'jquery'
 
 try:
-    from .screenshot import ZeroDimensionError
     from .screenshot import assertScreenshot
     from .screenshot import screenshot_window
 except ImportError:
@@ -446,7 +445,7 @@ class Selenese:
         if HAS_SCREENSHOT:
             try:
                 path = screenshot_window(self)
-            except (ZeroDimensionError, WebDriverException):
+            except WebDriverException:
                 return ('A screenshot could not be saved because document '
                         'body is empty.')
             if PRINT_JUNIT_ATTACHMENTS:

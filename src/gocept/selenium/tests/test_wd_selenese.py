@@ -317,11 +317,9 @@ class ScreenshotAssertionTest(HTMLTestCase,
         with self.assertRaises(ScreenshotMismatchError):
             self.selenium.assertScreenshot('screenshot_blocks', 'css=#block-2')
 
-    def test_raises_Exception_on_empty_element(self):
-        from ..screenshot import ZeroDimensionError
+    def test_returns_whole_screen_on_empty_element(self):
         self.selenium.open('empty-tag.html')
-        with self.assertRaises(ZeroDimensionError):
-            self.selenium.assertScreenshot('emtpy-tag', 'css=#block0')
+        self.selenium.assertScreenshot('emtpy-tag', 'css=#block0')
 
     def test_takes_screenshot_on_assertion_error(self):
         self.selenium.open('screenshot.html')
@@ -335,9 +333,9 @@ class ScreenshotAssertionTest(HTMLTestCase,
         self.selenium.open('display-delay.html')
         with self.assertRaises(AssertionError) as err:
             self.selenium.assertTextPresent('FooBar')
-        self.assertEqual(
-            "Text 'FooBar' not present\nA screenshot could not be saved "
-            "because document body is empty.", str(err.exception))
+        self.assertStartsWith(
+            "Text 'FooBar' not present\nA screenshot has been saved, see: ",
+            str(err.exception))
 
     def test_screenshot_files_have_normal_file_mode(self):
         self.selenium.open('screenshot.html')
