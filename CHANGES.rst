@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-6.2 (unreleased)
+7.0 (unreleased)
 ----------------
 
 - Remove ``.screenshot.ZeroDimensionError``. Where it was previously raised now
