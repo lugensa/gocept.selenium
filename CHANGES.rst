@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+7.1 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 7.0 (2022-06-28)
 ----------------
 
