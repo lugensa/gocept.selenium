@@ -175,15 +175,6 @@ class ScreenshotSizeMismatchError(ValueError):
               junit_attach_line(self.got, 'actual'))
 
 
-class ZeroDimensionError(ValueError):
-
-    def __init__(self, locator):
-        self.locator = locator
-
-    def __str__(self):
-        return 'Either width or height of %r is zero.' % self.locator
-
-
 def make_screenshot(selenese, locator):
     tmpfile, path = tempfile.mkstemp(
         prefix='gocept_selenium_screenshot', suffix='.png')
@@ -205,14 +196,19 @@ def make_screenshot(selenese, locator):
         return dimensions;
         """, selenese._find(locator))
 
-    if 0 in (dimensions['width'], dimensions['height']):
-        raise ZeroDimensionError(locator)
+    if not dimensions or 0 in (dimensions['width'], dimensions['height']):
+        do_crop = False
+    else:
+        do_crop = True
 
     with open(path, 'r+b') as screenshot:
-        box = (dimensions['left'], dimensions['top'],
-               dimensions['left'] + dimensions['width'],
-               dimensions['top'] + dimensions['height'])
-        return Image.open(screenshot).convert('RGBA').crop(box)
+        result = Image.open(screenshot).convert('RGBA')
+        if do_crop:
+            box = (dimensions['left'], dimensions['top'],
+                   dimensions['left'] + dimensions['width'],
+                   dimensions['top'] + dimensions['height'])
+            result = result.crop(box)
+        return result
 
 
 def _screenshot_path(screenshot_directory):

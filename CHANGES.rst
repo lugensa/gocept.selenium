@@ -5,7 +5,8 @@ Changelog
 6.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Remove ``.screenshot.ZeroDimensionError``. Where it was previously raised now
+  the whole screenshot is saved.
 
 
 6.1 (2021-05-04)
