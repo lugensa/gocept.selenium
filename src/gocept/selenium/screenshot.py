@@ -247,7 +247,7 @@ def save_as_expected(screenshot, img_basename, exp_path):
             img_basename, exp_path))
 
 
-def assertScreenshot(selenese, img_basename, locator, threshold=1):
+def assertScreenshot(selenese, img_basename, locator, threshold=1.0):
     exp_path = os.path.join(
         _screenshot_path(selenese.screenshot_directory),
         '%s.png' % img_basename)
