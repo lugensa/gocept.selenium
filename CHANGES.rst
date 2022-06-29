@@ -9,7 +9,7 @@ Changelog
 
 - Depend on ``webdriver-manager`` to get drivers automatically updated.
 
-- Add support for ``edge`` headless mode.
+- Add support for ``edge`` headless mode and test it on GHA.
 
 
 7.0 (2022-06-28)
