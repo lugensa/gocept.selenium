@@ -14,6 +14,12 @@
 
 from selenium.common.exceptions import JavascriptException
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 import atexit
 import gocept.selenium.wd_selenese
 import os
@@ -21,7 +27,6 @@ import pathlib
 import plone.testing
 import selenium.webdriver
 import selenium.webdriver.edge.options
-import shutil
 import sys
 import tempfile
 import warnings
@@ -104,22 +109,16 @@ class Layer(plone.testing.Layer):
             "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
         options.set_preference("pdfjs.disabled", True)
 
-        return {'options': options}
+        return {'options': options,
+                'service': FirefoxService(GeckoDriverManager().install())}
 
     def get_edge_webdriver_args(self):
         options = selenium.webdriver.edge.options.Options()
         if self['headless']:
-            raise NotImplementedError(
-                'Edgedriver currently only works in head mode.'
-                ' After Selenium 4 is released, we can fix this.')
+            options.add_argument('headless')
 
-        capabilities = options.to_capabilities()
-        if sys.platform == 'darwin':
-            capabilities['platform'] = 'MAC'
-        args = {'capabilities': capabilities}
-        if os.name == 'posix':
-            args['executable_path'] = shutil.which('msedgedriver')
-        return args
+        return {'options': options,
+                'service': EdgeService(EdgeChromiumDriverManager().install())}
 
     def get_chrome_webdriver_args(self):
         options = selenium.webdriver.ChromeOptions()
@@ -148,7 +147,8 @@ class Layer(plone.testing.Layer):
 
         return {
             'options': options,
-            'service_args': ['--log-path=chromedriver.log']
+            'service_args': ['--log-path=chromedriver.log'],
+            'service': ChromeService(ChromeDriverManager().install()),
         }
 
     def _start_selenium(self):
