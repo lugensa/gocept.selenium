@@ -292,7 +292,8 @@ class ScreenshotAssertionTest(HTMLTestCase,
         reason='This test is for edge only.')
     def test_successful_comparison_edge(self):
         self.selenium.open('screenshot.html')
-        self.selenium.assertScreenshot('screenshot-edge', 'css=#block-1')
+        self.selenium.assertScreenshot(
+            'screenshot-edge', 'css=#block-1', threshold=14)
 
     def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
