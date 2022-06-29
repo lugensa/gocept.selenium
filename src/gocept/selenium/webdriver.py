@@ -14,7 +14,6 @@
 
 from selenium.common.exceptions import JavascriptException
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import atexit
 import gocept.selenium.wd_selenese
 import os
@@ -89,24 +88,23 @@ class Layer(plone.testing.Layer):
         if self['headless']:
             options.add_argument('-headless')
 
-        profile = FirefoxProfile(
-            os.environ.get(
-                'GOCEPT_WEBDRIVER_FF_PROFILE',
-                os.environ.get('GOCEPT_SELENIUM_FF_PROFILE')))
-        profile.native_events_enabled = True
-        profile.update_preferences()
+        profile_path = os.environ.get(
+            'GOCEPT_WEBDRIVER_FF_PROFILE',
+            os.environ.get('GOCEPT_SELENIUM_FF_PROFILE'))
+        if profile_path:
+            options.set_preference('profile', profile_path)
 
         # Save downloads always to disk into a predefined dir.
-        profile.set_preference("browser.download.folderList", 2)
-        profile.set_preference(
+        options.set_preference("browser.download.folderList", 2)
+        options.set_preference(
             "browser.download.manager.showWhenStarting", False)
-        profile.set_preference(
+        options.set_preference(
             "browser.download.dir", str(self['selenium_download_dir']))
-        profile.set_preference(
+        options.set_preference(
             "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-        profile.set_preference("pdfjs.disabled", True)
+        options.set_preference("pdfjs.disabled", True)
 
-        return {'options': options, 'firefox_profile': profile}
+        return {'options': options}
 
     def get_edge_webdriver_args(self):
         options = selenium.webdriver.edge.options.Options()

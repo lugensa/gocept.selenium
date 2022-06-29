@@ -5,7 +5,7 @@ Changelog
 7.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix deprecation warnings emitted when using ``firefox``.
 
 
 7.0 (2022-06-28)
