@@ -94,9 +94,6 @@ class Layer(plone.testing.Layer):
         if profile_path:
             options.set_preference('profile', profile_path)
 
-        # profile.native_events_enabled = True
-        # profile.update_preferences()
-
         # Save downloads always to disk into a predefined dir.
         options.set_preference("browser.download.folderList", 2)
         options.set_preference(
