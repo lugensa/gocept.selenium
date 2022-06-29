@@ -5,7 +5,11 @@ Changelog
 7.1 (unreleased)
 ----------------
 
-- Fix deprecation warnings emitted when using ``firefox``.
+- Fix deprecation warnings.
+
+- Depend on ``webdriver-manager`` to get drivers automatically updated.
+
+- Add support for ``edge`` headless mode.
 
 
 7.0 (2022-06-28)
