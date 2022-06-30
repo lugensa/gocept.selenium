@@ -22,8 +22,7 @@ Developing gocept.selenium
 Documentation
 -------------
 
-In order to build the Sphinx documentation, run the following command with a
-python, where sphinx is installed::
+In order to build the Sphinx documentation, run the following commands::
 
     $ python3 -m venv .
     $ bin/pip install Sphinx
