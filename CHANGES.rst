@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-7.1 (unreleased)
+7.1 (2022-06-30)
 ----------------
 
 - Fix deprecation warnings.
