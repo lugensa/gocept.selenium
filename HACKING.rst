@@ -8,7 +8,7 @@ Developing gocept.selenium
     https://goceptselenium.readthedocs.org/
 
 :PyPI page:
-    https://pypi.python.org/pypi/gocept.selenium/
+    https://pypi.org/project/gocept.selenium/
 
 :Issue tracker:
     https://github.com/gocept/gocept.selenium/issues
