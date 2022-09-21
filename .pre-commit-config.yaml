@@ -47,4 +47,5 @@ repos:
         rev: 'v6.1.0'
         hooks:
         -   id: rstcheck
-            args: [--ignore-messages, Duplicate implicit target name ]
+            additional_dependencies: [sphinx]
+            args: [--ignore-messages, 'Duplicate implicit target name' ]
