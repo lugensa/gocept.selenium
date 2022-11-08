@@ -27,7 +27,7 @@ jobs:
           - headless
           # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: ${{ matrix.config[1] }}-${{ matrix.browser }}-${{ matrix.state }}
     steps:
     - uses: actions/checkout@v2
