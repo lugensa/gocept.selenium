@@ -28,7 +28,7 @@ repos:
         args: [--filter-files]
         files: \.py$
     - repo: https://github.com/mgedmin/check-manifest
-      rev: "0.48"
+      rev: "0.49"
       hooks:
       - id: check-manifest
     - repo: local
