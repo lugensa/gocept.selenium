@@ -1,10 +1,10 @@
 from PIL import Image
 from PIL import ImageChops
+import importlib_resources
 import inspect
 import itertools
 import math
 import os
-import pkg_resources
 import tempfile
 
 
@@ -13,7 +13,7 @@ PRINT_JUNIT_ATTACHMENTS = os.environ.get('GOCEPT_SELENIUM_JUNIT_ATTACH', False)
 
 
 def get_path(resource):
-    return pkg_resources.resource_filename('gocept.selenium', resource)
+    return importlib_resources.files('gocept.selenium') / resource
 
 
 WHITE = (255, 255, 255, 0)
@@ -215,7 +215,7 @@ def _screenshot_path(screenshot_directory):
     if screenshot_directory == '.':
         screenshot_directory = \
             inspect.currentframe().f_back.f_back.f_back.f_globals['__name__']
-    return pkg_resources.resource_filename(screenshot_directory, '')
+    return importlib_resources.files(screenshot_directory)
 
 
 def save_screenshot_temporary(screenshot):
