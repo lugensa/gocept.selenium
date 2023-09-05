@@ -147,8 +147,9 @@ class Layer(plone.testing.Layer):
 
         return {
             'options': options,
-            'service_args': ['--log-path=chromedriver.log'],
-            'service': ChromeService(ChromeDriverManager().install()),
+            'service': ChromeService(
+                ChromeDriverManager().install(),
+                service_args=['--log-path=chromedriver.log']),
         }
 
     def _start_selenium(self):
