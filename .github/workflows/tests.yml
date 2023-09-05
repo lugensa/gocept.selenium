@@ -27,7 +27,7 @@ jobs:
           - headless
           # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: ${{ matrix.config[1] }}-${{ matrix.browser }}-${{ matrix.state }}
     steps:
     - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
       with:
         python-version: ${{ matrix.config[0] }}
     - name: Pip cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('setup.*', 'tox.ini') }}
@@ -45,7 +45,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install 'tox < 4' tox-factor
+        pip install tox
     - name: Install dependencies (firefox)
       if: matrix.browser == 'ff'
       run: |
