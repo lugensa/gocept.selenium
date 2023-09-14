@@ -292,17 +292,28 @@ class ScreenshotAssertionTest(HTMLTestCase,
     def test_successful_comparison_edge(self):
         self.selenium.open('screenshot.html')
         self.selenium.assertScreenshot(
-            'screenshot-edge', 'css=#block-1', threshold=14)
+            'screenshot-edge', 'css=#block-1', threshold=5)
 
     def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
         with self.assertRaises(ScreenshotSizeMismatchError):
             self.selenium.assertScreenshot('screenshot', 'css=#block-2')
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'edge',
+        reason='Screenshots of Edge are currently broken.')
     def test_does_not_fail_if_threshold_greater_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         self.selenium.assertScreenshot(
             'screenshot_threshold', 'css=#block-2', threshold=12)
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',
+        reason='Test the broken screenshots of Edge.')
+    def test_does_not_fail_if_threshold_greater_than_distance_edge(self):
+        self.selenium.open('screenshot_threshold.html')
+        self.selenium.assertScreenshot(
+            'screenshot_threshold_edge', 'css=#block-2', threshold=12)
 
     def test_does_fail_if_threshold_less_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
