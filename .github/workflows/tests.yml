@@ -9,9 +9,6 @@ on:
   # Allow to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  GH_TOKEN: ${{ vars.GH_TOKEN }}
-
 jobs:
   build:
     strategy:
@@ -64,6 +61,8 @@ jobs:
         sudo apt update
         sudo apt install microsoft-edge-stable
     - name: Test
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         tox -f ${{ matrix.config[1] }}-${{ matrix.browser }}-${{ matrix.state }}
     - name: Report to coveralls
