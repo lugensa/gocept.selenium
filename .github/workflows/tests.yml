@@ -20,10 +20,12 @@ jobs:
         - ["3.7",   "py37"]
         - ["3.8",   "py38"]
         - ["3.9",   "py39"]
+        - ["3.10",  "py310"]
+        - ["3.11",  "py311"]
         browser:
-          - ff
+          # - ff  # unability to solve `API rate limit exceeded` problems
           - chrome
-          - edge
+          # - edge  # Edge version and driver version do not match
         state:
           - headless
           # - head  # disabled because it needs xvfb which is not so easy to set up on GHA
@@ -62,8 +64,6 @@ jobs:
         sudo apt update
         sudo apt install microsoft-edge-stable
     - name: Test
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         tox -f ${{ matrix.config[1] }}-${{ matrix.browser }}-${{ matrix.state }}
     - name: Report to coveralls

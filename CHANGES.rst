@@ -5,7 +5,13 @@ Changelog
 7.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add support for Python 3.10, 3.11.
+
+- Drop testing against ``Firefox`` in GitHub Actions: I was unable to solve the
+  *API rate limit exceeded* problem.
+
+- Drop testing against ``Edge`` in GitHub Actions: It says that the driver does
+  not match the Edge version.
 
 
 7.1 (2022-06-30)
