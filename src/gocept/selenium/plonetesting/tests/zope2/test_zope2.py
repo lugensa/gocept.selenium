@@ -26,4 +26,4 @@ class Zope2Tests(gocept.selenium.tests.isolation.IsolationTests,
 
 
 def test_suite():
-    return unittest.makeSuite(Zope2Tests)
+    return unittest.defaultTestLoader.loadTestsFromTestCase(Zope2Tests)

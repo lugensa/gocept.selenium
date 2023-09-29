@@ -5,6 +5,7 @@ from setuptools import setup
 install_requires = [
     'gocept.httpserverlayer >= 3',
     'httpagentparser',
+    'importlib-resources',
     'plone.testing >= 7.0',
     'selenium >= 4',
     'Pillow',

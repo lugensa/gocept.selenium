@@ -26,10 +26,10 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from unittest import mock
 import gocept.httpserverlayer.static
+import gocept.selenium
 import gocept.testing.assertion
+import importlib_resources
 import os.path
-import pathlib
-import pkg_resources
 import pytest
 import shutil
 import stat
@@ -98,8 +98,7 @@ class HTMLTestCase(gocept.selenium.webdriver.WebdriverSeleneseTestCase,
 
     def setUp(self):
         super().setUp()
-        directory = pathlib.Path(pkg_resources.resource_filename(
-            'gocept.selenium.tests.fixture', ''))
+        directory = importlib_resources.files('gocept.selenium.tests.fixture')
         for glob in ('*.html', '*.pdf'):
             for name in directory.glob(glob):
                 shutil.copy(directory / name, self.layer['documentroot'])
@@ -293,17 +292,28 @@ class ScreenshotAssertionTest(HTMLTestCase,
     def test_successful_comparison_edge(self):
         self.selenium.open('screenshot.html')
         self.selenium.assertScreenshot(
-            'screenshot-edge', 'css=#block-1', threshold=14)
+            'screenshot-edge', 'css=#block-1', threshold=5)
 
     def test_raises_exception_if_image_sizes_differ(self):
         self.selenium.open('screenshot.html')
         with self.assertRaises(ScreenshotSizeMismatchError):
             self.selenium.assertScreenshot('screenshot', 'css=#block-2')
 
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() == 'edge',
+        reason='Screenshots of Edge are currently broken.')
     def test_does_not_fail_if_threshold_greater_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
         self.selenium.assertScreenshot(
             'screenshot_threshold', 'css=#block-2', threshold=12)
+
+    @pytest.mark.skipif(
+        os.environ.get('GOCEPT_WEBDRIVER_BROWSER').lower() != 'edge',
+        reason='Test the broken screenshots of Edge.')
+    def test_does_not_fail_if_threshold_greater_than_distance_edge(self):
+        self.selenium.open('screenshot_threshold.html')
+        self.selenium.assertScreenshot(
+            'screenshot_threshold_edge', 'css=#block-2', threshold=12)
 
     def test_does_fail_if_threshold_less_than_distance(self):
         self.selenium.open('screenshot_threshold.html')
@@ -373,7 +383,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
 
     def test_default_setting_when_not_set(self):
         # the default is the directory where the current test is
-        img = pkg_resources.resource_filename(self.__module__, 'foo.png')
+        img = str(importlib_resources.files(self.__module__) / 'foo.png')
         self.selenium.capture_screenshot = True
         self.selenium.open('screenshot.html')
         with self.assertRaisesRegex(ValueError, img):
@@ -384,7 +394,7 @@ class ScreenshotDirectorySettingTest(HTMLTestCase):
     def test_screenshot_directory_setting_resolves_dotted_name(self):
         directory = 'gocept.selenium.tests.screenshot_directory'
         self.selenium.screenshot_directory = directory
-        img = pkg_resources.resource_filename(directory, 'foo.png')
+        img = str(importlib_resources.files(directory) / 'foo.png')
         self.selenium.capture_screenshot = True
         self.selenium.open('screenshot.html')
         with self.assertRaisesRegex(ValueError, img):

@@ -109,8 +109,11 @@ class Layer(plone.testing.Layer):
             "browser.helperApps.neverAsk.saveToDisk", "application/pdf")
         options.set_preference("pdfjs.disabled", True)
 
-        return {'options': options,
-                'service': FirefoxService(GeckoDriverManager().install())}
+        return {
+            'options': options,
+            'service': FirefoxService(
+                GeckoDriverManager().install(),
+                log_output=open("geckodriver.log", "a+", encoding="utf-8"))}
 
     def get_edge_webdriver_args(self):
         options = selenium.webdriver.edge.options.Options()
@@ -147,8 +150,9 @@ class Layer(plone.testing.Layer):
 
         return {
             'options': options,
-            'service_args': ['--log-path=chromedriver.log'],
-            'service': ChromeService(ChromeDriverManager().install()),
+            'service': ChromeService(
+                ChromeDriverManager().install(),
+                service_args=['--log-path=chromedriver.log']),
         }
 
     def _start_selenium(self):
